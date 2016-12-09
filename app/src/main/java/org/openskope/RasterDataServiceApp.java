@@ -17,8 +17,8 @@ import java.io.PrintStream;
 import java.util.Arrays;
 
 @SpringBootApplication
-@ComponentScan(basePackages="org.openskope.rasterdataservice")
-public class RasterDataService {
+@ComponentScan
+public class RasterDataServiceApp {
 
     public static VersionInfo versionInfo;
 
@@ -49,8 +49,8 @@ public class RasterDataService {
     public static ExitCode startServiceForArgs(String [] args, 
         PrintStream outStream, PrintStream errStream) throws Exception{
 
-        RasterDataService.outStream = outStream;
-        RasterDataService.errStream = errStream;
+        RasterDataServiceApp.outStream = outStream;
+        RasterDataServiceApp.errStream = errStream;
 
         versionInfo = VersionInfo.loadVersionInfoFromResource(
             "Raster Data Service", 
@@ -89,7 +89,7 @@ public class RasterDataService {
                 return ExitCode.SUCCESS;
             }
 
-        SpringApplication.run(RasterDataService.class, args);
+        SpringApplication.run(RasterDataServiceApp.class, args);
         
         } catch (CliUsageException e) {
 //            printToolUsageErrors(e.getMessage());
