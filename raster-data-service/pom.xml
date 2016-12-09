@@ -4,9 +4,9 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>org.openskope</groupId>
-    <artifactId>raster-data-service-app</artifactId>
+    <artifactId>raster-data-service</artifactId>
     <version>0.1.2-SNAPSHOT</version>
-    <packaging>pom</packaging>
+    <packaging>jar</packaging>
 
     <parent>
         <groupId>org.springframework.boot</groupId>
@@ -14,11 +14,7 @@
         <version>1.4.2.RELEASE</version>
     </parent>
 
-    <name>raster-data-service-app</name>
-    
-    <modules>
-      <module>raster-data-service</module>
-   </modules>
+    <name>raster-data-service</name>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -30,11 +26,6 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
-
-        <!--<dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-remote-shell</artifactId>
-        </dependency>-->
 
         <dependency>
             <groupId>net.sf.jopt-simple</groupId>
@@ -72,11 +63,6 @@
     
 
 	    <plugins>
-	
-	        <plugin>
-	            <groupId>org.springframework.boot</groupId>
-	            <artifactId>spring-boot-maven-plugin</artifactId>
-	        </plugin>
 
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
