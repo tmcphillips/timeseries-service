@@ -24,7 +24,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 @RestController 
 @EnableAutoConfiguration
 @CrossOrigin 
-@RequestMapping("${raster-data-service.url}/")
+@RequestMapping("${raster-data-service.endpoint}/")
 public class RasterDataServiceController {
     
     @Autowired public TimeseriesColumnService timeseriesColumnService;
