@@ -4,11 +4,11 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>org.openskope</groupId>
-    <artifactId>raster-data-service-pom</artifactId>
-    <version>0.1.4</version>
+    <artifactId>time-series-service-pom</artifactId>
+    <version>0.1.5</version>
     <packaging>pom</packaging>
 
-    <name>raster-data-service-pom</name>
+    <name>time-series-service-pom</name>
     
     <modules>
       <module>app</module>

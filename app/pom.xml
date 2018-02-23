@@ -4,7 +4,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>org.openskope</groupId>
-    <artifactId>raster-data-service-app</artifactId>
+    <artifactId>time-series-service-app</artifactId>
     <version>0.1.4</version>
     <packaging>jar</packaging>
 
@@ -14,7 +14,7 @@
         <version>1.4.2.RELEASE</version>
     </parent>
 
-    <name>raster-data-service-app</name>
+    <name>time-series-service-app</name>
     
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -42,7 +42,7 @@
 
         <dependency>
             <groupId>org.openskope</groupId>
-            <artifactId>raster-data-service</artifactId>
+            <artifactId>time-series-service</artifactId>
             <version>0.1.4</version>
         </dependency>
 
