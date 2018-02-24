@@ -1,1 +1,1 @@
-# time-series-service
+# SKOPE Time Series Service
