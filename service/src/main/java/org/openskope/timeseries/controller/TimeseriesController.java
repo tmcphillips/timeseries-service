@@ -1,31 +1,25 @@
-package org.openskope.rasterdataservice.controller;
+package org.openskope.timeseries.controller;
 
-import org.openskope.rasterdataservice.model.Timeseries;
-import org.openskope.rasterdataservice.service.TimeseriesColumnService;
-import org.openskope.rasterdataservice.service.TimeseriesTableService;
+import org.openskope.timeseries.model.Timeseries;
+import org.openskope.timeseries.service.TimeseriesColumnService;
+import org.openskope.timeseries.service.TimeseriesTableService;
 
-import java.io.File;
-import java.io.Writer;
-import java.util.Map;
-import java.util.HashMap;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 
 @RestController 
 @EnableAutoConfiguration
 @CrossOrigin 
-@RequestMapping("${raster-data-service.endpoint}/")
-public class RasterDataServiceController {
+@RequestMapping("${timeseries.endpoint}/")
+public class TimeseriesController {
     
     @Autowired public TimeseriesColumnService timeseriesColumnService;
     @Autowired public TimeseriesTableService timeseriesTableService;

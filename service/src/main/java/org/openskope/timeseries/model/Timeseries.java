@@ -1,4 +1,4 @@
-package org.openskope.rasterdataservice.model;
+package org.openskope.timeseries.model;
 
 import java.util.Map;
 import java.util.HashMap;

@@ -1,10 +1,8 @@
-package org.openskope.rasterdataservice;
+package org.openskope;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.ApplicationRunner;
-import org.springframework.boot.ApplicationArguments;
 
 import org.yesworkflow.util.cli.VersionInfo;
 
@@ -18,7 +16,7 @@ import java.util.Arrays;
 
 @SpringBootApplication
 @ComponentScan
-public class RasterDataServiceApp {
+public class TimeseriesApp {
 
     public static VersionInfo versionInfo;
 
@@ -49,12 +47,12 @@ public class RasterDataServiceApp {
     public static ExitCode startServiceForArgs(String [] args, 
         PrintStream outStream, PrintStream errStream) throws Exception{
 
-        RasterDataServiceApp.outStream = outStream;
-        RasterDataServiceApp.errStream = errStream;
+            TimeseriesApp.outStream = outStream;
+            TimeseriesApp.errStream = errStream;
 
         versionInfo = VersionInfo.loadVersionInfoFromResource(
-            "Raster Data Service", 
-            "https://github.com/openskope/raster-data-service.git",
+            "Timemseries Service", 
+            "https://github.com/openskope/timeseries-service.git",
             "git.properties",
             "maven.properties");        
 
@@ -89,7 +87,7 @@ public class RasterDataServiceApp {
                 return ExitCode.SUCCESS;
             }
 
-        SpringApplication.run(RasterDataServiceApp.class, args);
+        SpringApplication.run(TimeseriesApp.class, args);
         
         } catch (CliUsageException e) {
 //            printToolUsageErrors(e.getMessage());

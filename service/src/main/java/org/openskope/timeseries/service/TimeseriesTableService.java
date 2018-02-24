@@ -1,6 +1,4 @@
-package org.openskope.rasterdataservice.service;
-
-import org.openskope.rasterdataservice.model.Timeseries;
+package org.openskope.timeseries.service;
 
 import org.yesworkflow.util.exec.ProcessRunner;
 import org.yesworkflow.util.exec.StreamSink;
@@ -28,12 +26,12 @@ public class TimeseriesTableService implements InitializingBean {
         };
     };
 
-	@Value("${raster-data-service.data-dir}") public String rasterDataDirectory;
+	@Value("${timeseries.data}") public String timeseriesDataDirectory;
 
     private String dataDirectory;
 
     public void afterPropertiesSet() {
-        dataDirectory = (new File(rasterDataDirectory)).getAbsolutePath();
+        dataDirectory = (new File(timeseriesDataDirectory)).getAbsolutePath();
     }
 
 	public String getTable(String longitude, String latitude, String startYear, String endYear) throws Exception {
