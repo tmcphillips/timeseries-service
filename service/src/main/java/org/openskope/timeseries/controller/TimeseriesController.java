@@ -29,7 +29,7 @@ public class TimeseriesController {
 
 	@RequestMapping(value="/status", method=RequestMethod.GET)
     public @ResponseBody ServiceStatus getServiceStatus() throws Exception {
-        return new ServiceStatus();
+        return new ServiceStatus(timeseriesServiceName);
 	}
 
     @RequestMapping(value="/timeseries", method=RequestMethod.GET)
