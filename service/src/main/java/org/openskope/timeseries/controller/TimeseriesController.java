@@ -1,5 +1,6 @@
 package org.openskope.timeseries.controller;
 
+import org.openskope.timeseries.model.ServiceStatus;
 import org.openskope.timeseries.model.Timeseries;
 import org.openskope.timeseries.service.TimeseriesColumnService;
 import org.openskope.timeseries.service.TimeseriesTableService;
@@ -26,10 +27,9 @@ public class TimeseriesController {
     @Autowired public TimeseriesTableService timeseriesTableService;
     @Value("${service.name}") public String timeseriesServiceName;
 
-	@RequestMapping(value="/", method=RequestMethod.GET)
-    public @ResponseBody String getServiceName() throws Exception {
-        // return "{ 'name': " + timeseriesServiceName + "}";
-        return "SKOPE Timeseries Service";
+	@RequestMapping(value="/status", method=RequestMethod.GET)
+    public @ResponseBody ServiceStatus getServiceStatus() throws Exception {
+        return new ServiceStatus();
 	}
 
     @RequestMapping(value="/timeseries", method=RequestMethod.GET)
