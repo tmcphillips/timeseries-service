@@ -1,19 +1,20 @@
 const rest = require('rest');
 const mime = require('rest/interceptor/mime');
 
-const timeseriesServiceUrl = 'http://localhost:8001';
+const timeseriesServiceBase = 'http://localhost:8001/timeseries-service/api/v1/';
 
-const callRESTService =  rest.wrap(mime, { mime: 'application/json' } );
-  
+// const callRESTService =  rest.wrap(mime, { mime: 'application/json' } );
+const callRESTService = rest
+
 describe("When timeseries service is running", () => {
     
     it ('GET / should return service name', async function() {
         var response = await callRESTService({
             method: 'GET',
-            path: timeseriesServiceUrl
+            path: timeseriesServiceBase
         });
         expect(response.status.code).toBe(200);
-        expect(response.entity.name).toBe("SKOPE Timeseries Service");
+        expect(response.entity).toBe("SKOPE Timeseries Service");
     });
 
 });

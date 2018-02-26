@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 
 @RestController 
 @EnableAutoConfiguration
@@ -23,8 +24,15 @@ public class TimeseriesController {
     
     @Autowired public TimeseriesColumnService timeseriesColumnService;
     @Autowired public TimeseriesTableService timeseriesTableService;
+    @Value("${service.name}") public String timeseriesServiceName;
 
-	@RequestMapping(value="/timeseries", method=RequestMethod.GET)
+	@RequestMapping(value="/", method=RequestMethod.GET)
+    public @ResponseBody String getServiceName() throws Exception {
+        // return "{ 'name': " + timeseriesServiceName + "}";
+        return "SKOPE Timeseries Service";
+	}
+
+    @RequestMapping(value="/timeseries", method=RequestMethod.GET)
     public @ResponseBody Timeseries getTimeSeries(
             @RequestParam(value="long", required=true) String longitude,
             @RequestParam(value="lat", required=true) String latitude
