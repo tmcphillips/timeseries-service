@@ -37,12 +37,12 @@ public class TimeseriesColumnService implements InitializingBean {
         String fileName = datasetId + "_" + variableName + ".tif";
         String[] stringOutputValues = runGdalLocationInfo(fileName, dLongitude, dLatitude);
         int[] valuesInRequestedRange = getRangeOfStringValuesAsInts(stringOutputValues, start, end);
-		return new Timeseries(datasetId, variableName, dLatitude, dLongitude, valuesInRequestedRange);
+		return new Timeseries(datasetId, variableName, dLatitude, dLongitude, start, end , valuesInRequestedRange);
 	}
 	
 	private String[] runGdalLocationInfo(String fileName, double longitude, double latitude) throws Exception {
         String commandLine = String.format(
-                "gdallocationinfo -valonly -wgs84 %s %f %f", dataDirectory + "/" + fileName, longitude, latitude);
+                "gdallocationinfo -valonly -geoloc %s %f %f", dataDirectory + "/" + fileName, longitude, latitude);
         System.out.println(commandLine);
         StreamSink streams[] = ProcessRunner.run(commandLine, "", new String[0], null);
         return streams[0].toString().split("\\s+");

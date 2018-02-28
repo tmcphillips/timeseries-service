@@ -1,6 +1,6 @@
 package org.openskope.timeseries.model;
 
-import java.util.Hashtable;
+import java.util.HashMap;
 import java.util.Map;
 
 public class Timeseries {
@@ -9,13 +9,25 @@ public class Timeseries {
 	private String variableName;
 	private double latitude;
 	private double longitude;
+	private int start;
+	private int end;
     private int[] values;
 
-	public Timeseries(String datasetId, String variableName, double latitude, double longitude, int[] values) {
+	public Timeseries(
+			String datasetId, 
+			String variableName, 
+			double latitude, 
+			double longitude, 
+			int start,
+			int end,
+			int[] values
+		) {
 		this.datasetId = datasetId;
 		this.variableName = variableName;
         this.latitude = latitude;
         this.longitude = longitude;
+        this.start = start;
+        this.end = end;
         this.values = values.clone();
     }
 
@@ -31,10 +43,17 @@ public class Timeseries {
         coordinates[0] = longitude;
         coordinates[1] = latitude;
 
-        Map<String,Object> boundaryGeometry = new Hashtable<String,Object>();
+        Map<String,Object> boundaryGeometry = new HashMap<String,Object>();
         boundaryGeometry.put("type", "Point");
         boundaryGeometry.put("coordinates", coordinates);
 		
         return boundaryGeometry; 
+	}
+	
+	public Map<String,Integer> getRange() {
+        Map<String,Integer> series = new HashMap<String,Integer>();
+        series.put("start", start);
+        series.put("end", end);
+        return series;
 	}
 }
