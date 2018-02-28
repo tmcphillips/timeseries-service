@@ -41,8 +41,9 @@ public class TimeseriesController {
             @RequestParam(value="start", required=true) int start,
             @RequestParam(value="end", required=true) int end
         ) throws Exception {
-
-        return timeseriesColumnService.getTimeseries(datasetName, variableName, longitude, latitude, start, end);
+    	
+        return timeseriesColumnService.getTimeseries(
+        		datasetName, variableName, longitude, latitude, start, end);
 	}
 
 	@RequestMapping(value="/download", method=RequestMethod.GET)

@@ -23,22 +23,26 @@ public class TimeseriesColumnService implements InitializingBean {
     }
 
 	public Timeseries getTimeseries(
-			String dataSetName,
+			String datasetId,
 			String variableName,
 			String longitude,
 			String latitude,
 			int start,
 			int end
 	) throws Exception {
-        String fileName = dataSetName + "_" + variableName + ".tif";
-        String[] stringOutputValues = runGdalLocationInfo(fileName, longitude, latitude);
+
+    	double dLongitude = Double.parseDouble(longitude);
+    	double dLatitude = Double.parseDouble(latitude);
+
+        String fileName = datasetId + "_" + variableName + ".tif";
+        String[] stringOutputValues = runGdalLocationInfo(fileName, dLongitude, dLatitude);
         int[] valuesInRequestedRange = getRangeOfStringValuesAsInts(stringOutputValues, start, end);
-		return new Timeseries(valuesInRequestedRange);
+		return new Timeseries(datasetId, variableName, dLatitude, dLongitude, valuesInRequestedRange);
 	}
 	
-	private String[] runGdalLocationInfo(String fileName, String longitude, String latitude) throws Exception {
+	private String[] runGdalLocationInfo(String fileName, double longitude, double latitude) throws Exception {
         String commandLine = String.format(
-                "gdallocationinfo -valonly -wgs84 %s %s %s", dataDirectory + "/" + fileName, longitude, latitude);
+                "gdallocationinfo -valonly -wgs84 %s %f %f", dataDirectory + "/" + fileName, longitude, latitude);
         System.out.println(commandLine);
         StreamSink streams[] = ProcessRunner.run(commandLine, "", new String[0], null);
         return streams[0].toString().split("\\s+");
