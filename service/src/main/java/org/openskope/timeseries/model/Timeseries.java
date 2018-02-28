@@ -2,18 +2,13 @@ package org.openskope.timeseries.model;
 
 public class Timeseries {
     
-    private String[] values;
+    private int[] values;
 
-	public Timeseries(int size) {
-        values = new String[size];
+	public Timeseries(int[] values) {
+        this.values = values.clone();
     }
 
-    public String[] getValues() {
+    public int[] getValues() {
         return this.values;
     }
-
-    public void setValues(String[] values) {
-        this.values = values;
-    }
-
 }
