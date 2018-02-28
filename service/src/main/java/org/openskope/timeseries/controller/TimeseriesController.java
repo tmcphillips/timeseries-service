@@ -32,10 +32,10 @@ public class TimeseriesController {
         return new ServiceStatus(timeseriesServiceName);
 	}
 
-    @RequestMapping(value="/timeseries", method=RequestMethod.GET)
+    @RequestMapping(value="/values", method=RequestMethod.GET)
     public @ResponseBody Timeseries getTimeSeries(
-            @RequestParam(value="data", required=true) String datasetName,
-            @RequestParam(value="var", required=true) String variableName,
+            @RequestParam(value="dataset", required=true) String datasetName,
+            @RequestParam(value="variable", required=true) String variableName,
             @RequestParam(value="lng", required=true) String longitude,
             @RequestParam(value="lat", required=true) String latitude,
             @RequestParam(value="start", required=true) int start,
@@ -45,7 +45,7 @@ public class TimeseriesController {
         return timeseriesColumnService.getTimeseries(datasetName, variableName, longitude, latitude, start, end);
 	}
 
-	@RequestMapping(value="/timeseries-download", method=RequestMethod.GET)
+	@RequestMapping(value="/download", method=RequestMethod.GET)
     public @ResponseBody String getTimeSeriesDownload(
             HttpServletResponse response,
             @RequestParam(value="long", required=true) String longitude,

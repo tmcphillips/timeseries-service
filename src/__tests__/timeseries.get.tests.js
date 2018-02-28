@@ -7,10 +7,10 @@ const callRESTService =  rest.wrap(mime, { mime: 'application/json' } );
 
 describe("When timeseries service is running ", () => {
     
-    it ('GET /timeseries should return a timeseries', async function() {
+    it ('GET /values should return a timeseries', async function() {
         var response = await callRESTService({
             method: 'GET',
-            path: timeseriesServiceBase + '/timeseries?data=dummy&var=temp_5x5x5&lng=-123&lat=45&start=0&end=4'
+            path: timeseriesServiceBase + '/values?dataset=dummy&variable=temp_5x5x5&lng=-123&lat=45&start=0&end=4'
         });
         expect(response.status.code).toBe(200);
         expect(response.entity.values).toEqual([100,200,300,400,500]);
