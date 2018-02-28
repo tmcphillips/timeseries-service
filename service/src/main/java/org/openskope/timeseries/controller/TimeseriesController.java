@@ -34,11 +34,15 @@ public class TimeseriesController {
 
     @RequestMapping(value="/timeseries", method=RequestMethod.GET)
     public @ResponseBody Timeseries getTimeSeries(
-            @RequestParam(value="long", required=true) String longitude,
-            @RequestParam(value="lat", required=true) String latitude
+            @RequestParam(value="data", required=true) String datasetName,
+            @RequestParam(value="var", required=true) String variableName,
+            @RequestParam(value="lng", required=true) String longitude,
+            @RequestParam(value="lat", required=true) String latitude,
+            @RequestParam(value="start", required=true) int start,
+            @RequestParam(value="end", required=true) int end
         ) throws Exception {
 
-        return timeseriesColumnService.getTimeseries(longitude, latitude);
+        return timeseriesColumnService.getTimeseries(datasetName, variableName, longitude, latitude, start, end);
 	}
 
 	@RequestMapping(value="/timeseries-download", method=RequestMethod.GET)

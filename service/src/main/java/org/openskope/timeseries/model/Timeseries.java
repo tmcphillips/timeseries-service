@@ -1,21 +1,19 @@
 package org.openskope.timeseries.model;
 
-import java.util.Map;
-import java.util.HashMap;
-
 public class Timeseries {
     
-    private Map<String, String[]> yearlyValues;
+    private String[] values;
 
-	public Timeseries() {
-        yearlyValues = new HashMap<String,String[]>();
+	public Timeseries(int size) {
+        values = new String[size];
     }
 
-    public Map<String, String[]> getData() {
-        return this.yearlyValues;
+    public String[] getValues() {
+        return this.values;
     }
 
-    public void put(String fileName, String[] values) {
-        yearlyValues.put(fileName, values);
+    public void setValues(String[] values) {
+        this.values = values;
     }
+
 }

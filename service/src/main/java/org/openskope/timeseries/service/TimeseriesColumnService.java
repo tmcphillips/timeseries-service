@@ -13,18 +13,7 @@ import java.io.File;
 
 @Service
 public class TimeseriesColumnService implements InitializingBean {
-
-    private final static String files[];
     
-    static {
-        files = new String[] {
-            "GDD_may_sept_demosaic.tif",
-            "PPT_annual_demosaic.tif",
-            "PPT_may_sept_demosaic.tif",
-            "PPT_water_year.tif"
-        };
-    };
-
 	@Value("${timeseries.data}") public String timeseriesDataDirectory;
 
     private String dataDirectory;
@@ -33,17 +22,21 @@ public class TimeseriesColumnService implements InitializingBean {
         dataDirectory = (new File(timeseriesDataDirectory)).getAbsolutePath();
     }
 
-	public Timeseries getTimeseries(String longitude, String latitude) throws Exception {
-
-        Timeseries timeseries = new Timeseries();
-
-        for (String fileName : files) {
-            String commandLine = String.format(
-                "gdallocationinfo -valonly -wgs84 %s %s %s", dataDirectory + "/" + fileName, longitude, latitude);
-            System.out.println(commandLine);
-            StreamSink streams[] = ProcessRunner.run(commandLine, "", new String[0], null);
-            timeseries.put(fileName, streams[0].toString().split("\\s+"));
-        }
+	public Timeseries getTimeseries(
+			String dataSetName, 
+			String variableName, 
+			String longitude, 
+			String latitude, 
+			int start, 
+			int end
+	) throws Exception {
+        String fileName = dataSetName + "_" + variableName + ".tif";
+        String commandLine = String.format(
+            "gdallocationinfo -valonly -wgs84 %s %s %s", dataDirectory + "/" + fileName, longitude, latitude);
+        System.out.println(commandLine);
+        StreamSink streams[] = ProcessRunner.run(commandLine, "", new String[0], null);
+        Timeseries timeseries = new Timeseries(end - start + 1);
+        timeseries.setValues(streams[0].toString().split("\\s+"));
 
 		return timeseries;
 	}
