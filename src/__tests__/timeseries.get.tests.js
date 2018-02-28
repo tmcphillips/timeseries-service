@@ -24,12 +24,25 @@ describe("When a values request selects first pixel of each band ", async () => 
         expect(response.entity.datasetId).toBe('dummy');
     });
 
+    it ('Boundary geometry type should be point', async function() {
+        expect(response.entity.boundaryGeometry.type).toBe('Point');
+    });
+
+    it ('Boundary geometry type should be point', async function() {
+        expect(response.entity.boundaryGeometry.type).toBe('Point');
+    });
+
+    it ('Boundary geometry coordinates should be array with requested lat and lng ', async function() {
+        expect(response.entity.boundaryGeometry.coordinates).toEqual( [-123, 45] );
+    });
+
+    
 	it ('Variable name should match that in the request', async function() {
         expect(response.entity.variableName).toBe('temp_5x5x5');
     });
     
     it ('Values should be an array with one element for the first pixel of each band', async function() {
-        expect(response.entity.values).toEqual([100,200,300,400,500]);
+        expect(response.entity.values).toEqual( [100,200,300,400,500] );
     });
 
 });
