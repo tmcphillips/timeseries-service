@@ -3,8 +3,8 @@ package org.openskope.timeseries.model;
 import java.util.HashMap;
 import java.util.Map;
 
-public class Timeseries {
-    
+public class TimeseriesResponse {
+	
 	private String datasetId;
 	private String variableName;
 	private double latitude;
@@ -13,7 +13,7 @@ public class Timeseries {
 	private int end;
     private int[] values;
 
-	public Timeseries(
+	public TimeseriesResponse(
 			String datasetId, 
 			String variableName, 
 			double latitude, 
@@ -56,4 +56,5 @@ public class Timeseries {
         series.put("end", end);
         return series;
 	}
+
 }

@@ -1,7 +1,8 @@
 package org.openskope.timeseries.controller;
 
 import org.openskope.timeseries.model.ServiceStatus;
-import org.openskope.timeseries.model.Timeseries;
+import org.openskope.timeseries.model.TimeseriesRequest;
+import org.openskope.timeseries.model.TimeseriesResponse;
 import org.openskope.timeseries.service.TimeseriesColumnService;
 import org.openskope.timeseries.service.TimeseriesTableService;
 
@@ -9,6 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -33,7 +35,7 @@ public class TimeseriesController {
 	}
 
     @RequestMapping(value="/values", method=RequestMethod.GET)
-    public @ResponseBody Timeseries getTimeSeries(
+    public @ResponseBody TimeseriesResponse getTimeSeriesByGet(
             @RequestParam(value="dataset", required=true) String datasetName,
             @RequestParam(value="variable", required=true) String variableName,
             @RequestParam(value="lng", required=true) String longitude,
@@ -42,10 +44,35 @@ public class TimeseriesController {
             @RequestParam(value="end", required=true) int end
         ) throws Exception {
     	
+    	double dLongitude = Double.parseDouble(longitude);
+    	double dLatitude = Double.parseDouble(latitude);
+
         return timeseriesColumnService.getTimeseries(
-        		datasetName, variableName, longitude, latitude, start, end);
+        		datasetName, 
+        		variableName, 
+        		dLongitude, 
+        		dLatitude,
+        		start, 
+        		end
+    		);
 	}
 
+    @RequestMapping(value="/values", method=RequestMethod.POST)
+    public @ResponseBody TimeseriesResponse getTimeSeriesByPost(
+            @RequestBody TimeseriesRequest request
+        ) throws Exception {
+    	
+        return timeseriesColumnService.getTimeseries(
+        		request.getDatasetId(), 
+        		request.getVariableName(), 
+        		request.getLongitude(), 
+        		request.getLatitude(), 
+        		request.getStart(), 
+        		request.getEnd()
+    		);
+	}
+
+    
 	@RequestMapping(value="/download", method=RequestMethod.GET)
     public @ResponseBody String getTimeSeriesDownload(
             HttpServletResponse response,

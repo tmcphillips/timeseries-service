@@ -1,7 +1,6 @@
 package org.openskope.timeseries.service;
 
-import org.openskope.timeseries.model.Timeseries;
-
+import org.openskope.timeseries.model.TimeseriesResponse;
 import org.yesworkflow.util.exec.ProcessRunner;
 import org.yesworkflow.util.exec.StreamSink;
 
@@ -22,22 +21,19 @@ public class TimeseriesColumnService implements InitializingBean {
         dataDirectory = (new File(timeseriesDataDirectory)).getAbsolutePath();
     }
 
-	public Timeseries getTimeseries(
+	public TimeseriesResponse getTimeseries(
 			String datasetId,
 			String variableName,
-			String longitude,
-			String latitude,
+			double dLongitude,
+			double dLatitude,
 			int start,
 			int end
 	) throws Exception {
 
-    	double dLongitude = Double.parseDouble(longitude);
-    	double dLatitude = Double.parseDouble(latitude);
-
         String fileName = datasetId + "_" + variableName + ".tif";
         String[] stringOutputValues = runGdalLocationInfo(fileName, dLongitude, dLatitude);
         int[] valuesInRequestedRange = getRangeOfStringValuesAsInts(stringOutputValues, start, end);
-		return new Timeseries(datasetId, variableName, dLatitude, dLongitude, start, end , valuesInRequestedRange);
+		return new TimeseriesResponse(datasetId, variableName, dLatitude, dLongitude, start, end , valuesInRequestedRange);
 	}
 	
 	private String[] runGdalLocationInfo(String fileName, double longitude, double latitude) throws Exception {
