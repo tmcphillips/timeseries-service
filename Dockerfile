@@ -63,11 +63,14 @@ RUN echo '***** Clone timeseries-service and build the executable JAR *****'    
  && cd ~skope                                                                                       \
  && git clone https://github.com/openskope/timeseries-service.git                                   \
  && cd timeseries-service                                                                           \
- && mvn install
+ && mvn  install
+
+ENV TIMESERIES_SERVICE_DATA=timeseries-service/data
+ENV JAR=/home/skope/timeseries-service/app/target/time-series-service-app-0.1.5.jar
 
 RUN echo '***** Create scripts in ~skope/bin directory *****'                                       \
  && echo "#!/bin/bash" > start                                                                      \
- && echo "java -jar ~/timeseries-service/app/target/time-series-service-app-0.1.5.jar" >> start     \
+ && echo "java -jar $JAR $*" >> start     															\
  && chmod +rx start                                                                                 \
  && echo "export PATH=$PATH:/home/skope" >> ~/.bashrc
 
