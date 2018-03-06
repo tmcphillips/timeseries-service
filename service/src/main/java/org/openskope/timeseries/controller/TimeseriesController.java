@@ -22,12 +22,12 @@ import org.springframework.beans.factory.annotation.Value;
 @RestController 
 @EnableAutoConfiguration
 @CrossOrigin 
-@RequestMapping("${timeseries.endpoint}/")
+@RequestMapping("${TIMESERIES_SERVICE_BASE}/")
 public class TimeseriesController {
     
     @Autowired public TimeseriesColumnService timeseriesColumnService;
     @Autowired public TimeseriesTableService timeseriesTableService;
-    @Value("${service.name}") public String timeseriesServiceName;
+    @Value("${TIMESERIES_SERVICE_NAME}") public String timeseriesServiceName;
 
 	@RequestMapping(value="/status", method=RequestMethod.GET)
     public @ResponseBody ServiceStatus getServiceStatus() throws Exception {
@@ -72,7 +72,6 @@ public class TimeseriesController {
     		);
 	}
 
-    
 	@RequestMapping(value="/download", method=RequestMethod.GET)
     public @ResponseBody String getTimeSeriesDownload(
             HttpServletResponse response,

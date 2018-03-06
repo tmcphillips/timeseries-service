@@ -26,7 +26,7 @@ public class TimeseriesTableService implements InitializingBean {
         };
     };
 
-	@Value("${timeseries.data}") public String timeseriesDataDirectory;
+	@Value("${TIMESERIES_SERVICE_DATA}") public String timeseriesDataDirectory;
 
     private String dataDirectory;
 
