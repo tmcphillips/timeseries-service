@@ -3,11 +3,14 @@ version: '3.2'
 services:
 
   timeseries-service:
-    image: skope/timeseries-service:0.1
+    image: openskope/timeseries-service:0.1
     command: start
     restart: always
+    user: "0:1258"
     environment:
       TIMESERIES_SERVICE_BASE: timeseries-service/api/v1
-      TIMESERIES_SERVICE_DATA: timeseries-service/data
+      TIMESERIES_SERVICE_DATA: /projects/skope/staging/timeseries 
     ports: 
       - 8001:8001
+    volumes:
+      - /projects/skope:/projects/skope
