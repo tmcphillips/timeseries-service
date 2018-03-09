@@ -9,11 +9,26 @@ public class TimeseriesRequest {
 	private String variableName;
 	private Number latitude;
 	private Number longitude;
-	private int start;
-	private int end;
+	private String start;
+	private String end;
 
-	public void setDatasetId(String datasetId) { this.datasetId = datasetId; }
-	public void setVariableName(String variableName) { this.variableName = variableName; }
+	public TimeseriesRequest() {}
+	
+	public TimeseriesRequest(
+			String datasetId, 
+			String variableName, 
+			String latitude, 
+			String longitude, 
+			String start,
+			String end
+		) {
+		this.datasetId = datasetId;
+		this.variableName = variableName;
+        this.latitude = Double.parseDouble(latitude);
+        this.longitude = Double.parseDouble(longitude);
+        this.start = start;
+        this.end = end;
+    }
 
 	public void setBoundaryGeometry(Map<String,Object> boundaryGeometry) {
 		@SuppressWarnings("rawtypes")
@@ -22,7 +37,7 @@ public class TimeseriesRequest {
 		this.latitude  = (Number) coordinates.get(1);
 	}
 	
-	public void setRange(Map<String,Integer> range) {
+	public void setRange(Map<String,String> range) {
 		this.start = range.get("start");
 		this.end   = range.get("end");
 	}
@@ -31,7 +46,7 @@ public class TimeseriesRequest {
 	public String getVariableName() { return variableName; }
 	public double getLatitude() { return latitude.doubleValue(); }
 	public double getLongitude() { return longitude.doubleValue(); }
-	public int getStart() { return start; }
-	public int getEnd() { return end; }
+	public String getStart() { return start; }
+	public String getEnd() { return end; }
     
 }

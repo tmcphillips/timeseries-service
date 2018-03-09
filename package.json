@@ -4,8 +4,8 @@
   "description": "",
   "scripts": {
     "build": "docker build -t openskope/timeseries-service:0.1 .",
-    "start": "docker-compose up",
-    "stop": "docker-compose down",
+    "start": "docker-compose -f docker-compose-dev.yml up",
+    "stop": "docker-compose -f docker-compose-dev.yml down",
     "test": "jest --watchAll --runInBand"
   },
   "keywords": [],

@@ -40,21 +40,20 @@ public class TimeseriesController {
             @RequestParam(value="variable", required=true) String variableName,
             @RequestParam(value="lng", required=true) String longitude,
             @RequestParam(value="lat", required=true) String latitude,
-            @RequestParam(value="start", required=true) int start,
-            @RequestParam(value="end", required=true) int end
+            @RequestParam(value="start", required=false) String start,
+            @RequestParam(value="end", required=false) String end
         ) throws Exception {
     	
-    	double dLongitude = Double.parseDouble(longitude);
-    	double dLatitude = Double.parseDouble(latitude);
+    	TimeseriesRequest request = new TimeseriesRequest(
+    		datasetName,
+    		variableName,
+    		latitude,
+    		longitude,
+    		start,
+    		end
+		);
 
-        return timeseriesColumnService.getTimeseries(
-        		datasetName, 
-        		variableName, 
-        		dLongitude, 
-        		dLatitude,
-        		start, 
-        		end
-    		);
+        return timeseriesColumnService.getTimeseries(request);
 	}
 
     @RequestMapping(value="/values", method=RequestMethod.POST)
@@ -62,14 +61,7 @@ public class TimeseriesController {
             @RequestBody TimeseriesRequest request
         ) throws Exception {
     	
-        return timeseriesColumnService.getTimeseries(
-        		request.getDatasetId(), 
-        		request.getVariableName(), 
-        		request.getLongitude(), 
-        		request.getLatitude(), 
-        		request.getStart(), 
-        		request.getEnd()
-    		);
+        return timeseriesColumnService.getTimeseries(request);
 	}
 
 	@RequestMapping(value="/download", method=RequestMethod.GET)

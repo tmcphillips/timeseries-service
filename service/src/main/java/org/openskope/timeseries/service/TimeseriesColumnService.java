@@ -1,5 +1,6 @@
 package org.openskope.timeseries.service;
 
+import org.openskope.timeseries.model.TimeseriesRequest;
 import org.openskope.timeseries.model.TimeseriesResponse;
 import org.yesworkflow.util.exec.ProcessRunner;
 import org.yesworkflow.util.exec.StreamSink;
@@ -22,18 +23,25 @@ public class TimeseriesColumnService implements InitializingBean {
     }
 
 	public TimeseriesResponse getTimeseries(
-			String datasetId,
-			String variableName,
-			double dLongitude,
-			double dLatitude,
-			int start,
-			int end
+			TimeseriesRequest request
 	) throws Exception {
 
-        String fileName = datasetId + "_" + variableName + ".tif";
-        String[] stringOutputValues = runGdalLocationInfo(fileName, dLongitude, dLatitude);
-        int[] valuesInRequestedRange = getRangeOfStringValuesAsInts(stringOutputValues, start, end);
-		return new TimeseriesResponse(datasetId, variableName, dLatitude, dLongitude, start, end , valuesInRequestedRange);
+        String fileName = request.getDatasetId() + "_" + request.getVariableName() + ".tif";
+        String[] stringOutputValues = runGdalLocationInfo(fileName,  request.getLongitude(), request.getLatitude());
+
+        Integer rangeStart = (request.getStart() == null) ? 0 : Integer.parseInt(request.getStart());
+    	Integer rangeEnd = (request.getEnd() == null) ? stringOutputValues.length - 1: Integer.parseInt(request.getEnd());
+        int[] valuesInRequestedRange = getRangeOfStringValuesAsInts(stringOutputValues, rangeStart, rangeEnd);
+		
+        return new TimeseriesResponse(
+        		request.getDatasetId(), 
+        		request.getVariableName(), 
+        		request.getLatitude(),  
+        		request.getLongitude(), 
+        		rangeStart, 
+        		rangeEnd, 
+        		valuesInRequestedRange
+    		);
 	}
 	
 	private String[] runGdalLocationInfo(String fileName, double longitude, double latitude) throws Exception {
