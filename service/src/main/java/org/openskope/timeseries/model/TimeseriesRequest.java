@@ -48,5 +48,4 @@ public class TimeseriesRequest {
 	public double getLongitude() { return longitude.doubleValue(); }
 	public String getStart() { return start; }
 	public String getEnd() { return end; }
-    
 }
