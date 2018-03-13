@@ -58,8 +58,11 @@ public class TimeseriesController {
 
     @RequestMapping(value="/values", method=RequestMethod.POST)
     public @ResponseBody TimeseriesResponse getTimeSeriesByPost(
-            @RequestBody TimeseriesRequest request
+            @RequestBody TimeseriesRequest request,
+            HttpServletResponse response
         ) throws Exception {
+    	
+    	request.validate();
     	
         return timeseriesColumnService.getTimeseries(request);
 	}

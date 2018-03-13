@@ -5,7 +5,7 @@ const timeseriesServiceBase = 'http://localhost:8001/timeseries-service/api/v1';
 
 const callRESTService =  rest.wrap(mime, { mime: 'application/json' } );
 
-describe("When a values GET request is missing the dataset paramter", async () => {
+describe("When a values GET request is missing the dataset parameter", async () => {
     
 	var response;
 	
@@ -29,7 +29,7 @@ describe("When a values GET request is missing the dataset paramter", async () =
     });    
 });
 
-describe("When a values GET request is missing the variable paramter", async () => {
+describe("When a values GET request is missing the variable parameter", async () => {
     
 	var response;
 	
@@ -53,7 +53,7 @@ describe("When a values GET request is missing the variable paramter", async () 
     });    
 });
 
-describe("When a values GET request is missing the lng paramter", async () => {
+describe("When a values GET request is missing the lng parameter", async () => {
     
 	var response;
 	
@@ -77,7 +77,7 @@ describe("When a values GET request is missing the lng paramter", async () => {
     });    
 });
 
-describe("When a values GET request is missing the lat paramter", async () => {
+describe("When a values GET request is missing the lat parameter", async () => {
     
 	var response;
 	
