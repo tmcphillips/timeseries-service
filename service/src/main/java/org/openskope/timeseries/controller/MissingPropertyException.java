@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 @ResponseStatus(HttpStatus.BAD_REQUEST)
 public class MissingPropertyException extends RuntimeException {
 
-	public MissingPropertyException(String argumentName) {
-		super("Required property '" + argumentName + "' is not present");
+	public MissingPropertyException(String propertyName) {
+		super("Required property '" + propertyName + "' is not present");
 	}
 }

@@ -176,3 +176,39 @@ describe("When a values POST request is missing the boundaryGeometry.coordinates
         expect(response.entity.message).toBe("Required property 'boundaryGeometry.coordinates' is not present");
     });    
 });
+
+describe("When a values POST request specifies an unsupported boundary geometry type", async () => {
+    
+	var response;
+	
+	beforeAll(async () => {
+		response = await callRESTService({
+		    method: 'POST',
+		    path: timeseriesServiceBase + '/values',
+		    entity: {
+		    	datasetId: '5x5x5',
+		    	variableName: 'temp',
+		    	boundaryGeometry: {
+		    		type: 'Polygon',
+		    		coordinates: [-123, 45]
+		    	},		    	
+		    	range: {
+		    		start: 0,
+		    		end: 4
+		    	}
+		    }
+		});
+    });
+
+    it ('HTTP response status code should be 400', async function() {
+        expect(response.status.code).toBe(400);
+    });
+
+    it ('Error summary should be bad request', async function() {
+        expect(response.entity.error).toBe("Bad Request");
+    });
+
+    it ('Error message should be that boundaryGeometry.type property is not present', async function() {
+        expect(response.entity.message).toBe("'Polygon' is not a supported value for property 'boundaryGeometry.type'");
+    });    
+});

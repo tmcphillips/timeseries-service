@@ -3,6 +3,7 @@ package org.openskope.timeseries.model;
 import java.util.ArrayList;
 import java.util.Map;
 
+import org.openskope.timeseries.controller.InvalidPropertyException;
 import org.openskope.timeseries.controller.MissingPropertyException;
 
 public class TimeseriesRequest {
@@ -14,8 +15,9 @@ public class TimeseriesRequest {
 	private Number longitude;
 	private String start;
 	private String end;
-	private ArrayList coordinates;
+	private ArrayList<Number> coordinates;
 	private String boundaryGeometryType;
+	private boolean invalidBoundaryGeometryType = true;
 	
 	public TimeseriesRequest() {}
 	
@@ -35,12 +37,17 @@ public class TimeseriesRequest {
         this.end = end;
     }
 
+	@SuppressWarnings("unchecked")
 	public void setBoundaryGeometry(Map<String,Object> boundaryGeometry) {
 
 		this.boundaryGeometry = boundaryGeometry;
 		
 		boundaryGeometryType = (String) boundaryGeometry.get("type");
-		coordinates = (ArrayList) boundaryGeometry.get("coordinates");
+		if (boundaryGeometryType != null && boundaryGeometryType.equals("Point")) {
+			invalidBoundaryGeometryType = false;
+		}
+
+		this.coordinates = (ArrayList<Number>) boundaryGeometry.get("coordinates");
 		
 		if (coordinates != null && boundaryGeometryType != null) {
 			if (boundaryGeometryType.equals("Point")) {
@@ -60,6 +67,7 @@ public class TimeseriesRequest {
 		if (variableName == null) throw new MissingPropertyException("variableName");
 		if (boundaryGeometry == null) throw new MissingPropertyException("boundaryGeometry");
 		if (boundaryGeometryType == null) throw new MissingPropertyException("boundaryGeometry.type");
+		if (invalidBoundaryGeometryType) throw new InvalidPropertyException("boundaryGeometry.type", boundaryGeometryType);
 		if (coordinates == null) throw new MissingPropertyException("boundaryGeometry.coordinates");
 	}
 
