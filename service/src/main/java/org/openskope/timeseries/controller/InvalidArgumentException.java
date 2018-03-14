@@ -5,9 +5,13 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 
 @SuppressWarnings("serial")
 @ResponseStatus(HttpStatus.BAD_REQUEST)
-public class InvalidPropertyException extends RuntimeException {
+public class InvalidArgumentException extends RuntimeException {
 
-	public InvalidPropertyException(String propertyName, String invalidValue) {
+	public InvalidArgumentException(String message) {
+		super(message);
+	}
+
+	public InvalidArgumentException(String propertyName, String invalidValue) {
 		super("'" + invalidValue + "' is not a supported value for property '" + propertyName + "'");
 	}
 }

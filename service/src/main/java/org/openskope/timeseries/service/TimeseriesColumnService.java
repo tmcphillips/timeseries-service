@@ -1,5 +1,6 @@
 package org.openskope.timeseries.service;
 
+import org.openskope.timeseries.controller.InvalidArgumentException;
 import org.openskope.timeseries.model.TimeseriesRequest;
 import org.openskope.timeseries.model.TimeseriesResponse;
 import org.yesworkflow.util.exec.ProcessRunner;
@@ -26,8 +27,15 @@ public class TimeseriesColumnService implements InitializingBean {
 			TimeseriesRequest request
 	) throws Exception {
 
-        String fileName = request.getDatasetId() + "_" + request.getVariableName() + ".tif";
-        String[] stringOutputValues = runGdalLocationInfo(fileName,  request.getLongitude(), request.getLatitude());
+        File dataFile = getDataFile(request.getDatasetId(), request.getVariableName());
+        if (!dataFile.exists()) {
+        	throw new InvalidArgumentException("Data file " + dataFile.getName() + " does not exist on timeseries server.");
+        }
+        
+        String[] stringOutputValues = runGdalLocationInfo(dataFile, request.getLongitude(), request.getLatitude());
+        if (stringOutputValues.length == 0) {
+        	throw new InvalidArgumentException("Coordinates are outside region covered by the dataset");
+        }
 
         Integer rangeStart = (request.getStart() == null) ? 0 : Integer.parseInt(request.getStart());
     	Integer rangeEnd = (request.getEnd() == null) ? stringOutputValues.length - 1: Integer.parseInt(request.getEnd());
@@ -44,9 +52,14 @@ public class TimeseriesColumnService implements InitializingBean {
     		);
 	}
 	
-	private String[] runGdalLocationInfo(String fileName, double longitude, double latitude) throws Exception {
+	private File getDataFile(String datasetId, String variableName) {
+        String fileName = dataDirectory + "/" + datasetId + "_" + variableName + ".tif";
+        return new File(fileName); 
+	}
+	
+	private String[] runGdalLocationInfo(File dataFile, double longitude, double latitude) throws Exception {
         String commandLine = String.format(
-                "gdallocationinfo -valonly -geoloc %s %f %f", dataDirectory + "/" + fileName, longitude, latitude);
+                "gdallocationinfo -valonly -geoloc %s %f %f", dataFile.getAbsolutePath(), longitude, latitude);
         System.out.println(commandLine);
         StreamSink streams[] = ProcessRunner.run(commandLine, "", new String[0], null);
         return streams[0].toString().split("\\s+");

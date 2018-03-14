@@ -3,7 +3,7 @@ package org.openskope.timeseries.model;
 import java.util.ArrayList;
 import java.util.Map;
 
-import org.openskope.timeseries.controller.InvalidPropertyException;
+import org.openskope.timeseries.controller.InvalidArgumentException;
 import org.openskope.timeseries.controller.MissingPropertyException;
 
 public class TimeseriesRequest {
@@ -67,7 +67,7 @@ public class TimeseriesRequest {
 		if (variableName == null) throw new MissingPropertyException("variableName");
 		if (boundaryGeometry == null) throw new MissingPropertyException("boundaryGeometry");
 		if (boundaryGeometryType == null) throw new MissingPropertyException("boundaryGeometry.type");
-		if (invalidBoundaryGeometryType) throw new InvalidPropertyException("boundaryGeometry.type", boundaryGeometryType);
+		if (invalidBoundaryGeometryType) throw new InvalidArgumentException("boundaryGeometry.type", boundaryGeometryType);
 		if (coordinates == null) throw new MissingPropertyException("boundaryGeometry.coordinates");
 	}
 
