@@ -208,7 +208,7 @@ describe("When a values POST request specifies an unsupported boundary geometry 
         expect(response.entity.error).toBe("Bad Request");
     });
 
-    it ('Error message should be that boundaryGeometry.type property is not present', async function() {
+    it ('Error message should be that value for boundaryGeometry.type property is not supported', async function() {
         expect(response.entity.message).toBe("'Polygon' is not a supported value for property 'boundaryGeometry.type'");
     });    
 });
@@ -244,7 +244,7 @@ describe("When a values POST request specifies coordinates outside of raster fil
         expect(response.entity.error).toBe("Bad Request");
     });
 
-    it ('Error message should be that boundaryGeometry.type property is not present', async function() {
+    it ('Error message should be that coordinates are outside dataset coverage', async function() {
         expect(response.entity.message).toBe("Coordinates are outside region covered by the dataset");
     });
     
@@ -263,7 +263,7 @@ describe("When a values POST request specifies a nonexistent a dataset that does
 		    	variableName: 'temp',
 		    	boundaryGeometry: {
 		    		type: 'Point',
-		    		coordinates: [-124, 45]
+		    		coordinates: [-123, 45]
 		    	},
 		    	range: {
 		    		start: 0,
@@ -281,7 +281,7 @@ describe("When a values POST request specifies a nonexistent a dataset that does
         expect(response.entity.error).toBe("Bad Request");
     });
 
-    it ('Error message should be that boundaryGeometry.type property is not present', async function() {
+    it ('Error message should be that dataset file does not exist', async function() {
         expect(response.entity.message).toBe("Data file not-a-dataset_temp.tif does not exist on timeseries server.");
     });
     
@@ -300,7 +300,7 @@ describe("When a values POST request specifies a nonexistent variable for datase
 		    	variableName: 'not-a-variable',
 		    	boundaryGeometry: {
 		    		type: 'Point',
-		    		coordinates: [-124, 45]
+		    		coordinates: [-123, 45]
 		    	},
 		    	range: {
 		    		start: 0,
@@ -318,8 +318,121 @@ describe("When a values POST request specifies a nonexistent variable for datase
         expect(response.entity.error).toBe("Bad Request");
     });
 
-    it ('Error message should be that boundaryGeometry.type property is not present', async function() {
-        expect(response.entity.message).toBe( "Data file 5x5x5_not-a-variable.tif does not exist on timeseries server.");
+    it ('Error message should be that dataset file does not exist', async function() {
+        expect(response.entity.message).toBe("Data file 5x5x5_not-a-variable.tif does not exist on timeseries server.");
+    });
+    
+})
+
+
+describe("When a values POST request specifies a range start outside of dataset coverage", async () => {
+    
+	var response;
+	
+	beforeAll(async () => {
+		response = await callRESTService({
+		    method: 'POST',
+		    path: timeseriesServiceBase + '/values',
+		    entity: {
+		    	datasetId: '5x5x5',
+		    	variableName: 'temp',
+		    	boundaryGeometry: {
+		    		type: 'Point',
+		    		coordinates: [-123, 45]
+		    	},
+		    	range: {
+		    		start: 5,
+		    		end: 5
+		    	}
+		    }
+		});
+    });
+
+    it ('HTTP response status code should be 400 - bad request', async function() {
+        expect(response.status.code).toBe(400);
+    });
+    
+    it ('Error summary should be bad request', async function() {
+        expect(response.entity.error).toBe("Bad Request");
+    });
+
+    it ('Error message should be that range start is outside dataset coverage', async function() {
+        expect(response.entity.message).toBe("Time range start is outside coverage of dataset");
+    });
+    
+})
+
+describe("When a values POST request specifies a range end outside of dataset coverage", async () => {
+    
+	var response;
+	
+	beforeAll(async () => {
+		response = await callRESTService({
+		    method: 'POST',
+		    path: timeseriesServiceBase + '/values',
+		    entity: {
+		    	datasetId: '5x5x5',
+		    	variableName: 'temp',
+		    	boundaryGeometry: {
+		    		type: 'Point',
+		    		coordinates: [-123, 45]
+		    	},
+		    	range: {
+		    		start: 4,
+		    		end: 5
+		    	}
+		    }
+		});
+    });
+
+    it ('HTTP response status code should be 400 - bad request', async function() {
+        expect(response.status.code).toBe(400);
+    });
+    
+    it ('Error summary should be bad request', async function() {
+        expect(response.entity.error).toBe("Bad Request");
+    });
+
+    it ('Error message should be that range end is outside dataset coverage', async function() {
+        expect(response.entity.message).toBe("Time range end is outside coverage of dataset");
+    });
+    
+})
+
+
+describe("When a values POST request specifies a range end before range start", async () => {
+    
+	var response;
+	
+	beforeAll(async () => {
+		response = await callRESTService({
+		    method: 'POST',
+		    path: timeseriesServiceBase + '/values',
+		    entity: {
+		    	datasetId: '5x5x5',
+		    	variableName: 'temp',
+		    	boundaryGeometry: {
+		    		type: 'Point',
+		    		coordinates: [-123, 45]
+		    	},
+		    	range: {
+		    		start: 4,
+		    		end: 3
+		    	}
+		    }
+		});
+    });
+
+    it ('HTTP response status code should be 400 - bad request', async function() {
+        expect(response.status.code).toBe(400);
+    });
+    
+    it ('Error summary should be bad request', async function() {
+        expect(response.entity.error).toBe("Bad Request");
+    });
+
+    it ('Error message should be that range end precedes range start', async function() {
+        expect(response.entity.message).toBe("Time range end is before time range start");
     });
     
 })

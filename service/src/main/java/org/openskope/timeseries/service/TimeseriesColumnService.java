@@ -38,7 +38,19 @@ public class TimeseriesColumnService implements InitializingBean {
         }
 
         Integer rangeStart = (request.getStart() == null) ? 0 : Integer.parseInt(request.getStart());
+        if (rangeStart > stringOutputValues.length - 1) {
+        	throw new InvalidArgumentException("Time range start is outside coverage of dataset");
+        }
+        
     	Integer rangeEnd = (request.getEnd() == null) ? stringOutputValues.length - 1: Integer.parseInt(request.getEnd());
+        if (rangeEnd > stringOutputValues.length - 1) {
+        	throw new InvalidArgumentException("Time range end is outside coverage of dataset");
+        }
+        
+        if (rangeEnd < rangeStart) {
+        	throw new InvalidArgumentException("Time range end is before time range start");
+        }
+
         int[] valuesInRequestedRange = getRangeOfStringValuesAsInts(stringOutputValues, rangeStart, rangeEnd);
 		
         return new TimeseriesResponse(
