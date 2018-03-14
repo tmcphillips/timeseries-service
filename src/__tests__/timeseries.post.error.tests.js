@@ -250,7 +250,7 @@ describe("When a values POST request specifies coordinates outside of raster fil
     
 });
 
-describe("When a values POST request specifies a nonexistent a dataset that does not exist", async () => {
+describe("When a values POST request specifies a dataset that does not exist", async () => {
     
 	var response;
 	
@@ -323,7 +323,6 @@ describe("When a values POST request specifies a nonexistent variable for datase
     });
     
 })
-
 
 describe("When a values POST request specifies a range start outside of dataset coverage", async () => {
     
