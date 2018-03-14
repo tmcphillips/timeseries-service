@@ -378,23 +378,24 @@ describe("When a values POST request specifies a range end outside of dataset co
 		    		coordinates: [-123, 45]
 		    	},
 		    	range: {
-		    		start: 4,
+		    		start: 3,
 		    		end: 5
 		    	}
 		    }
 		});
     });
 
-    it ('HTTP response status code should be 400 - bad request', async function() {
-        expect(response.status.code).toBe(400);
-    });
-    
-    it ('Error summary should be bad request', async function() {
-        expect(response.entity.error).toBe("Bad Request");
+    it ('HTTP response status code should be 200 - success', async function() {
+        expect(response.status.code).toBe(200);
     });
 
-    it ('Error message should be that range end is outside dataset coverage', async function() {
-        expect(response.entity.message).toBe("Time range end is outside coverage of dataset");
+    it ('Series range start and end should represent bands from the first band through the requested end band', async function() {
+        expect(response.entity.range.start).toEqual( 3 );
+        expect(response.entity.range.end).toEqual( 4 );
+    });
+
+    it ('Values should be an array with one element for the first band through the requested end band', async function() {
+        expect(response.entity.values).toEqual( [400,500] );
     });
     
 })

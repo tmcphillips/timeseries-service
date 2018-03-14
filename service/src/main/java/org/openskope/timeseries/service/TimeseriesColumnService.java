@@ -44,7 +44,7 @@ public class TimeseriesColumnService implements InitializingBean {
         
     	Integer rangeEnd = (request.getEnd() == null) ? stringOutputValues.length - 1: Integer.parseInt(request.getEnd());
         if (rangeEnd > stringOutputValues.length - 1) {
-        	throw new InvalidArgumentException("Time range end is outside coverage of dataset");
+        	rangeEnd = stringOutputValues.length - 1;
         }
         
         if (rangeEnd < rangeStart) {
