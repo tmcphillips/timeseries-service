@@ -20,10 +20,8 @@ describe("When a values POST request selects first pixel of each band in 5x5x5 d
 		    		type: 'Point',
 		    		coordinates: [-123, 45]
 		    	},
-		    	range: {
-		    		start: 0,
-		    		end: 4
-		    	}
+	    		start: 0,
+	    		end: 4
 		    }
 		});
     });
@@ -74,10 +72,8 @@ describe("When a values POST request selects first pixel of first band in 5x5x5 
 		    		type: 'Point',
 		    		coordinates: [-123, 45]
 		    	},
-		    	range: {
-		    		start: 0,
-		    		end: 0
-		    	}
+	    		start: 0,
+	    		end: 0
 		    }
 		});
     });
@@ -111,10 +107,8 @@ describe("When a values POST request selects last pixel of each band in 5x5x5 da
 		    		type: 'Point',
 		    		coordinates: [-119, 49]
 		    	},
-		    	range: {
-		    		start: 0,
-		    		end: 4
-		    	}
+	    		start: 0,
+	    		end: 4
 		    }
 		});
     });
@@ -150,10 +144,8 @@ describe("When a values POST request selects last pixel of last band in 5x5x5 da
 		    		type: 'Point',
 		    		coordinates: [-119, 49]
 		    	},
-		    	range: {
-		    		start: 4,
-		    		end: 4
-		    	}
+	    		start: 4,
+	    		end: 4
 		    }
 		});
 	});
@@ -224,9 +216,7 @@ describe("When a values POST request selects last pixel of 5x5x5 data cube and s
 		    		type: 'Point',
 		    		coordinates: [-119, 49]
 		    	},
-		    	range: {
-		    		start: 2
-		    	}
+	    		start: 2
 		    }
 		});
 	});
@@ -262,9 +252,7 @@ describe("When a values POST request selects last pixel of 5x5x5 data cube and s
 		    		type: 'Point',
 		    		coordinates: [-119, 49]
 		    	},
-		    	range: {
-		    		end: 3
-		    	}
+	    		end: 3
 		    }
 		});
 	});

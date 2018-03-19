@@ -10,65 +10,73 @@ public class TimeseriesRequest {
 	
 	private String datasetId;
 	private String variableName;
-	private Map<String,Object> boundaryGeometry;
 	private Number latitude;
 	private Number longitude;
 	private String start;
 	private String end;
-	private ArrayList<Number> coordinates;
-	private String boundaryGeometryType;
-	private boolean invalidBoundaryGeometryType = true;
+	private String boundaryGeometryType = "Point";
+	private boolean invalidBoundaryGeometryType = false;
 	
 	public TimeseriesRequest() {}
-	
-	public TimeseriesRequest(
-			String datasetId, 
-			String variableName, 
-			String latitude, 
-			String longitude, 
-			String start,
-			String end
-		) {
-		this.datasetId = datasetId;
-		this.variableName = variableName;
-        this.latitude = Double.parseDouble(latitude);
-        this.longitude = Double.parseDouble(longitude);
-        this.start = start;
-        this.end = end;
-    }
+
+	public void setDatasetId(String datasetId) {
+		if (this.datasetId == null) {
+			this.datasetId = datasetId;
+		}
+	}
+
+	public void setVariableName(String variableName) {
+		if (this.variableName == null) {
+			this.variableName = variableName;
+		}
+	}
+
+	public void setLatitude(String latitude) {
+		if (this.latitude == null && latitude != null) {
+			this.latitude = Double.parseDouble(latitude);
+		}
+	}
+
+	public void setLongitude(String longitude) {
+		if (this.longitude == null && longitude != null) {
+			this.longitude = Double.parseDouble(longitude);
+		}
+	}
+
+	public void setStart(String start) {
+		if (this.start == null) {
+			this.start = start;
+		}
+	}
+
+	public void setEnd(String end) {
+		if (this.end == null) {
+			this.end = end;
+		}
+	}
 
 	@SuppressWarnings("unchecked")
 	public void setBoundaryGeometry(Map<String,Object> boundaryGeometry) {
-
-		this.boundaryGeometry = boundaryGeometry;
 		
 		boundaryGeometryType = (String) boundaryGeometry.get("type");
-		if (boundaryGeometryType != null && boundaryGeometryType.equals("Point")) {
-			invalidBoundaryGeometryType = false;
+		if (boundaryGeometryType != null && ! boundaryGeometryType.equals("Point")) {
+			invalidBoundaryGeometryType = true;
+			return;
 		}
 
-		this.coordinates = (ArrayList<Number>) boundaryGeometry.get("coordinates");
-		
-		if (coordinates != null && boundaryGeometryType != null) {
-			if (boundaryGeometryType.equals("Point")) {
-				this.longitude = (Number) coordinates.get(0);
-				this.latitude  = (Number) coordinates.get(1);
-			}
+		ArrayList<Number> coordinates = (ArrayList<Number>) boundaryGeometry.get("coordinates");
+		if (coordinates != null) {
+			this.longitude = (Number) coordinates.get(0);
+			this.latitude  = (Number) coordinates.get(1);
 		}
 	}
-	
-	public void setRange(Map<String,String> range) {
-		this.start = range.get("start");
-		this.end   = range.get("end");
-	}
-	
+		
 	public void validate() throws Exception {
 		if (datasetId == null) throw new MissingPropertyException("datasetId");
 		if (variableName == null) throw new MissingPropertyException("variableName");
-		if (boundaryGeometry == null) throw new MissingPropertyException("boundaryGeometry");
-		if (boundaryGeometryType == null) throw new MissingPropertyException("boundaryGeometry.type");
 		if (invalidBoundaryGeometryType) throw new InvalidArgumentException("boundaryGeometry.type", boundaryGeometryType);
-		if (coordinates == null) throw new MissingPropertyException("boundaryGeometry.coordinates");
+		if (this.latitude == null) throw new MissingPropertyException("latitude");
+		if (this.longitude == null) throw new MissingPropertyException("longitude");
 	}
 
 	public String getDatasetId() { return datasetId; }

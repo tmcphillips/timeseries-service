@@ -19,10 +19,8 @@ describe("When a values POST request is missing the datasetId property", async (
 		    		type: 'Point',
 		    		coordinates: [-123, 45]
 		    	},
-		    	range: {
-		    		start: 0,
-		    		end: 4
-		    	}
+	    		start: 0,
+	    		end: 4
 		    }
 		});
     });
@@ -54,10 +52,8 @@ describe("When a values POST request is missing the variableName property", asyn
 		    		type: 'Point',
 		    		coordinates: [-123, 45]
 		    	},
-		    	range: {
-		    		start: 0,
-		    		end: 4
-		    	}
+	    		start: 0,
+	    		end: 4
 		    }
 		});
     });
@@ -86,10 +82,8 @@ describe("When a values POST request is missing the boundaryGeometry property", 
 		    entity: {
 		    	datasetId: '5x5x5',
 		    	variableName: 'temp',
-		    	range: {
-		    		start: 0,
-		    		end: 4
-		    	}
+	    		start: 0,
+	    		end: 4
 		    }
 		});
     });
@@ -102,78 +96,8 @@ describe("When a values POST request is missing the boundaryGeometry property", 
         expect(response.entity.error).toBe("Bad Request");
     });
 
-    it ('Error message should be that variableName property is not present', async function() {
-        expect(response.entity.message).toBe("Required property 'boundaryGeometry' is not present");
-    });    
-});
-
-describe("When a values POST request is missing the boundaryGeometry.type property", async () => {
-    
-	var response;
-	
-	beforeAll(async () => {
-		response = await callRESTService({
-		    method: 'POST',
-		    path: timeseriesServiceBase + '/values',
-		    entity: {
-		    	datasetId: '5x5x5',
-		    	variableName: 'temp',
-		    	boundaryGeometry: {
-		    		coordinates: [-123, 45]
-		    	},		    	
-		    	range: {
-		    		start: 0,
-		    		end: 4
-		    	}
-		    }
-		});
-    });
-
-    it ('HTTP response status code should be 400', async function() {
-        expect(response.status.code).toBe(400);
-    });
-
-    it ('Error summary should be bad request', async function() {
-        expect(response.entity.error).toBe("Bad Request");
-    });
-
-    it ('Error message should be that boundaryGeometry.type property is not present', async function() {
-        expect(response.entity.message).toBe("Required property 'boundaryGeometry.type' is not present");
-    });    
-});
-
-describe("When a values POST request is missing the boundaryGeometry.coordinates property", async () => {
-    
-	var response;
-	
-	beforeAll(async () => {
-		response = await callRESTService({
-		    method: 'POST',
-		    path: timeseriesServiceBase + '/values',
-		    entity: {
-		    	datasetId: '5x5x5',
-		    	variableName: 'temp',
-		    	boundaryGeometry: {
-		    		type: 'Point'
-		    	},		    	
-		    	range: {
-		    		start: 0,
-		    		end: 4
-		    	}
-		    }
-		});
-    });
-
-    it ('HTTP response status code should be 400', async function() {
-        expect(response.status.code).toBe(400);
-    });
-
-    it ('Error summary should be bad request', async function() {
-        expect(response.entity.error).toBe("Bad Request");
-    });
-
-    it ('Error message should be that boundaryGeometry.coordintes property is not present', async function() {
-        expect(response.entity.message).toBe("Required property 'boundaryGeometry.coordinates' is not present");
+    it ('Error message should be that latitude property is not present', async function() {
+        expect(response.entity.message).toBe("Required property 'latitude' is not present");
     });    
 });
 
@@ -192,10 +116,8 @@ describe("When a values POST request specifies an unsupported boundary geometry 
 		    		type: 'Polygon',
 		    		coordinates: [-123, 45]
 		    	},		    	
-		    	range: {
-		    		start: 0,
-		    		end: 4
-		    	}
+	    		start: 0,
+	    		end: 4
 		    }
 		});
     });
@@ -228,10 +150,8 @@ describe("When a values POST request specifies coordinates outside of raster fil
 		    		type: 'Point',
 		    		coordinates: [-124, 45]
 		    	},
-		    	range: {
-		    		start: 0,
-		    		end: 4
-		    	}
+	    		start: 0,
+	    		end: 4
 		    }
 		});
     });
@@ -265,10 +185,8 @@ describe("When a values POST request specifies a dataset that does not exist", a
 		    		type: 'Point',
 		    		coordinates: [-123, 45]
 		    	},
-		    	range: {
-		    		start: 0,
-		    		end: 4
-		    	}
+	    		start: 0,
+	    		end: 4
 		    }
 		});
     });
@@ -302,10 +220,8 @@ describe("When a values POST request specifies a nonexistent variable for datase
 		    		type: 'Point',
 		    		coordinates: [-123, 45]
 		    	},
-		    	range: {
-		    		start: 0,
-		    		end: 4
-		    	}
+	    		start: 0,
+	    		end: 4
 		    }
 		});
     });
@@ -339,10 +255,8 @@ describe("When a values POST request specifies a range start outside of dataset 
 		    		type: 'Point',
 		    		coordinates: [-123, 45]
 		    	},
-		    	range: {
-		    		start: 5,
-		    		end: 5
-		    	}
+	    		start: 5,
+	    		end: 5
 		    }
 		});
     });
@@ -376,10 +290,8 @@ describe("When a values POST request specifies a range end outside of dataset co
 		    		type: 'Point',
 		    		coordinates: [-123, 45]
 		    	},
-		    	range: {
-		    		start: 3,
-		    		end: 5
-		    	}
+	    		start: 3,
+	    		end: 5
 		    }
 		});
     });
@@ -415,10 +327,8 @@ describe("When a values POST request specifies a range end before range start", 
 		    		type: 'Point',
 		    		coordinates: [-123, 45]
 		    	},
-		    	range: {
-		    		start: 4,
-		    		end: 3
-		    	}
+	    		start: 4,
+	    		end: 3
 		    }
 		});
     });

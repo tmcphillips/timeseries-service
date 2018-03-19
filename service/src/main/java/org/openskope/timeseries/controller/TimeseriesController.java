@@ -35,49 +35,82 @@ public class TimeseriesController {
 	}
 
     @RequestMapping(value="/values", method=RequestMethod.GET)
-    public @ResponseBody TimeseriesResponse getTimeSeriesByGet(
-            @RequestParam(value="dataset", required=true) String datasetName,
-            @RequestParam(value="variable", required=true) String variableName,
+    public @ResponseBody TimeseriesResponse requestUsingQueryLineOnly(
+            @RequestParam(value="datasetId", required=true) String datasetId,
+            @RequestParam(value="variableName", required=true) String variableName,
             @RequestParam(value="lng", required=true) String longitude,
             @RequestParam(value="lat", required=true) String latitude,
             @RequestParam(value="start", required=false) String start,
-            @RequestParam(value="end", required=false) String end
-        ) throws Exception {
-    	
-    	TimeseriesRequest request = new TimeseriesRequest(
-    		datasetName,
-    		variableName,
-    		latitude,
-    		longitude,
-    		start,
-    		end
-		);
-
-        return timeseriesColumnService.getTimeseries(request);
-	}
-
-    @RequestMapping(value="/values", method=RequestMethod.POST)
-    public @ResponseBody TimeseriesResponse getTimeSeriesByPost(
-            @RequestBody TimeseriesRequest request,
+            @RequestParam(value="end", required=false) String end,
             HttpServletResponse response
         ) throws Exception {
     	
-    	request.validate();
-    	
-        return timeseriesColumnService.getTimeseries(request);
+    	TimeseriesRequest requestBody = new TimeseriesRequest();
+
+    	return requestUsingBodyAndQueryLine(requestBody, datasetId, variableName, longitude, latitude, start, end, response);
 	}
 
-	@RequestMapping(value="/download", method=RequestMethod.GET)
-    public @ResponseBody String getTimeSeriesDownload(
-            HttpServletResponse response,
-            @RequestParam(value="long", required=true) String longitude,
-            @RequestParam(value="lat", required=true) String latitude,
-            @RequestParam(value="startYear", required=true) String startYear,
-            @RequestParam(value="endYear", required=true) String endYear
+    @RequestMapping(value="/values", method=RequestMethod.POST)
+    public @ResponseBody TimeseriesResponse requestUsingBodyAndQueryLine(
+            @RequestBody TimeseriesRequest requestBody,
+            @RequestParam(value="datasetId", required=false) String datasetId,
+            @RequestParam(value="variableName", required=false) String variableName,
+            @RequestParam(value="lng", required=false) String longitude,
+            @RequestParam(value="lat", required=false) String latitude,
+            @RequestParam(value="start", required=false) String start,
+            @RequestParam(value="end", required=false) String end,
+            HttpServletResponse response
         ) throws Exception {
 
-        response.setContentType("text/csv");
-        response.setHeader("Content-Disposition", "attachment; filename=SKOPE.csv");
-        return timeseriesTableService.getTable(longitude, latitude, startYear, endYear);
+    	requestBody.setDatasetId(datasetId); 
+    	requestBody.setVariableName(variableName); 
+    	requestBody.setLatitude(latitude); 
+    	requestBody.setLongitude(longitude); 
+    	requestBody.setStart(start); 
+    	requestBody.setEnd(end); 
+    	
+    	requestBody.validate();
+    	
+        return timeseriesColumnService.getTimeseries(requestBody);
 	}
+
+//    @RequestMapping(value="/download", method=RequestMethod.GET)
+//    public @ResponseBody String getDownloadByGet(
+//            HttpServletResponse response,
+//            @RequestParam(value="dataset", required=true) String datasetName,
+//            @RequestParam(value="variable", required=true) String variableName,
+//            @RequestParam(value="lng", required=true) String longitude,
+//            @RequestParam(value="lat", required=true) String latitude,
+//            @RequestParam(value="start", required=false) String start,
+//            @RequestParam(value="end", required=false) String end
+//        ) throws Exception {
+//    	
+//    	TimeseriesRequest request = new TimeseriesRequest(
+//    		datasetName,
+//    		variableName,
+//    		latitude,
+//    		longitude,
+//    		start,
+//    		end
+//		);
+//
+//        response.setContentType("text/csv");
+//        response.setHeader("Content-Disposition", "attachment; filename=timeseries.csv");
+//        
+//        return timeseriesTableService.getTable(request);
+//	}
+//    
+//    @RequestMapping(value="/download", method=RequestMethod.POST)
+//    public @ResponseBody String getDownloadByPost(
+//            @RequestBody TimeseriesRequest request,
+//            HttpServletResponse response
+//        ) throws Exception {
+//    	
+//    	request.validate();
+//
+////        response.setContentType("text/csv");
+////        response.setHeader("Content-Disposition", "attachment; filename=timeseries.csv");
+//        
+//        return timeseriesTableService.getTable(request);
+//	}
 }
