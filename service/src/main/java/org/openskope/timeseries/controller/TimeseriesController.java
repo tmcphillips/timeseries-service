@@ -38,8 +38,8 @@ public class TimeseriesController {
     public @ResponseBody TimeseriesResponse requestUsingQueryLineOnly(
             @RequestParam(value="datasetId", required=true) String datasetId,
             @RequestParam(value="variableName", required=true) String variableName,
-            @RequestParam(value="lng", required=true) String longitude,
-            @RequestParam(value="lat", required=true) String latitude,
+            @RequestParam(value="longitude", required=true) String longitude,
+            @RequestParam(value="latitude", required=true) String latitude,
             @RequestParam(value="start", required=false) String start,
             @RequestParam(value="end", required=false) String end,
             HttpServletResponse response
@@ -55,8 +55,8 @@ public class TimeseriesController {
             @RequestBody TimeseriesRequest requestBody,
             @RequestParam(value="datasetId", required=false) String datasetId,
             @RequestParam(value="variableName", required=false) String variableName,
-            @RequestParam(value="lng", required=false) String longitude,
-            @RequestParam(value="lat", required=false) String latitude,
+            @RequestParam(value="longitude", required=false) String longitude,
+            @RequestParam(value="latitude", required=false) String latitude,
             @RequestParam(value="start", required=false) String start,
             @RequestParam(value="end", required=false) String end,
             HttpServletResponse response

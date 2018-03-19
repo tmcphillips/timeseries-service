@@ -13,7 +13,7 @@ describe("When a values POST uses query line only to request first pixel of each
 	beforeAll(async () => {
 		response = await callRESTService({
 		    method: 'POST',
-		    path: timeseriesServiceBase + '/values?datasetId=5x5x5&variableName=temp&lng=-123.0&lat=45.0&start=0&end=4',
+		    path: timeseriesServiceBase + '/values?datasetId=5x5x5&variableName=temp&longitude=-123.0&latitude=45.0&start=0&end=4',
 		    entity: {}
 		});
     });
