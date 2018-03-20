@@ -50,11 +50,7 @@ public class TimeseriesResponse {
         return boundaryGeometry; 
 	}
 	
-	public Map<String,Integer> getRange() {
-        Map<String,Integer> series = new HashMap<String,Integer>();
-        series.put("start", start);
-        series.put("end", end);
-        return series;
-	}
+	public Integer getStart() { return start; }
+	public Integer getEnd() { return end; }
 
 }

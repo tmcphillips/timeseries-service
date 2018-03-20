@@ -39,8 +39,8 @@ describe("When a values POST request uses the query line only to request first p
     });
 
     it ('Series range start and end should match the request', async function() {
-        expect(response.entity.range.start).toEqual( 0 );
-        expect(response.entity.range.end).toEqual( 4 );
+        expect(response.entity.start).toEqual( 0 );
+        expect(response.entity.end).toEqual( 4 );
     });
     
     it ('Values should be an array with one element for the first pixel of each band', async function() {

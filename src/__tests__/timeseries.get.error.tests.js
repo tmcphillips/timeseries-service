@@ -217,8 +217,8 @@ describe("When a values GET request specifies a range end outside of dataset cov
     });
 
     it ('Series range start and end should represent bands from the first band through the actual end band', async function() {
-        expect(response.entity.range.start).toEqual( 3 );
-        expect(response.entity.range.end).toEqual( 4 );
+        expect(response.entity.start).toEqual( 3 );
+        expect(response.entity.end).toEqual( 4 );
     });
 
     it ('Values should be an array with one element for the first requested band through the last actual band', async function() {
