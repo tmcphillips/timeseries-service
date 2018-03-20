@@ -56,6 +56,56 @@ describe("When a values POST request selects first pixel of each band in 5x5x5 d
     });
 });
 
+describe("When a values POST request selects first pixel of middle three bands in 5x5x5 data cube using string values for start and end", async () => {
+    
+	var response;
+	
+	beforeAll(async () => {
+		response = await callRESTService({
+		    method: 'POST',
+		    path: timeseriesServiceBase + '/values',
+		    entity: {
+		    	datasetId: '5x5x5',
+		    	variableName: 'temp',
+		    	boundaryGeometry: {
+		    		type: 'Point',
+		    		coordinates: [-123, 45]
+		    	},
+	    		start: '1', 
+	    		end: '3' 
+		    }
+		});
+    });
+
+    it ('HTTP response status code should be 200 - success', async function() {
+        expect(response.status.code).toBe(200);
+    });
+    
+    it ('Dataset id should match that in the request', async function() {
+        expect(response.entity.datasetId).toBe('5x5x5');
+    });
+
+	it ('Variable name should match that in the request', async function() {
+        expect(response.entity.variableName).toBe('temp');
+    });
+
+	it ('Boundary geometry type should be point', async function() {
+        expect(response.entity.boundaryGeometry.type).toBe('Point');
+    });
+
+    it ('Boundary geometry coordinates should be array with requested lat and lng ', async function() {
+        expect(response.entity.boundaryGeometry.coordinates).toEqual( [-123, 45] );
+    });
+
+    it ('Series range start and end should match the request', async function() {
+        expect(response.entity.start).toEqual( 1 );
+        expect(response.entity.end).toEqual( 3 );
+    });
+
+    it ('Values should be an array with one element for the first pixel of each band', async function() {
+        expect(response.entity.values).toEqual( [200,300,400] );
+    });
+});
 
 describe("When a values POST request selects first pixel of first band in 5x5x5 data cube", async () => {
     
