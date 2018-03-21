@@ -12,6 +12,7 @@ public class TimeseriesResponse {
 	private int start;
 	private int end;
     private int[] values;
+    private String csv;
 
 	public TimeseriesResponse(
 			String datasetId, 
@@ -20,7 +21,8 @@ public class TimeseriesResponse {
 			double longitude, 
 			int start,
 			int end,
-			int[] values
+			int[] values,
+			String csv
 		) {
 		this.datasetId = datasetId;
 		this.variableName = variableName;
@@ -28,7 +30,8 @@ public class TimeseriesResponse {
         this.longitude = longitude;
         this.start = start;
         this.end = end;
-        this.values = values.clone();
+        this.values = values;
+        this.csv = csv;
     }
 
 	public String getDatasetId() { return datasetId; }
@@ -36,6 +39,8 @@ public class TimeseriesResponse {
 	public String getVariableName() { return variableName; }
     
 	public int[] getValues() { return this.values; }
+	
+	public String getCsv() { return this.csv; }
 
 	public Map<String,Object> getBoundaryGeometry() { 
         

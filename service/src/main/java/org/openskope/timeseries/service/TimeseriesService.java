@@ -13,7 +13,7 @@ import org.springframework.stereotype.Service;
 import java.io.File;
 
 @Service
-public class TimeseriesColumnService implements InitializingBean {
+public class TimeseriesService implements InitializingBean {
     
 	@Value("${TIMESERIES_SERVICE_DATA}") public String timeseriesDataDirectory;
 
@@ -52,15 +52,19 @@ public class TimeseriesColumnService implements InitializingBean {
         }
 
         int[] valuesInRequestedRange = getRangeOfStringValuesAsInts(stringOutputValues, rangeStart, rangeEnd);
+        
+        int[] values =  request.getFormat().equals("array") ? valuesInRequestedRange : null;
+        String csv = request.getFormat().equals("csv") ? getTable(request, valuesInRequestedRange) : null;
 		
         return new TimeseriesResponse(
         		request.getDatasetId(), 
         		request.getVariableName(), 
-        		request.getLatitude(),  
+        		request.getLatitude(),
         		request.getLongitude(), 
         		rangeStart, 
         		rangeEnd, 
-        		valuesInRequestedRange
+        		values,
+        		csv
     		);
 	}
 	
@@ -85,5 +89,14 @@ public class TimeseriesColumnService implements InitializingBean {
 			}
 		}
 		return ia;
+	}
+	
+	public String getTable(TimeseriesRequest request, int[] values) throws Exception {
+		StringBuffer buffer = new StringBuffer();
+        buffer.append("Year, " + request.getVariableName() + "\n");
+        for (int i = 0; i < values.length; ++i) {
+            buffer.append(String.format("%d, %s\n", i + 1, values[i]));
+        }
+        return buffer.toString();
 	}
 }

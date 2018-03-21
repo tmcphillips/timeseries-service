@@ -16,6 +16,7 @@ public class TimeseriesRequest {
 	private String end;
 	private String boundaryGeometryType = "Point";
 	private boolean invalidBoundaryGeometryType = false;
+	private String format = "array";
 	
 	public TimeseriesRequest() {}
 
@@ -55,6 +56,12 @@ public class TimeseriesRequest {
 		}
 	}
 
+	public void setFormat(String format) {
+		if (format != null) {
+			this.format = format;
+		}
+	}
+
 	@SuppressWarnings("unchecked")
 	public void setBoundaryGeometry(Map<String,Object> boundaryGeometry) {
 		
@@ -85,4 +92,5 @@ public class TimeseriesRequest {
 	public double getLongitude() { return longitude.doubleValue(); }
 	public String getStart() { return start; }
 	public String getEnd() { return end; }
+	public String getFormat() { return format; }
 }

@@ -3,8 +3,7 @@ package org.openskope.timeseries.controller;
 import org.openskope.timeseries.model.ServiceStatus;
 import org.openskope.timeseries.model.TimeseriesRequest;
 import org.openskope.timeseries.model.TimeseriesResponse;
-import org.openskope.timeseries.service.TimeseriesColumnService;
-import org.openskope.timeseries.service.TimeseriesTableService;
+import org.openskope.timeseries.service.TimeseriesService;
 
 import javax.servlet.http.HttpServletResponse;
 
@@ -25,8 +24,7 @@ import org.springframework.beans.factory.annotation.Value;
 @RequestMapping("${TIMESERIES_SERVICE_BASE}/")
 public class TimeseriesController {
     
-    @Autowired public TimeseriesColumnService timeseriesColumnService;
-    @Autowired public TimeseriesTableService timeseriesTableService;
+    @Autowired public TimeseriesService timeseriesColumnService;
     @Value("${TIMESERIES_SERVICE_NAME}") public String timeseriesServiceName;
 
 	@RequestMapping(value="/status", method=RequestMethod.GET)
@@ -42,12 +40,13 @@ public class TimeseriesController {
             @RequestParam(value="latitude", required=true) String latitude,
             @RequestParam(value="start", required=false) String start,
             @RequestParam(value="end", required=false) String end,
+            @RequestParam(value="format", required=false) String format,
             HttpServletResponse response
         ) throws Exception {
     	
     	TimeseriesRequest requestBody = new TimeseriesRequest();
 
-    	return requestUsingBodyAndQueryLine(requestBody, datasetId, variableName, longitude, latitude, start, end, response);
+    	return requestUsingBodyAndQueryLine(requestBody, datasetId, variableName, longitude, latitude, start, end, format, response);
 	}
 
     @RequestMapping(value="/values", method=RequestMethod.POST)
@@ -59,6 +58,7 @@ public class TimeseriesController {
             @RequestParam(value="latitude", required=false) String latitude,
             @RequestParam(value="start", required=false) String start,
             @RequestParam(value="end", required=false) String end,
+            @RequestParam(value="format", required=false) String format,
             HttpServletResponse response
         ) throws Exception {
 
@@ -68,49 +68,17 @@ public class TimeseriesController {
     	requestBody.setLongitude(longitude); 
     	requestBody.setStart(start); 
     	requestBody.setEnd(end); 
+    	requestBody.setFormat(format);
     	
     	requestBody.validate();
     	
         return timeseriesColumnService.getTimeseries(requestBody);
 	}
 
-//    @RequestMapping(value="/download", method=RequestMethod.GET)
-//    public @ResponseBody String getDownloadByGet(
-//            HttpServletResponse response,
-//            @RequestParam(value="dataset", required=true) String datasetName,
-//            @RequestParam(value="variable", required=true) String variableName,
-//            @RequestParam(value="lng", required=true) String longitude,
-//            @RequestParam(value="lat", required=true) String latitude,
-//            @RequestParam(value="start", required=false) String start,
-//            @RequestParam(value="end", required=false) String end
-//        ) throws Exception {
-//    	
-//    	TimeseriesRequest request = new TimeseriesRequest(
-//    		datasetName,
-//    		variableName,
-//    		latitude,
-//    		longitude,
-//    		start,
-//    		end
-//		);
-//
 //        response.setContentType("text/csv");
 //        response.setHeader("Content-Disposition", "attachment; filename=timeseries.csv");
 //        
 //        return timeseriesTableService.getTable(request);
 //	}
-//    
-//    @RequestMapping(value="/download", method=RequestMethod.POST)
-//    public @ResponseBody String getDownloadByPost(
-//            @RequestBody TimeseriesRequest request,
-//            HttpServletResponse response
-//        ) throws Exception {
-//    	
-//    	request.validate();
-//
-////        response.setContentType("text/csv");
-////        response.setHeader("Content-Disposition", "attachment; filename=timeseries.csv");
-//        
-//        return timeseriesTableService.getTable(request);
-//	}
+
 }
