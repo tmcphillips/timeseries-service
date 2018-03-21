@@ -19,13 +19,27 @@ import java.util.Map;
 @Service
 public class TimeseriesService implements InitializingBean {
     
-	@Value("${TIMESERIES_SERVICE_DATA}") public String timeseriesDataPath;
+	@Value("${TIMESERIES_DATA_PATH_TEMPLATE}") public String timeseriesDataPath;
+	@Value("${TIMESERIES_DATA_FILE_EXTENSIONS}") public String timeseriesDatafileExtensions;
 
     private UriTemplate dataPathTemplate;
     private Map<String, String> uriVariables = new HashMap<String,String>();
+    private String[] extensions;
 
     public void afterPropertiesSet() {
+    	
     	dataPathTemplate = new UriTemplate(timeseriesDataPath);
+    	
+    	String[] customExtensionArray = {};
+    	if (timeseriesDatafileExtensions.trim().length() > 0) {
+    		customExtensionArray = timeseriesDatafileExtensions.split("\\s+");
+    	}
+    	extensions = new String[1 + customExtensionArray.length];
+    	extensions[0] = "";
+    	int i = 1;
+    	for (String customExtension : customExtensionArray) {
+    		extensions[i++] = customExtension;
+    	}
     }
 
 	public TimeseriesResponse getTimeseries(
@@ -33,8 +47,12 @@ public class TimeseriesService implements InitializingBean {
 	) throws Exception {
 
         File dataFile = getDataFile(request.getDatasetId(), request.getVariableName());
-        if (!dataFile.exists()) {
-        	throw new InvalidArgumentException("Data file " + dataFile.getName() + " does not exist on timeseries server.");
+        if (dataFile == null) {
+        	throw new InvalidArgumentException(
+    			"Data file for dataset '" + request.getDatasetId() +
+    			"', variable '" + request.getVariableName() + 
+    			"' does not exist on timeseries server."
+			);
         }
         
         String[] stringOutputValues = runGdalLocationInfo(dataFile, request.getLongitude(), request.getLatitude());
@@ -76,8 +94,14 @@ public class TimeseriesService implements InitializingBean {
 	private File getDataFile(String datasetId, String variableName) {
         uriVariables.put("datasetId", datasetId);
         uriVariables.put("variableName", variableName);
-		URI datafileUri = dataPathTemplate.expand(uriVariables);
-        return new File(datafileUri.getPath());
+		URI datafileBaseUri = dataPathTemplate.expand(uriVariables);
+		for (String extension : extensions) {
+			File file = new File(datafileBaseUri.getPath() + extension);
+			if (file.exists()) {
+				return file;
+			}
+		}
+		return null;
 	}
 	
 	private String[] runGdalLocationInfo(File dataFile, double longitude, double latitude) throws Exception {

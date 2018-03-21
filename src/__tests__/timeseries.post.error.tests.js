@@ -200,7 +200,7 @@ describe("When a values POST request specifies a dataset that does not exist", a
     });
 
     it ('Error message should be that dataset file does not exist', async function() {
-        expect(response.entity.message).toBe("Data file temp.tif does not exist on timeseries server.");
+        expect(response.entity.message).toBe( "Data file for dataset 'not-a-dataset', variable 'temp' does not exist on timeseries server.");
     });
     
 });
@@ -235,7 +235,7 @@ describe("When a values POST request specifies a nonexistent variable for datase
     });
 
     it ('Error message should be that dataset file does not exist', async function() {
-        expect(response.entity.message).toBe("Data file not-a-variable.tif does not exist on timeseries server.");
+        expect(response.entity.message).toBe("Data file for dataset '5x5x5', variable 'not-a-variable' does not exist on timeseries server.");
     });
     
 })
