@@ -9,18 +9,23 @@ import org.yesworkflow.util.exec.StreamSink;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.web.util.UriTemplate;
 
 import java.io.File;
+import java.net.URI;
+import java.util.HashMap;
+import java.util.Map;
 
 @Service
 public class TimeseriesService implements InitializingBean {
     
-	@Value("${TIMESERIES_SERVICE_DATA}") public String timeseriesDataDirectory;
+	@Value("${TIMESERIES_SERVICE_DATA}") public String timeseriesDataPath;
 
-    private String dataDirectory;
+    private UriTemplate dataPathTemplate;
+    private Map<String, String> uriVariables = new HashMap<String,String>();
 
     public void afterPropertiesSet() {
-        dataDirectory = (new File(timeseriesDataDirectory)).getAbsolutePath();
+    	dataPathTemplate = new UriTemplate(timeseriesDataPath);
     }
 
 	public TimeseriesResponse getTimeseries(
@@ -69,8 +74,10 @@ public class TimeseriesService implements InitializingBean {
 	}
 	
 	private File getDataFile(String datasetId, String variableName) {
-        String fileName = dataDirectory + "/" + datasetId + "_" + variableName + ".tif";
-        return new File(fileName); 
+        uriVariables.put("datasetId", datasetId);
+        uriVariables.put("variableName", variableName);
+		URI datafileUri = dataPathTemplate.expand(uriVariables);
+        return new File(datafileUri.getPath());
 	}
 	
 	private String[] runGdalLocationInfo(File dataFile, double longitude, double latitude) throws Exception {
