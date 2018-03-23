@@ -76,12 +76,12 @@ public class TimeseriesService implements InitializingBean {
 
         int[] valuesInRequestedRange = getRangeOfStringValuesAsInts(stringOutputValues, rangeStart, rangeEnd);
         
-        int[] values =  request.getFormat().equals("array") ? valuesInRequestedRange : null;
-        String csv = request.getFormat().equals("csv") ? getTable(request, valuesInRequestedRange) : null;
+        int[] values =  request.getReturnArray() ? valuesInRequestedRange : null;
+        String csv = request.getReturnCsv() ? getTable(request, valuesInRequestedRange) : null;
 		
         return new TimeseriesResponse(
-        		request.getDatasetId(), 
-        		request.getVariableName(), 
+        		request.getDatasetId(),
+        		request.getVariableName(),
         		request.getLatitude(),
         		request.getLongitude(), 
         		rangeStart, 

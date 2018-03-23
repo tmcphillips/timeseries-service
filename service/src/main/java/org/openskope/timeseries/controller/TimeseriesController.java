@@ -41,13 +41,14 @@ public class TimeseriesController {
             @RequestParam(value="latitude", required=true) String latitude,
             @RequestParam(value="start", required=false) String start,
             @RequestParam(value="end", required=false) String end,
-            @RequestParam(value="format", required=false) String format,
+            @RequestParam(value="array", required=false) Boolean returnArray,
+            @RequestParam(value="csv", required=false) Boolean returnCsv,
             HttpServletResponse response
         ) throws Exception {
     	
     	TimeseriesRequest request = new TimeseriesRequest();
 
-    	return requestUsingPathVariablesQueryParametersAndBody(request, datasetId, variableName, longitude, latitude, start, end, format, response);
+    	return requestUsingPathVariablesQueryParametersAndBody(request, datasetId, variableName, longitude, latitude, start, end, returnArray, returnCsv, response);
 	}
 
     @RequestMapping(value="/timeseries/{datasetId}/{variableName}", method=RequestMethod.POST)
@@ -59,14 +60,15 @@ public class TimeseriesController {
             @RequestParam(value="latitude", required=false) String latitude,
             @RequestParam(value="start", required=false) String start,
             @RequestParam(value="end", required=false) String end,
-            @RequestParam(value="format", required=false) String format,
+            @RequestParam(value="array", required=false) Boolean returnArray,
+            @RequestParam(value="csv", required=false) Boolean returnCsv,
             HttpServletResponse response
         ) throws Exception {
 
     	request.setDatasetId(datasetId); 
     	request.setVariableName(variableName);
 
-    	return requestUsingQueryParametersAndBody(request, longitude, latitude, start, end, format, response);
+    	return requestUsingQueryParametersAndBody(request, longitude, latitude, start, end, returnArray, returnCsv, response);
 	}
     
     @RequestMapping(value="/timeseries", method=RequestMethod.POST)
@@ -76,15 +78,17 @@ public class TimeseriesController {
             @RequestParam(value="latitude", required=false) String latitude,
             @RequestParam(value="start", required=false) String start,
             @RequestParam(value="end", required=false) String end,
-            @RequestParam(value="format", required=false) String format,
+            @RequestParam(value="array", required=false) Boolean returnArray,
+            @RequestParam(value="csv", required=false) Boolean returnCsv,
             HttpServletResponse response
         ) throws Exception {
 
     	request.setLatitude(latitude); 
     	request.setLongitude(longitude); 
     	request.setStart(start); 
-    	request.setEnd(end); 
-    	request.setFormat(format);
+    	request.setEnd(end);
+    	request.setArray(returnArray);
+    	request.setCsv(returnCsv);
     	
     	request.validate();
     	
