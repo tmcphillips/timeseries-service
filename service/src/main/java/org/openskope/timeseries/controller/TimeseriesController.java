@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -32,10 +33,10 @@ public class TimeseriesController {
         return new ServiceStatus(timeseriesServiceName);
 	}
 
-    @RequestMapping(value="/values", method=RequestMethod.GET)
+    @RequestMapping(value="/timeseries/{datasetId}/{variableName}", method=RequestMethod.GET)
     public @ResponseBody TimeseriesResponse requestUsingQueryLineOnly(
-            @RequestParam(value="datasetId", required=true) String datasetId,
-            @RequestParam(value="variableName", required=true) String variableName,
+            @PathVariable(value="datasetId", required=true) String datasetId,
+            @PathVariable(value="variableName", required=true) String variableName,
             @RequestParam(value="longitude", required=true) String longitude,
             @RequestParam(value="latitude", required=true) String latitude,
             @RequestParam(value="start", required=false) String start,
