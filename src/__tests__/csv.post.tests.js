@@ -12,7 +12,7 @@ describe("When a csv POST request selects first pixel of each band in 5x5x5 data
 	beforeAll(async () => {
 		response = await callRESTService({
 		    method: 'POST',
-		    path: timeseriesServiceBase + '/values',
+		    path: timeseriesServiceBase + '/timeseries',
 		    entity: {
 		    	datasetId: '5x5x5',
 		    	variableName: 'temp',

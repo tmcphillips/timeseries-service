@@ -13,7 +13,7 @@ describe("When a values POST request uses the query line only to request first p
 	beforeAll(async () => {
 		response = await callRESTService({
 		    method: 'POST',
-		    path: timeseriesServiceBase + '/values?datasetId=5x5x5&variableName=temp&longitude=-123.0&latitude=45.0&start=0&end=4',
+		    path: timeseriesServiceBase + '/timeseries/5x5x5/temp?longitude=-123.0&latitude=45.0&start=0&end=4',
 		    entity: {}
 		});
     });
@@ -56,7 +56,7 @@ describe("When a values POST request provides the dataset id both in the request
 	beforeAll(async () => {
 		response = await callRESTService({
 		    method: 'POST',
-		    path: timeseriesServiceBase + '/values?datasetId=not-a-dataset&variableName=temp&longitude=-123.0&latitude=45.0&start=0&end=4',
+		    path: timeseriesServiceBase + '/timeseries/not-a-dataset/temp?longitude=-123.0&latitude=45.0&start=0&end=4',
 		    entity: {
 		    	datasetId: '5x5x5'
 		    }
@@ -80,7 +80,7 @@ describe("When a values POST request provides the variable name both in the requ
 	beforeAll(async () => {
 		response = await callRESTService({
 		    method: 'POST',
-		    path: timeseriesServiceBase + '/values?datasetId=5x5x5&variableName=not-a-variable&longitude=-123.0&latitude=45.0&start=0&end=4',
+		    path: timeseriesServiceBase + '/timeseries/5x5x5/not-a-variable?longitude=-123.0&latitude=45.0&start=0&end=4',
 		    entity: {
 		    	variableName: 'temp'
 		    }
@@ -104,7 +104,7 @@ describe("When a values POST request provides the coordinates both in the reques
 	beforeAll(async () => {
 		response = await callRESTService({
 		    method: 'POST',
-		    path: timeseriesServiceBase + '/values?datasetId=5x5x5&variableName=temp&longitude=0.0&latitude=0.0&start=0&end=4',
+		    path: timeseriesServiceBase + '/timeseries/5x5x5/temp?longitude=0.0&latitude=0.0&start=0&end=4',
 		    entity: {
 		    	boundaryGeometry: {
 		    		type: 'Point',
@@ -131,7 +131,7 @@ describe("When a values POST request provides the band range both in the request
 	beforeAll(async () => {
 		response = await callRESTService({
 		    method: 'POST',
-		    path: timeseriesServiceBase + '/values?datasetId=5x5x5&variableName=temp&longitude=-123.0&latitude=45.0&start=5&end=10',
+		    path: timeseriesServiceBase + '/timeseries/5x5x5/temp?longitude=-123.0&latitude=45.0&start=5&end=10',
 		    entity: {
 		    	start: 0,
 		    	end: 4

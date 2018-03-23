@@ -12,7 +12,7 @@ describe("When a values POST request selects first pixel of each band in 5x5x5 d
 	beforeAll(async () => {
 		response = await callRESTService({
 		    method: 'POST',
-		    path: timeseriesServiceBase + '/values',
+		    path: timeseriesServiceBase + '/timeseries',
 		    entity: {
 		    	datasetId: '5x5x5',
 		    	variableName: 'temp',
@@ -63,7 +63,7 @@ describe("When a values POST request selects first pixel of middle three bands i
 	beforeAll(async () => {
 		response = await callRESTService({
 		    method: 'POST',
-		    path: timeseriesServiceBase + '/values',
+		    path: timeseriesServiceBase + '/timeseries',
 		    entity: {
 		    	datasetId: '5x5x5',
 		    	variableName: 'temp',
@@ -114,7 +114,7 @@ describe("When a values POST request selects first pixel of first band in 5x5x5 
 	beforeAll(async () => {
 		response = await callRESTService({
 		    method: 'POST',
-		    path: timeseriesServiceBase + '/values',
+		    path: timeseriesServiceBase + '/timeseries',
 		    entity: {
 		    	datasetId: '5x5x5',
 		    	variableName: 'temp',
@@ -149,7 +149,7 @@ describe("When a values POST request selects last pixel of each band in 5x5x5 da
 	beforeAll(async () => {
 		response = await callRESTService({
 		    method: 'POST',
-		    path: timeseriesServiceBase + '/values',
+		    path: timeseriesServiceBase + '/timeseries',
 		    entity: {
 		    	datasetId: '5x5x5',
 		    	variableName: 'temp',
@@ -186,7 +186,7 @@ describe("When a values POST request selects last pixel of last band in 5x5x5 da
 	beforeAll(async () => {
 		response = await callRESTService({
 		    method: 'POST',
-		    path: timeseriesServiceBase + '/values',
+		    path: timeseriesServiceBase + '/timeseries',
 		    entity: {
 		    	datasetId: '5x5x5',
 		    	variableName: 'temp',
@@ -222,7 +222,7 @@ describe("When a values POST request selects last pixel of 5x5x5 data cube witho
 	beforeAll(async () => {
 		response = await callRESTService({
 		    method: 'POST',
-		    path: timeseriesServiceBase + '/values',
+		    path: timeseriesServiceBase + '/timeseries',
 		    entity: {
 		    	datasetId: '5x5x5',
 		    	variableName: 'temp',
@@ -258,7 +258,7 @@ describe("When a values POST request selects last pixel of 5x5x5 data cube and s
 	beforeAll(async () => {
 		response = await callRESTService({
 		    method: 'POST',
-		    path: timeseriesServiceBase + '/values',
+		    path: timeseriesServiceBase + '/timeseries',
 		    entity: {
 		    	datasetId: '5x5x5',
 		    	variableName: 'temp',
@@ -294,7 +294,7 @@ describe("When a values POST request selects last pixel of 5x5x5 data cube and s
 	beforeAll(async () => {
 		response = await callRESTService({
 		    method: 'POST',
-		    path: timeseriesServiceBase + '/values',
+		    path: timeseriesServiceBase + '/timeseries',
 		    entity: {
 		    	datasetId: '5x5x5',
 		    	variableName: 'temp',

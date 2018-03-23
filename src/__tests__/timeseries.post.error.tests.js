@@ -12,7 +12,7 @@ describe("When a values POST request is missing the datasetId property", async (
 	beforeAll(async () => {
 		response = await callRESTService({
 		    method: 'POST',
-		    path: timeseriesServiceBase + '/values',
+		    path: timeseriesServiceBase + '/timeseries',
 		    entity: {
 		    	variableName: 'temp',
 		    	boundaryGeometry: {
@@ -45,7 +45,7 @@ describe("When a values POST request is missing the variableName property", asyn
 	beforeAll(async () => {
 		response = await callRESTService({
 		    method: 'POST',
-		    path: timeseriesServiceBase + '/values',
+		    path: timeseriesServiceBase + '/timeseries',
 		    entity: {
 		    	datasetId: '5x5x5',
 		    	boundaryGeometry: {
@@ -78,7 +78,7 @@ describe("When a values POST request is missing the boundaryGeometry property", 
 	beforeAll(async () => {
 		response = await callRESTService({
 		    method: 'POST',
-		    path: timeseriesServiceBase + '/values',
+		    path: timeseriesServiceBase + '/timeseries',
 		    entity: {
 		    	datasetId: '5x5x5',
 		    	variableName: 'temp',
@@ -108,7 +108,7 @@ describe("When a values POST request specifies an unsupported boundary geometry 
 	beforeAll(async () => {
 		response = await callRESTService({
 		    method: 'POST',
-		    path: timeseriesServiceBase + '/values',
+		    path: timeseriesServiceBase + '/timeseries',
 		    entity: {
 		    	datasetId: '5x5x5',
 		    	variableName: 'temp',
@@ -142,7 +142,7 @@ describe("When a values POST request specifies coordinates outside of raster fil
 	beforeAll(async () => {
 		response = await callRESTService({
 		    method: 'POST',
-		    path: timeseriesServiceBase + '/values',
+		    path: timeseriesServiceBase + '/timeseries',
 		    entity: {
 		    	datasetId: '5x5x5',
 		    	variableName: 'temp',
@@ -177,7 +177,7 @@ describe("When a values POST request specifies a dataset that does not exist", a
 	beforeAll(async () => {
 		response = await callRESTService({
 		    method: 'POST',
-		    path: timeseriesServiceBase + '/values',
+		    path: timeseriesServiceBase + '/timeseries',
 		    entity: {
 		    	datasetId: 'not-a-dataset',
 		    	variableName: 'temp',
@@ -212,7 +212,7 @@ describe("When a values POST request specifies a nonexistent variable for datase
 	beforeAll(async () => {
 		response = await callRESTService({
 		    method: 'POST',
-		    path: timeseriesServiceBase + '/values',
+		    path: timeseriesServiceBase + '/timeseries',
 		    entity: {
 		    	datasetId: '5x5x5',
 		    	variableName: 'not-a-variable',
@@ -247,7 +247,7 @@ describe("When a values POST request specifies a range start outside of dataset 
 	beforeAll(async () => {
 		response = await callRESTService({
 		    method: 'POST',
-		    path: timeseriesServiceBase + '/values',
+		    path: timeseriesServiceBase + '/timeseries',
 		    entity: {
 		    	datasetId: '5x5x5',
 		    	variableName: 'temp',
@@ -282,7 +282,7 @@ describe("When a values POST request specifies a range end outside of dataset co
 	beforeAll(async () => {
 		response = await callRESTService({
 		    method: 'POST',
-		    path: timeseriesServiceBase + '/values',
+		    path: timeseriesServiceBase + '/timeseries',
 		    entity: {
 		    	datasetId: '5x5x5',
 		    	variableName: 'temp',
@@ -319,7 +319,7 @@ describe("When a values POST request specifies a range end before range start", 
 	beforeAll(async () => {
 		response = await callRESTService({
 		    method: 'POST',
-		    path: timeseriesServiceBase + '/values',
+		    path: timeseriesServiceBase + '/timeseries',
 		    entity: {
 		    	datasetId: '5x5x5',
 		    	variableName: 'temp',

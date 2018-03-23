@@ -34,9 +34,9 @@ public class TimeseriesController {
 	}
 
     @RequestMapping(value="/timeseries/{datasetId}/{variableName}", method=RequestMethod.GET)
-    public @ResponseBody TimeseriesResponse requestUsingQueryLineOnly(
-            @PathVariable(value="datasetId", required=true) String datasetId,
-            @PathVariable(value="variableName", required=true) String variableName,
+    public @ResponseBody TimeseriesResponse requestUsingPathVariablesAndQueryParameters(
+            @PathVariable(value="datasetId") String datasetId,
+            @PathVariable(value="variableName") String variableName,
             @RequestParam(value="longitude", required=true) String longitude,
             @RequestParam(value="latitude", required=true) String latitude,
             @RequestParam(value="start", required=false) String start,
@@ -45,16 +45,16 @@ public class TimeseriesController {
             HttpServletResponse response
         ) throws Exception {
     	
-    	TimeseriesRequest requestBody = new TimeseriesRequest();
+    	TimeseriesRequest request = new TimeseriesRequest();
 
-    	return requestUsingBodyAndQueryLine(requestBody, datasetId, variableName, longitude, latitude, start, end, format, response);
+    	return requestUsingPathVariablesQueryParametersAndBody(request, datasetId, variableName, longitude, latitude, start, end, format, response);
 	}
 
-    @RequestMapping(value="/values", method=RequestMethod.POST)
-    public @ResponseBody TimeseriesResponse requestUsingBodyAndQueryLine(
-            @RequestBody TimeseriesRequest requestBody,
-            @RequestParam(value="datasetId", required=false) String datasetId,
-            @RequestParam(value="variableName", required=false) String variableName,
+    @RequestMapping(value="/timeseries/{datasetId}/{variableName}", method=RequestMethod.POST)
+    public @ResponseBody TimeseriesResponse requestUsingPathVariablesQueryParametersAndBody(
+            @RequestBody TimeseriesRequest request,
+            @PathVariable(value="datasetId") String datasetId,
+            @PathVariable(value="variableName") String variableName,
             @RequestParam(value="longitude", required=false) String longitude,
             @RequestParam(value="latitude", required=false) String latitude,
             @RequestParam(value="start", required=false) String start,
@@ -63,17 +63,32 @@ public class TimeseriesController {
             HttpServletResponse response
         ) throws Exception {
 
-    	requestBody.setDatasetId(datasetId); 
-    	requestBody.setVariableName(variableName); 
-    	requestBody.setLatitude(latitude); 
-    	requestBody.setLongitude(longitude); 
-    	requestBody.setStart(start); 
-    	requestBody.setEnd(end); 
-    	requestBody.setFormat(format);
+    	request.setDatasetId(datasetId); 
+    	request.setVariableName(variableName);
+
+    	return requestUsingQueryParametersAndBody(request, longitude, latitude, start, end, format, response);
+	}
+    
+    @RequestMapping(value="/timeseries", method=RequestMethod.POST)
+    public @ResponseBody TimeseriesResponse requestUsingQueryParametersAndBody(
+            @RequestBody TimeseriesRequest request,
+            @RequestParam(value="longitude", required=false) String longitude,
+            @RequestParam(value="latitude", required=false) String latitude,
+            @RequestParam(value="start", required=false) String start,
+            @RequestParam(value="end", required=false) String end,
+            @RequestParam(value="format", required=false) String format,
+            HttpServletResponse response
+        ) throws Exception {
+
+    	request.setLatitude(latitude); 
+    	request.setLongitude(longitude); 
+    	request.setStart(start); 
+    	request.setEnd(end); 
+    	request.setFormat(format);
     	
-    	requestBody.validate();
+    	request.validate();
     	
-        return timeseriesColumnService.getTimeseries(requestBody);
+        return timeseriesColumnService.getTimeseries(request);
 	}
 
 //        response.setContentType("text/csv");
