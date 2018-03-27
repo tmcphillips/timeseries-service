@@ -1,5 +1,6 @@
 package org.openskope.timeseries.controller;
 
+import org.openskope.timeseries.VersionInfo;
 import org.openskope.timeseries.model.ServiceStatus;
 import org.openskope.timeseries.model.TimeseriesRequest;
 import org.openskope.timeseries.model.TimeseriesResponse;
@@ -33,6 +34,21 @@ public class TimeseriesController {
         return new ServiceStatus(timeseriesServiceName);
 	}
 
+	@RequestMapping(value="/version", method=RequestMethod.GET)
+    public @ResponseBody String getVersionInfo() throws Exception {
+		
+		
+        VersionInfo versionInfo = 
+                VersionInfo.loadVersionInfoFromResource(
+                        "SKOPE Time-Series Service", 
+                        "https://github.com/openskope/timeseries-service.git",
+                        "git.properties",
+                        "maven.properties");
+        
+        
+        return versionInfo.versionDetails();
+	}
+	
     @RequestMapping(value="/timeseries/{datasetId}/{variableName}", method=RequestMethod.GET)
     public @ResponseBody TimeseriesResponse requestUsingPathVariablesAndQueryParameters(
             @PathVariable(value="datasetId") String datasetId,
