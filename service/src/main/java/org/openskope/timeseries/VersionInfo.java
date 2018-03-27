@@ -66,9 +66,9 @@ public class VersionInfo {
         
         buildVersion = gitProperties.getProperty("git.build.version");
 
-        productVersion = productName + " " + buildVersion + "-" + gitCommitsSinceTag;
+        productVersion = productName + " " + gitClosestTag + "-" + gitCommitsSinceTag;
         qualifiedVersion = productVersion + " (" 
-                            + (gitBranch.equals("master") ? "branch" : "BRANCH ") + gitBranch + 
+                            + (gitBranch.equals("master") ? "branch " : "BRANCH ") + gitBranch + 
                             ", commit " + gitCommitAbbrev + 
                             ")";
         
@@ -98,23 +98,20 @@ public class VersionInfo {
     }
     
     public String versionDetails() {
-    	String BR = "<br>" + EOL;
         return new StringBuilder()
-        		   .append("<HTML>")
-                   .append("Remote repo: ").append(officialRepoUrl).append(BR)
-                   .append("Git branch: ").append(gitBranch).append(BR)
-                   .append("Last commit: ").append(gitCommitId).append(BR)
-                   .append("Commit time: ").append(gitCommitTime).append(BR)
-                   .append("Most recent tag: ").append(gitClosestTag).append(BR)
-                   .append("Commits since tag: ").append(gitCommitsSinceTag).append(BR)
-                   .append("Builder name: ").append(buildUserName).append(BR)
-                   .append("Builder email: ").append(buildUserEmail).append(BR)
-                   .append("Build host: ").append(buildHost).append(BR)
-                   .append("Build platform: ").append(buildPlatform).append(BR)
-                   .append("Build Java VM: ").append(buildJavaVM).append(BR)
-                   .append("Build Java version: ").append("JDK ").append(buildJavaVersion).append(BR)
-                   .append("Build time: ").append(buildTime).append(BR)
-        		   .append("</HTML>")
+                   .append("Remote repo: ").append(officialRepoUrl).append(EOL)
+                   .append("Git branch: ").append(gitBranch).append(EOL)
+                   .append("Last commit: ").append(gitCommitId).append(EOL)
+                   .append("Commit time: ").append(gitCommitTime).append(EOL)
+                   .append("Most recent tag: ").append(gitClosestTag).append(EOL)
+                   .append("Commits since tag: ").append(gitCommitsSinceTag).append(EOL)
+                   .append("Builder name: ").append(buildUserName).append(EOL)
+                   .append("Builder email: ").append(buildUserEmail).append(EOL)
+                   .append("Build host: ").append(buildHost).append(EOL)
+                   .append("Build platform: ").append(buildPlatform).append(EOL)
+                   .append("Build Java VM: ").append(buildJavaVM).append(EOL)
+                   .append("Build Java version: ").append("JDK ").append(buildJavaVersion).append(EOL)
+                   .append("Build time: ").append(buildTime).append(EOL)
                    .toString();
     }
 }

@@ -9,6 +9,7 @@ import org.openskope.timeseries.service.TimeseriesService;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -25,7 +26,13 @@ import org.springframework.beans.factory.annotation.Value;
 @CrossOrigin 
 @RequestMapping("${TIMESERIES_SERVICE_BASE}/")
 public class TimeseriesController {
-    
+
+    private VersionInfo versionInfo = VersionInfo.loadVersionInfoFromResource(
+        "SKOPE Time-Series Service", 
+        "https://github.com/openskope/timeseries-service.git",
+        "git.properties",
+        "maven.properties");
+	
     @Autowired public TimeseriesService timeseriesColumnService;
     @Value("${TIMESERIES_SERVICE_NAME}") public String timeseriesServiceName;
 
@@ -34,19 +41,9 @@ public class TimeseriesController {
         return new ServiceStatus(timeseriesServiceName);
 	}
 
-	@RequestMapping(value="/version", method=RequestMethod.GET)
+	@RequestMapping(value="/version", method=RequestMethod.GET, produces= {MediaType.TEXT_PLAIN_VALUE})
     public @ResponseBody String getVersionInfo() throws Exception {
-		
-		
-        VersionInfo versionInfo = 
-                VersionInfo.loadVersionInfoFromResource(
-                        "SKOPE Time-Series Service", 
-                        "https://github.com/openskope/timeseries-service.git",
-                        "git.properties",
-                        "maven.properties");
-        
-        
-        return versionInfo.versionDetails();
+        return versionInfo.versionBanner() + versionInfo.versionDetails();
 	}
 	
     @RequestMapping(value="/timeseries/{datasetId}/{variableName}", method=RequestMethod.GET)
