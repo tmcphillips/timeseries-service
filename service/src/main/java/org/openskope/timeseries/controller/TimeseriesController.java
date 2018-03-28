@@ -48,51 +48,81 @@ public class TimeseriesController {
 	
     @RequestMapping(value="/timeseries/{datasetId}/{variableName}", method=RequestMethod.GET)
     public @ResponseBody TimeseriesResponse requestUsingPathVariablesAndQueryParameters(
-            @PathVariable(value="datasetId") String datasetId,
-            @PathVariable(value="variableName") String variableName,
-            @RequestParam(value="longitude", required=true) String longitude,
-            @RequestParam(value="latitude", required=true) String latitude,
-            @RequestParam(value="start", required=false) String start,
-            @RequestParam(value="end", required=false) String end,
-            @RequestParam(value="array", required=false) Boolean returnArray,
-            @RequestParam(value="csv", required=false) Boolean returnCsv,
+            @PathVariable String datasetId,
+            @PathVariable String variableName,
+            @RequestParam String longitude,
+            @RequestParam String latitude,
+            @RequestParam(required=false) String timeResolution,
+            @RequestParam(required=false) String timeZero,
+            @RequestParam(required=false) String start,
+            @RequestParam(required=false) String end,
+            @RequestParam(required=false) Boolean array,
+            @RequestParam(required=false) Boolean csv,
             HttpServletResponse response
         ) throws Exception {
     	
     	TimeseriesRequest request = new TimeseriesRequest();
 
-    	return requestUsingPathVariablesQueryParametersAndBody(request, datasetId, variableName, longitude, latitude, start, end, returnArray, returnCsv, response);
+    	return requestUsingPathVariablesQueryParametersAndBody(
+    			request, 
+    			datasetId, 
+    			variableName, 
+    			longitude, 
+    			latitude, 
+    			timeResolution, 
+    			timeZero, 
+    			start, 
+    			end, 
+    			array, 
+    			csv, 
+    			response
+		);
 	}
 
     @RequestMapping(value="/timeseries/{datasetId}/{variableName}", method=RequestMethod.POST)
     public @ResponseBody TimeseriesResponse requestUsingPathVariablesQueryParametersAndBody(
             @RequestBody TimeseriesRequest request,
-            @PathVariable(value="datasetId") String datasetId,
-            @PathVariable(value="variableName") String variableName,
-            @RequestParam(value="longitude", required=false) String longitude,
-            @RequestParam(value="latitude", required=false) String latitude,
-            @RequestParam(value="start", required=false) String start,
-            @RequestParam(value="end", required=false) String end,
-            @RequestParam(value="array", required=false) Boolean returnArray,
-            @RequestParam(value="csv", required=false) Boolean returnCsv,
+            @PathVariable String datasetId,
+            @PathVariable String variableName,
+            @RequestParam(required=false) String longitude,
+            @RequestParam(required=false) String latitude,
+            @RequestParam(required=false) String timeResolution,
+            @RequestParam(required=false) String timeZero,
+            @RequestParam(required=false) String start,
+            @RequestParam(required=false) String end,
+            @RequestParam(required=false) Boolean array,
+            @RequestParam(required=false) Boolean csv,
             HttpServletResponse response
         ) throws Exception {
 
     	request.setDatasetId(datasetId); 
     	request.setVariableName(variableName);
 
-    	return requestUsingQueryParametersAndBody(request, longitude, latitude, start, end, returnArray, returnCsv, response);
+    	return requestUsingQueryParametersAndBody(
+    			request, 
+    			longitude, 
+    			latitude, 
+    			timeResolution, 
+    			timeZero, 
+    			start, 
+    			end, 
+    			array, 
+    			csv, 
+    			response
+		);
 	}
     
     @RequestMapping(value="/timeseries", method=RequestMethod.POST)
     public @ResponseBody TimeseriesResponse requestUsingQueryParametersAndBody(
             @RequestBody TimeseriesRequest request,
-            @RequestParam(value="longitude", required=false) String longitude,
-            @RequestParam(value="latitude", required=false) String latitude,
-            @RequestParam(value="start", required=false) String start,
-            @RequestParam(value="end", required=false) String end,
-            @RequestParam(value="array", required=false) Boolean returnArray,
-            @RequestParam(value="csv", required=false) Boolean returnCsv,
+            @RequestParam(required=false) String longitude,
+            @RequestParam(required=false) String latitude,
+            @RequestParam(required=false) String timeResolution,
+            @RequestParam(required=false) String timeZero,
+            @RequestParam(required=false) String start,
+            @RequestParam(required=false) String end,
+            @RequestParam(required=false) Boolean array,
+            @RequestParam(required=false) Boolean csv,
             HttpServletResponse response
         ) throws Exception {
 
@@ -100,8 +130,8 @@ public class TimeseriesController {
     	request.setLongitude(longitude); 
     	request.setStart(start); 
     	request.setEnd(end);
-    	request.setArray(returnArray);
-    	request.setCsv(returnCsv);
+    	request.setArray(array);
+    	request.setCsv(csv);
     	
     	request.validate();
     	

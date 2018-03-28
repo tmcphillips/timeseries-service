@@ -12,6 +12,8 @@ public class TimeseriesRequest {
 	private String variableName;
 	private Number latitude;
 	private Number longitude;
+	private String timeResolution;
+	private String timeZero;
 	private String start;
 	private String end;
 	private String boundaryGeometryType = "Point";
@@ -45,6 +47,18 @@ public class TimeseriesRequest {
 		}
 	}
 
+	public void setTimeResolution(String timeResolution) {
+		if (this.timeResolution == null) {
+			this.timeResolution = timeResolution;
+		}
+	}
+	
+	public void setTimeZero(String timeZero) {
+		if (this.timeZero == null) {
+			this.timeZero = timeZero;
+		}
+	}
+	
 	public void setStart(String start) {
 		if (this.start == null) {
 			this.start = start;
@@ -97,6 +111,8 @@ public class TimeseriesRequest {
 	public String getVariableName() { return variableName; }
 	public double getLatitude() { return latitude.doubleValue(); }
 	public double getLongitude() { return longitude.doubleValue(); }
+	public String getTimeResolution() { return timeResolution; }
+	public String getTimeZero() { return timeZero; }
 	public String getStart() { return start; }
 	public String getEnd() { return end; }
 	public Boolean getReturnArray() { return returnArray; }
