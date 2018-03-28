@@ -16,6 +16,15 @@ import java.net.URI;
 import java.util.HashMap;
 import java.util.Map;
 
+class BandRange {
+	public final int start;
+	public final int end;
+	public BandRange(int start, int end) {
+		this.start = start;
+		this.end = end;
+	}
+}
+
 @Service
 public class TimeseriesService implements InitializingBean {
     
@@ -60,21 +69,9 @@ public class TimeseriesService implements InitializingBean {
         	throw new InvalidArgumentException("Coordinates are outside region covered by the dataset");
         }
 
-        Integer rangeStart = (request.getStart() == null) ? 0 : Integer.parseInt(request.getStart());
-        if (rangeStart > stringOutputValues.length - 1) {
-        	throw new InvalidArgumentException("Time range start is outside coverage of dataset");
-        }
+        BandRange bandRange = getBandRange(request, stringOutputValues.length);
         
-    	Integer rangeEnd = (request.getEnd() == null) ? stringOutputValues.length - 1: Integer.parseInt(request.getEnd());
-        if (rangeEnd > stringOutputValues.length - 1) {
-        	rangeEnd = stringOutputValues.length - 1;
-        }
-        
-        if (rangeEnd < rangeStart) {
-        	throw new InvalidArgumentException("Time range end is before time range start");
-        }
-
-        int[] valuesInRequestedRange = getRangeOfStringValuesAsInts(stringOutputValues, rangeStart, rangeEnd);
+        int[] valuesInRequestedRange = getRangeOfStringValuesAsInts(stringOutputValues, bandRange.start, bandRange.end);
         
         int[] values =  request.getReturnArray() ? valuesInRequestedRange : null;
         String csv = request.getReturnCsv() ? getTable(request, valuesInRequestedRange) : null;
@@ -84,12 +81,33 @@ public class TimeseriesService implements InitializingBean {
         		request.getVariableName(),
         		request.getLatitude(),
         		request.getLongitude(), 
-        		rangeStart, 
-        		rangeEnd, 
+        		bandRange.start, 
+        		bandRange.end, 
         		values,
         		csv
     		);
 	}
+
+	private BandRange getBandRange(TimeseriesRequest request, Integer valueCount) {
+		
+        int start = (request.getStart() == null) ? 0 : Integer.parseInt(request.getStart());
+        if (start > valueCount - 1) {
+        	throw new InvalidArgumentException("Time range start is outside coverage of dataset");
+        }
+
+        int end = (request.getEnd() == null) ? valueCount - 1: Integer.parseInt(request.getEnd());
+        if (end > valueCount - 1) {
+        	end = valueCount - 1;
+        }
+        
+        if (end < start) {
+        	throw new InvalidArgumentException("Time range end is before time range start");
+        }
+        
+		return new BandRange(start, end);
+	}
+
+	
 	
 	private File getDataFile(String datasetId, String variableName) {
         uriVariables.put("datasetId", datasetId);
