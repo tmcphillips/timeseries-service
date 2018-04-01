@@ -12,75 +12,55 @@ public class TimeseriesRequest {
 	private String variableName;
 	private Number latitude;
 	private Number longitude;
-	private String timeResolution;
+	private TimeResolution timeResolution = TimeResolution.INDEX;
 	private String timeZero;
 	private String start;
 	private String end;
 	private String boundaryGeometryType = "Point";
 	private Boolean invalidBoundaryGeometryType = false;
-	private Boolean returnCsv = true;
-	private Boolean returnArray = true;
+	private Boolean returnCsv;
+	private Boolean returnArray;
 	
 	public TimeseriesRequest() {}
 
 	public void setDatasetId(String datasetId) {
-		if (this.datasetId == null) {
-			this.datasetId = datasetId;
-		}
+		this.datasetId = datasetId;
 	}
 
 	public void setVariableName(String variableName) {
-		if (this.variableName == null) {
-			this.variableName = variableName;
-		}
+		this.variableName = variableName;
 	}
 
 	public void setLatitude(String latitude) {
-		if (this.latitude == null && latitude != null) {
-			this.latitude = Double.parseDouble(latitude);
-		}
+		if (latitude != null) this.latitude = Double.parseDouble(latitude);
 	}
 
 	public void setLongitude(String longitude) {
-		if (this.longitude == null && longitude != null) {
-			this.longitude = Double.parseDouble(longitude);
-		}
+		if (longitude != null) this.longitude = Double.parseDouble(longitude);
 	}
 
 	public void setTimeResolution(String timeResolution) {
-		if (this.timeResolution == null) {
-			this.timeResolution = timeResolution;
-		}
+		this.timeResolution = TimeResolution.toTimeResolution(timeResolution);
 	}
 	
 	public void setTimeZero(String timeZero) {
-		if (this.timeZero == null) {
-			this.timeZero = timeZero;
-		}
+		this.timeZero = timeZero;
 	}
 	
 	public void setStart(String start) {
-		if (this.start == null) {
-			this.start = start;
-		}
+		this.start = start;
 	}
 
 	public void setEnd(String end) {
-		if (this.end == null) {
-			this.end = end;
-		}
+		this.end = end;
 	}
 
 	public void setArray(Boolean returnArray) {
-		if (returnArray != null) {
-			this.returnArray = returnArray;
-		}
+		this.returnArray = returnArray;
 	}
 
 	public void setCsv(Boolean returnCsv) {
-		if (returnCsv != null) {
-			this.returnCsv = returnCsv;
-		}
+		this.returnCsv = returnCsv;
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -100,6 +80,7 @@ public class TimeseriesRequest {
 	}
 		
 	public void validate() throws Exception {
+		if (timeResolution == TimeResolution.INVALID) throw new InvalidArgumentException("Unrecognized TimeResolution");
 		if (datasetId == null) throw new MissingPropertyException("datasetId");
 		if (variableName == null) throw new MissingPropertyException("variableName");
 		if (invalidBoundaryGeometryType) throw new InvalidArgumentException("boundaryGeometry.type", boundaryGeometryType);
@@ -109,14 +90,14 @@ public class TimeseriesRequest {
 
 	public String getDatasetId() { return datasetId; }
 	public String getVariableName() { return variableName; }
-	public double getLatitude() { return latitude.doubleValue(); }
-	public double getLongitude() { return longitude.doubleValue(); }
-	public String getTimeResolution() { return timeResolution; }
+	public Double getLatitude() { return latitude != null ? latitude.doubleValue() : null; }
+	public Double getLongitude() { return longitude != null ? longitude.doubleValue() : null; }
+	public TimeResolution getTimeResolution() { return timeResolution; }
 	public String getTimeZero() { return timeZero; }
 	public String getStart() { return start; }
 	public String getEnd() { return end; }
-	public Boolean getReturnArray() { return returnArray; }
-	public Boolean getReturnCsv() { return returnCsv; }
+	public Boolean getArray() { return returnArray; }
+	public Boolean getCsv() { return returnCsv; }
 
 	public BandRange getBandRange(int valueCount) {
 		

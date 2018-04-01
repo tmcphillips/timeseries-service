@@ -49,7 +49,7 @@ describe("When a values POST request uses the query line only to request first p
 
 });
 
-describe("When a values POST request provides the dataset id both in the request body and on the query line", async () => {
+describe("When a values POST request provides the dataset id both in the request body and in the URL", async () => {
     
 	var response;
 	
@@ -73,7 +73,7 @@ describe("When a values POST request provides the dataset id both in the request
 
 });
 
-describe("When a values POST request provides the variable name both in the request body and on the query line", async () => {
+describe("When a values POST request provides the variable name both in the request body and in the URL", async () => {
     
 	var response;
 	
@@ -97,7 +97,7 @@ describe("When a values POST request provides the variable name both in the requ
 
 });
 
-describe("When a values POST request provides the coordinates both in the request body and on the query line", async () => {
+describe("When a values POST request provides the coordinates both in the request body and in the URL", async () => {
     
 	var response;
 	

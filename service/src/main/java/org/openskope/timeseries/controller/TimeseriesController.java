@@ -95,8 +95,10 @@ public class TimeseriesController {
             HttpServletResponse response
         ) throws Exception {
 
-    	request.setDatasetId(datasetId); 
-    	request.setVariableName(variableName);
+    	// set datasetId and variableName to those given in URL 
+    	// only if the request body did not already specify each
+    	if (request.getDatasetId() == null) request.setDatasetId(datasetId); 
+    	if (request.getVariableName() == null) request.setVariableName(variableName);
 
     	return requestUsingQueryParametersAndBody(
     			request, 
@@ -126,12 +128,14 @@ public class TimeseriesController {
             HttpServletResponse response
         ) throws Exception {
 
-    	request.setLatitude(latitude); 
-    	request.setLongitude(longitude); 
-    	request.setStart(start); 
-    	request.setEnd(end);
-    	request.setArray(array);
-    	request.setCsv(csv);
+    	if (request.getLatitude() == null) request.setLatitude(latitude); 
+    	if (request.getLongitude() == null) request.setLongitude(longitude); 
+    	if (request.getTimeResolution() == null) request.setTimeResolution(timeResolution); 
+    	if (request.getTimeZero() == null) request.setTimeZero(timeZero); 
+    	if (request.getStart() == null) request.setStart(start); 
+    	if (request.getEnd() == null) request.setEnd(end);
+    	if (request.getArray() == null) request.setArray(array);
+    	if (request.getCsv() == null) request.setCsv(csv);
     	
     	request.validate();
     	
