@@ -1,6 +1,7 @@
 package org.openskope.timeseries.service;
 
 import org.openskope.timeseries.controller.InvalidArgumentException;
+import org.openskope.timeseries.model.BandRange;
 import org.openskope.timeseries.model.TimeseriesRequest;
 import org.openskope.timeseries.model.TimeseriesResponse;
 import org.yesworkflow.util.exec.ProcessRunner;
@@ -15,15 +16,6 @@ import java.io.File;
 import java.net.URI;
 import java.util.HashMap;
 import java.util.Map;
-
-class BandRange {
-	public final int start;
-	public final int end;
-	public BandRange(int start, int end) {
-		this.start = start;
-		this.end = end;
-	}
-}
 
 @Service
 public class TimeseriesService implements InitializingBean {
@@ -69,7 +61,7 @@ public class TimeseriesService implements InitializingBean {
         	throw new InvalidArgumentException("Coordinates are outside region covered by the dataset");
         }
 
-        BandRange bandRange = getBandRange(request, stringOutputValues.length);
+        BandRange bandRange = request.getBandRange(stringOutputValues.length);
         
         int[] valuesInRequestedRange = getRangeOfStringValuesAsInts(stringOutputValues, bandRange.start, bandRange.end);
         
@@ -87,27 +79,6 @@ public class TimeseriesService implements InitializingBean {
         		csv
     		);
 	}
-
-	private BandRange getBandRange(TimeseriesRequest request, Integer valueCount) {
-		
-        int start = (request.getStart() == null) ? 0 : Integer.parseInt(request.getStart());
-        if (start > valueCount - 1) {
-        	throw new InvalidArgumentException("Time range start is outside coverage of dataset");
-        }
-
-        int end = (request.getEnd() == null) ? valueCount - 1: Integer.parseInt(request.getEnd());
-        if (end > valueCount - 1) {
-        	end = valueCount - 1;
-        }
-        
-        if (end < start) {
-        	throw new InvalidArgumentException("Time range end is before time range start");
-        }
-        
-		return new BandRange(start, end);
-	}
-
-	
 	
 	private File getDataFile(String datasetId, String variableName) {
         uriVariables.put("datasetId", datasetId);

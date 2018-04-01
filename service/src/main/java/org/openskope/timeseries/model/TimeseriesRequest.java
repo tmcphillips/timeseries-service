@@ -117,4 +117,24 @@ public class TimeseriesRequest {
 	public String getEnd() { return end; }
 	public Boolean getReturnArray() { return returnArray; }
 	public Boolean getReturnCsv() { return returnCsv; }
+
+	public BandRange getBandRange(int valueCount) {
+		
+        int startBand = (start == null) ? 0 : Integer.parseInt(start);
+        if (startBand > valueCount - 1) {
+        	throw new InvalidArgumentException("Time range start is outside coverage of dataset");
+        }
+
+        int endBand = (end == null) ? valueCount - 1: Integer.parseInt(end);
+        if (endBand > valueCount - 1) {
+        	endBand = valueCount - 1;
+        }
+        
+        if (endBand < startBand) {
+        	throw new InvalidArgumentException("Time range end is before time range start");
+        }
+        
+		return new BandRange(startBand, endBand);
+	}
+
 }
