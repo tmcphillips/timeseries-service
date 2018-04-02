@@ -35,14 +35,14 @@ describe("When the time resolution is index, time zero is not specified, and sec
     });
 });
 
-describe("When the time resolution is index, time zero is 1, and second through fourth bands are requested", async () => {
+describe("When the time resolution is index, time zero is 500, and second through fourth bands are requested", async () => {
     
 	var response;
 	
 	beforeAll(async () => {
 		response = await callRESTService({
 		    method: 'GET',
-		    path: timeseriesServiceBase + '/timeseries/5x5x5/temp?longitude=-123.0&latitude=45.0&timeResolution=index&timeZero=1&start=2&end=4'
+		    path: timeseriesServiceBase + '/timeseries/5x5x5/temp?longitude=-123.0&latitude=45.0&timeResolution=index&timeZero=500&start=501&end=503'
 		});
     });
 
@@ -50,10 +50,10 @@ describe("When the time resolution is index, time zero is 1, and second through 
         expect(response.status.code).toBe(200);
     });
 
-//    it ('Series range start and end should match the request', async function() {
-//        expect(response.entity.start).toEqual( "2" );
-//        expect(response.entity.end).toEqual( "4" );
-//    });
+    it ('Series range start and end should match the request', async function() {
+        expect(response.entity.start).toEqual( "501" );
+        expect(response.entity.end).toEqual( "503" );
+    });
     
     it ('Series range startIndex and endIndex should match the request', async function() {
         expect(response.entity.startIndex).toEqual( 1 );

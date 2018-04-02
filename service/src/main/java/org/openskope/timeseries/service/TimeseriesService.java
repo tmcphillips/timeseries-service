@@ -74,6 +74,8 @@ public class TimeseriesService implements InitializingBean {
         		request.getVariableName(),
         		request.getLatitude(),
         		request.getLongitude(),
+        		timeScale.getTimeForIndex(responseRange.startIndex),
+        		timeScale.getTimeForIndex(responseRange.endIndex),
         		responseRange.startIndex,
         		responseRange.endIndex, 
         		values,

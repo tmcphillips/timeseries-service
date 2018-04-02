@@ -9,6 +9,8 @@ public class TimeseriesResponse {
 	private String variableName;
 	private double latitude;
 	private double longitude;
+	private String start;
+	private String end;
 	private int startIndex;
 	private int endIndex;
     private int[] values;
@@ -18,7 +20,9 @@ public class TimeseriesResponse {
 			String datasetId, 
 			String variableName, 
 			double latitude, 
-			double longitude, 
+			double longitude,
+			String start,
+			String end,
 			int startIndex,
 			int endIndex,
 			int[] values,
@@ -28,6 +32,8 @@ public class TimeseriesResponse {
 		this.variableName = variableName;
         this.latitude = latitude;
         this.longitude = longitude;
+        this.start = start;
+        this.end = end;
         this.startIndex = startIndex;
         this.endIndex = endIndex;
         this.values = values;
@@ -38,8 +44,8 @@ public class TimeseriesResponse {
 	public String getVariableName() { return variableName; }
 	public int[] getValues() { return this.values; }
 	public String getCsv() { return this.csv; }
-	public String getStart() { return String.valueOf(startIndex); }
-	public String getEnd() { return String.valueOf(endIndex); }
+	public String getStart() { return start; }
+	public String getEnd() { return end; }
 	public Integer getStartIndex() { return startIndex; }
 	public Integer getEndIndex() { return endIndex; }
 
