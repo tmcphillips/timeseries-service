@@ -163,6 +163,16 @@ describe("When a GET request selects first pixel of each band in 5x5x5 data cube
     it ('HTTP response status code should be 200 - success', async function() {
         expect(response.status.code).toBe(200);
     });
+    
+    it ('Series range start and end should match the request', async function() {
+        expect(response.entity.start).toEqual( "1" );
+        expect(response.entity.end).toEqual( "5" );
+    });
+
+    it ('Series range startIndex and endIndex should match the request', async function() {
+        expect(response.entity.startIndex).toEqual( 0 );
+        expect(response.entity.endIndex).toEqual( 4 );
+    });
         
     it ('Csv should be present', async function() {
         expect(response.entity.csv).toEqual( 
@@ -190,8 +200,18 @@ describe("When a GET request selects first pixel of each band in 5x5x5 data cube
     it ('HTTP response status code should be 200 - success', async function() {
         expect(response.status.code).toBe(200);
     });
-        
-    it ('Csv should be present', async function() {
+
+    it ('Series range start and end should represent entire time range in data set starting at default year of 1', async function() {
+        expect(response.entity.start).toEqual( "1" );
+        expect(response.entity.end).toEqual( "5" );
+    });
+
+    it ('Series range startIndex and endIndex should represent entire index range in data set', async function() {
+        expect(response.entity.startIndex).toEqual( 0 );
+        expect(response.entity.endIndex).toEqual( 4 );
+    });
+    
+    it ('Csv should should represent entire time range in data set starting at default year of 1', async function() {
         expect(response.entity.csv).toEqual( 
         		"year, temp"	+ "\n" +
         		"1, 100"		+ "\n" +
@@ -203,7 +223,7 @@ describe("When a GET request selects first pixel of each band in 5x5x5 data cube
     });
 })
 
-describe("When a GET request selects first pixel of each band in 5x5x5 data cube in units of years without specyifying start or end but with timezero", async () => {
+describe("When a GET request selects first pixel of each band in 5x5x5 data cube in units of years without specyifying start or end but with explicit timezero", async () => {
     
 	var response;
 	
@@ -217,7 +237,17 @@ describe("When a GET request selects first pixel of each band in 5x5x5 data cube
     it ('HTTP response status code should be 200 - success', async function() {
         expect(response.status.code).toBe(200);
     });
-        
+       
+    it ('Series range start and end should represent entire time range in data set starting at specified timezero', async function() {
+        expect(response.entity.start).toEqual( "501" );
+        expect(response.entity.end).toEqual( "505" );
+    });
+
+    it ('Series range startIndex and endIndex should represent entire index range in data set', async function() {
+        expect(response.entity.startIndex).toEqual( 0 );
+        expect(response.entity.endIndex).toEqual( 4 );
+    });
+    
     it ('Csv should be present', async function() {
         expect(response.entity.csv).toEqual( 
         		"year, temp"	+ "\n" +
@@ -244,7 +274,17 @@ describe("When a GET request selects first pixel of 5x5x5 data cube in units of 
     it ('HTTP response status code should be 200 - success', async function() {
         expect(response.status.code).toBe(200);
     });
-        
+
+    it ('Series range start and end should represent requested time range truncated at end of data set coverage', async function() {
+        expect(response.entity.start).toEqual( "503" );
+        expect(response.entity.end).toEqual( "505" );
+    });
+
+    it ('Series range startIndex and endIndex should represent entire requested index range through end of data set coverage', async function() {
+        expect(response.entity.startIndex).toEqual( 2 );
+        expect(response.entity.endIndex).toEqual( 4 );
+    });
+  
     it ('Csv should be present', async function() {
         expect(response.entity.csv).toEqual( 
         		"year, temp"	+ "\n" +
@@ -270,6 +310,16 @@ describe("When a GET request selects first pixel of 5x5x5 data cube in units of 
         expect(response.status.code).toBe(200);
     });
         
+    it ('Series range start and end should represent requested time range truncated at end of data set coverage', async function() {
+        expect(response.entity.start).toEqual( "501" );
+        expect(response.entity.end).toEqual( "503" );
+    });
+
+    it ('Series range startIndex and endIndex should represent entire requested index range through end of data set coverage', async function() {
+        expect(response.entity.startIndex).toEqual( 0 );
+        expect(response.entity.endIndex).toEqual( 2 );
+    });
+
     it ('Csv should be present', async function() {
         expect(response.entity.csv).toEqual( 
         		"year, temp"	+ "\n" +
