@@ -12,7 +12,7 @@ public class TimeseriesRequest {
 	private String variableName;
 	private Number latitude;
 	private Number longitude;
-	private TimeResolution timeResolution;
+	private String timeResolution;
 	private String timeZero;
 	private String start;
 	private String end;
@@ -40,7 +40,7 @@ public class TimeseriesRequest {
 	}
 
 	public void setTimeResolution(String timeResolution) {
-		this.timeResolution = TimeResolution.toTimeResolution(timeResolution);
+		this.timeResolution = timeResolution;
 	}
 	
 	public void setTimeZero(String timeZero) {
@@ -80,7 +80,6 @@ public class TimeseriesRequest {
 	}
 		
 	public void validate() throws Exception {
-		if (timeResolution == TimeResolution.INVALID) throw new InvalidArgumentException("Unrecognized TimeResolution");
 		if (datasetId == null) throw new MissingPropertyException("datasetId");
 		if (variableName == null) throw new MissingPropertyException("variableName");
 		if (invalidBoundaryGeometryType) throw new InvalidArgumentException("boundaryGeometry.type", boundaryGeometryType);
@@ -92,54 +91,10 @@ public class TimeseriesRequest {
 	public String getVariableName() { return variableName; }
 	public Double getLatitude() { return latitude != null ? latitude.doubleValue() : null; }
 	public Double getLongitude() { return longitude != null ? longitude.doubleValue() : null; }
-	public TimeResolution getTimeResolution() { return timeResolution; }
+	public String getTimeResolution() { return timeResolution; }
 	public String getTimeZero() { return timeZero; }
 	public String getStart() { return start; }
 	public String getEnd() { return end; }
 	public Boolean getArray() { return returnArray; }
 	public Boolean getCsv() { return returnCsv; }
-
-	public IndexRange getIndexRange(int valueCount) throws Exception {
-	
-		if (timeResolution == null) timeResolution = TimeResolution.INDEX;
-		
-		switch (timeResolution) {
-		
-		case INDEX:
-			if (timeZero == null) timeZero = "0"; 
-			return getIndexRangeForIntegerTimeResolution(valueCount);
-		case BAND:
-			if (timeZero == null) timeZero = "1"; 
-				return getIndexRangeForIntegerTimeResolution(valueCount);
-		case YEAR:
-			if (timeZero == null) timeZero = "1"; 
-			return getIndexRangeForIntegerTimeResolution(valueCount);
-		default:
-			break;
-		}
-		
-		throw new Exception();
-	}
-	
-	public IndexRange getIndexRangeForIntegerTimeResolution(int valueCount) {
-		
-		int tzero = Integer.parseInt(timeZero);
-		
-        int startIndex = (start == null) ? tzero : Integer.parseInt(start) - tzero;
-        if (startIndex > valueCount - 1) {
-        	throw new InvalidArgumentException("Time range start is outside coverage of dataset");
-        }
-
-        int endIndex = (end == null) ? valueCount - 1: Integer.parseInt(end) - tzero;
-        if (endIndex > valueCount - 1) {
-        	endIndex = valueCount - 1;
-        }
-        
-        if (endIndex < startIndex) {
-        	throw new InvalidArgumentException("Time range end is before time range start");
-        }
-        
-		return new IndexRange(startIndex, endIndex);
-	}
-
 }

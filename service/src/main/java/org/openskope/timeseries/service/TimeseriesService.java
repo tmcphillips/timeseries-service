@@ -2,6 +2,7 @@ package org.openskope.timeseries.service;
 
 import org.openskope.timeseries.controller.InvalidArgumentException;
 import org.openskope.timeseries.model.IndexRange;
+import org.openskope.timeseries.model.TimeScale;
 import org.openskope.timeseries.model.TimeseriesRequest;
 import org.openskope.timeseries.model.TimeseriesResponse;
 import org.yesworkflow.util.exec.ProcessRunner;
@@ -43,9 +44,7 @@ public class TimeseriesService implements InitializingBean {
     	}
     }
 
-	public TimeseriesResponse getTimeseries(
-			TimeseriesRequest request
-	) throws Exception {
+	public TimeseriesResponse getTimeseries(TimeseriesRequest request) throws Exception {
 
         File dataFile = getDataFile(request.getDatasetId(), request.getVariableName());
         if (dataFile == null) {
@@ -56,17 +55,19 @@ public class TimeseriesService implements InitializingBean {
 			);
         }
         
-        String[] stringOutputValues = runGdalLocationInfo(dataFile, request.getLongitude(), request.getLatitude());
-        if (stringOutputValues.length == 0) {
+        String[] fullTimeSeries = runGdalLocationInfo(dataFile, request.getLongitude(), request.getLatitude());
+        if (fullTimeSeries.length == 0) {
         	throw new InvalidArgumentException("Coordinates are outside region covered by the dataset");
         }
 
-        IndexRange responseRange = request.getIndexRange(stringOutputValues.length);
+        TimeScale timeScale = new TimeScale(request.getTimeResolution(), request.getTimeZero());
         
-        int[] valuesInRequestedRange = getRangeOfStringValuesAsInts(stringOutputValues, responseRange.startIndex, responseRange.endIndex);
+        IndexRange responseRange = timeScale.getResponseIndexRange(request.getStart(), request.getEnd(), fullTimeSeries.length);
+        
+        int[] valuesInRequestedRange = getRangeOfStringValuesAsInts(fullTimeSeries, responseRange.startIndex, responseRange.endIndex);
         
         int[] values =  (request.getArray() == null || request.getArray()) ? valuesInRequestedRange : null;
-        String csv = (request.getCsv() == null || request.getCsv()) ? getTable(request, valuesInRequestedRange) : null;
+        String csv = (request.getCsv() == null || request.getCsv()) ? getTable(request.getVariableName(), valuesInRequestedRange) : null;
 		
         return new TimeseriesResponse(
         		request.getDatasetId(),
@@ -111,9 +112,9 @@ public class TimeseriesService implements InitializingBean {
 		return ia;
 	}
 	
-	public String getTable(TimeseriesRequest request, int[] values) throws Exception {
+	public String getTable(String variableName, int[] values) throws Exception {
 		StringBuffer buffer = new StringBuffer();
-        buffer.append("Year, " + request.getVariableName() + "\n");
+        buffer.append("Year, " + variableName + "\n");
         for (int i = 0; i < values.length; ++i) {
             buffer.append(String.format("%d, %s\n", i + 1, values[i]));
         }
