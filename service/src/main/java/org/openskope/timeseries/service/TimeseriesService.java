@@ -67,7 +67,7 @@ public class TimeseriesService implements InitializingBean {
         int[] valuesInRequestedRange = getRangeOfStringValuesAsInts(fullTimeSeries, responseRange.startIndex, responseRange.endIndex);
         
         int[] values =  (request.getArray() == null || request.getArray()) ? valuesInRequestedRange : null;
-        String csv = (request.getCsv() == null || request.getCsv()) ? getTable(request.getVariableName(), valuesInRequestedRange) : null;
+        String csv = (request.getCsv() == null || request.getCsv()) ? getTable(responseRange, timeScale, request.getVariableName(), valuesInRequestedRange) : null;
 		
         return new TimeseriesResponse(
         		request.getDatasetId(),
@@ -114,11 +114,11 @@ public class TimeseriesService implements InitializingBean {
 		return ia;
 	}
 	
-	public String getTable(String variableName, int[] values) throws Exception {
+	public String getTable(IndexRange responseRange, TimeScale timeScale, String variableName, int[] values) throws Exception {
 		StringBuffer buffer = new StringBuffer();
-        buffer.append("Year, " + variableName + "\n");
+        buffer.append(timeScale + ", " + variableName + "\n");
         for (int i = 0; i < values.length; ++i) {
-            buffer.append(String.format("%d, %s\n", i + 1, values[i]));
+            buffer.append(String.format("%s, %s\n", timeScale.getTimeForIndex(i + responseRange.startIndex), values[i]));
         }
         return buffer.toString();
 	}

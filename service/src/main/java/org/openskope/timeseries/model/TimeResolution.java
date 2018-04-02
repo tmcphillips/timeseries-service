@@ -1,7 +1,7 @@
 package org.openskope.timeseries.model;
 
 public enum TimeResolution {
-	INVALID,
+	UNDEFINED,
 	INDEX,
 	BAND,
 	YEAR;
@@ -17,6 +17,16 @@ public enum TimeResolution {
         if (tr.equalsIgnoreCase("year") || tr.equalsIgnoreCase("annual"))
             return TimeResolution.YEAR;
 
-        return TimeResolution.INVALID;
+        return TimeResolution.UNDEFINED;
     }
+    
+    public String toString() {
+    	switch(this) {
+    	case INDEX: return "index";
+    	case BAND: return "band";
+    	case YEAR: return "year";
+    	default: return "UNDEFINED";
+    	}
+    }
+    
 }

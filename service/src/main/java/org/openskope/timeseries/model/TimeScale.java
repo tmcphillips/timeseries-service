@@ -37,12 +37,15 @@ public class TimeScale {
 	
 	public IndexRange getResponseIndexRangeForIntegerTimeResolution(String start, String end, int valueCount) {
 		
-        int startIndex = (start == null) ? integerTimeZero : Integer.parseInt(start) - integerTimeZero;
-        if (startIndex > valueCount - 1) {
+        int startIndex = (start == null) ? 0 : Integer.parseInt(start) - integerTimeZero;
+        if (startIndex < 0 || startIndex > valueCount - 1) {
         	throw new InvalidArgumentException("Time range start is outside coverage of dataset");
         }
 
         int endIndex = (end == null) ? valueCount - 1: Integer.parseInt(end) - integerTimeZero;
+        if (endIndex < 0) {
+        	throw new InvalidArgumentException("Time range end is outside coverage of dataset");
+        }
         if (endIndex > valueCount - 1) {
         	endIndex = valueCount - 1;
         }
@@ -67,5 +70,9 @@ public class TimeScale {
 
 	public String getTimeForIndexForIntegerTimeResolution(int index) {
 		return String.valueOf(index + integerTimeZero);
+	}
+	
+	public String toString() {
+		return timeResolution.toString();
 	}
 }
