@@ -12,7 +12,7 @@ public class TimeseriesRequest {
 	private String variableName;
 	private Number latitude;
 	private Number longitude;
-	private TimeResolution timeResolution = TimeResolution.INDEX;
+	private TimeResolution timeResolution;
 	private String timeZero;
 	private String start;
 	private String end;
@@ -99,23 +99,47 @@ public class TimeseriesRequest {
 	public Boolean getArray() { return returnArray; }
 	public Boolean getCsv() { return returnCsv; }
 
-	public BandRange getBandRange(int valueCount) {
+	public IndexRange getIndexRange(int valueCount) throws Exception {
+	
+		if (timeResolution == null) timeResolution = TimeResolution.INDEX;
 		
-        int startBand = (start == null) ? 0 : Integer.parseInt(start);
-        if (startBand > valueCount - 1) {
+		switch (timeResolution) {
+		
+		case INDEX:
+			if (timeZero == null) timeZero = "0"; 
+			return getIndexRangeForIntegerTimeResolution(valueCount);
+		case BAND:
+			if (timeZero == null) timeZero = "1"; 
+				return getIndexRangeForIntegerTimeResolution(valueCount);
+		case YEAR:
+			if (timeZero == null) timeZero = "1"; 
+			return getIndexRangeForIntegerTimeResolution(valueCount);
+		default:
+			break;
+		}
+		
+		throw new Exception();
+	}
+	
+	public IndexRange getIndexRangeForIntegerTimeResolution(int valueCount) {
+		
+		int tzero = Integer.parseInt(timeZero);
+		
+        int startIndex = (start == null) ? tzero : Integer.parseInt(start) - tzero;
+        if (startIndex > valueCount - 1) {
         	throw new InvalidArgumentException("Time range start is outside coverage of dataset");
         }
 
-        int endBand = (end == null) ? valueCount - 1: Integer.parseInt(end);
-        if (endBand > valueCount - 1) {
-        	endBand = valueCount - 1;
+        int endIndex = (end == null) ? valueCount - 1: Integer.parseInt(end) - tzero;
+        if (endIndex > valueCount - 1) {
+        	endIndex = valueCount - 1;
         }
         
-        if (endBand < startBand) {
+        if (endIndex < startIndex) {
         	throw new InvalidArgumentException("Time range end is before time range start");
         }
         
-		return new BandRange(startBand, endBand);
+		return new IndexRange(startIndex, endIndex);
 	}
 
 }

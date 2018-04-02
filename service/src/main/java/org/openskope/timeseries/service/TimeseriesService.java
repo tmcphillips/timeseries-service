@@ -1,7 +1,7 @@
 package org.openskope.timeseries.service;
 
 import org.openskope.timeseries.controller.InvalidArgumentException;
-import org.openskope.timeseries.model.BandRange;
+import org.openskope.timeseries.model.IndexRange;
 import org.openskope.timeseries.model.TimeseriesRequest;
 import org.openskope.timeseries.model.TimeseriesResponse;
 import org.yesworkflow.util.exec.ProcessRunner;
@@ -61,9 +61,9 @@ public class TimeseriesService implements InitializingBean {
         	throw new InvalidArgumentException("Coordinates are outside region covered by the dataset");
         }
 
-        BandRange bandRange = request.getBandRange(stringOutputValues.length);
+        IndexRange responseRange = request.getIndexRange(stringOutputValues.length);
         
-        int[] valuesInRequestedRange = getRangeOfStringValuesAsInts(stringOutputValues, bandRange.start, bandRange.end);
+        int[] valuesInRequestedRange = getRangeOfStringValuesAsInts(stringOutputValues, responseRange.startIndex, responseRange.endIndex);
         
         int[] values =  (request.getArray() == null || request.getArray()) ? valuesInRequestedRange : null;
         String csv = (request.getCsv() == null || request.getCsv()) ? getTable(request, valuesInRequestedRange) : null;
@@ -72,9 +72,9 @@ public class TimeseriesService implements InitializingBean {
         		request.getDatasetId(),
         		request.getVariableName(),
         		request.getLatitude(),
-        		request.getLongitude(), 
-        		bandRange.start, 
-        		bandRange.end, 
+        		request.getLongitude(),
+        		responseRange.startIndex,
+        		responseRange.endIndex, 
         		values,
         		csv
     		);

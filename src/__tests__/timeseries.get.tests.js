@@ -37,8 +37,8 @@ describe("When a values GET request selects first pixel of each band in 5x5x5 da
     });
 
     it ('Series range start and end should match the request', async function() {
-        expect(response.entity.start).toEqual( 0 );
-        expect(response.entity.end).toEqual( 4 );
+        expect(response.entity.start).toEqual( "0" );
+        expect(response.entity.end).toEqual( "4" );
     });
     
     it ('Values should be an array with one element for the first pixel of each band', async function() {
@@ -63,8 +63,8 @@ describe("When a values GET request selects first pixel of first band in 5x5x5 d
     });
 
     it ('Series range start and end should match the request', async function() {
-        expect(response.entity.start).toEqual( 0 );
-        expect(response.entity.end).toEqual( 0 );
+        expect(response.entity.start).toEqual( "0" );
+        expect(response.entity.end).toEqual( "0" );
     });
     
     it ('Values should be an array with one element for the first pixel of each band', async function() {
@@ -89,8 +89,8 @@ describe("When a values GET request selects last pixel of each band in 5x5x5 dat
     });
 
     it ('Series range start and end should match the request', async function() {
-        expect(response.entity.start).toEqual( 0 );
-        expect(response.entity.end).toEqual( 4 );
+        expect(response.entity.start).toEqual( "0" );
+        expect(response.entity.end).toEqual( "4" );
     });
 
     it ('Values should be an array with one element for the first pixel of each band', async function() {
@@ -115,8 +115,8 @@ describe("When a values GET request selects last pixel of last band in 5x5x5 dat
     });
 
     it ('Series range start and end should match the request', async function() {
-        expect(response.entity.start).toEqual( 4 );
-        expect(response.entity.end).toEqual( 4 );
+        expect(response.entity.start).toEqual( "4" );
+        expect(response.entity.end).toEqual( "4" );
     });
 
     it ('Values should be an array with one element for the first pixel of each band', async function() {
@@ -141,8 +141,8 @@ describe("When a values GET request selects last pixel of 5x5x5 data cube withou
     });
 
     it ('Series range start and end should represent all of the bands in the file', async function() {
-        expect(response.entity.start).toEqual( 0 );
-        expect(response.entity.end).toEqual( 4 );
+        expect(response.entity.start).toEqual( "0" );
+        expect(response.entity.end).toEqual( "4" );
     });
 
     it ('Values should be an array with one element for the first pixel of each band', async function() {
@@ -168,8 +168,8 @@ describe("When a values GET request selects last pixel of 5x5x5 data cube and sp
     });
 
     it ('Series range start and end should represent bands from the requested start through the last band', async function() {
-        expect(response.entity.start).toEqual( 2 );
-        expect(response.entity.end).toEqual( 4 );
+        expect(response.entity.start).toEqual( "2" );
+        expect(response.entity.end).toEqual( "4" );
     });
 
     it ('Values should be an array with one element for the first requested band through the last band', async function() {
@@ -195,8 +195,8 @@ describe("When a values GET request selects last pixel of 5x5x5 data cube and sp
     });
 
     it ('Series range start and end should represent bands from the first band through the requested end band', async function() {
-        expect(response.entity.start).toEqual( 0 );
-        expect(response.entity.end).toEqual( 3 );
+        expect(response.entity.start).toEqual( "0" );
+        expect(response.entity.end).toEqual( "3" );
     });
 
     it ('Values should be an array with one element for the first band through the requested end band', async function() {

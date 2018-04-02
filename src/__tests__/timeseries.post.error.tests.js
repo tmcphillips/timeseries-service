@@ -301,8 +301,8 @@ describe("When a values POST request specifies a range end outside of dataset co
     });
 
     it ('Series range start and end should represent bands from the first band through the requested end band', async function() {
-        expect(response.entity.start).toEqual( 3 );
-        expect(response.entity.end).toEqual( 4 );
+        expect(response.entity.start).toEqual( "3" );
+        expect(response.entity.end).toEqual( "4" );
     });
 
     it ('Values should be an array with one element for the first band through the requested end band', async function() {
