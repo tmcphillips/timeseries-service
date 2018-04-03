@@ -13,9 +13,11 @@ public class TimeScale {
 		 
 		switch (this.timeResolution) {
 			case INDEX:
-				integerTimeZero = (timeZeroSetting == null) ? 0 : Integer.parseInt(timeZeroSetting);
+				integerTimeZero = 0;
 				break;
 			case BAND:
+				integerTimeZero = 1;
+				break;
 			case YEAR:
 				integerTimeZero = (timeZeroSetting == null) ? 1 : Integer.parseInt(timeZeroSetting);
 				break;
