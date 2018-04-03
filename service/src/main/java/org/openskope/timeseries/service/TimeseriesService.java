@@ -55,6 +55,8 @@ public class TimeseriesService implements InitializingBean {
 			);
         }
         
+        Number nodataValue = getNodataValue(request.getNodata(), dataFile);
+        
         String[] fullTimeSeries = runGdalLocationInfo(dataFile, request.getLongitude(), request.getLatitude());
         if (fullTimeSeries.length == 0) {
         	throw new InvalidArgumentException("Coordinates are outside region covered by the dataset");
@@ -68,7 +70,9 @@ public class TimeseriesService implements InitializingBean {
         
         int[] values =  (request.getArray() == null || request.getArray()) ? valuesInRequestedRange : null;
         String csv = (request.getCsv() == null || request.getCsv()) ? getTable(responseRange, timeScale, request.getVariableName(), valuesInRequestedRange) : null;
-		
+		        
+        boolean containsNodata = valueContainNodataValue(nodataValue, valuesInRequestedRange);
+        
         return new TimeseriesResponse(
         		request.getDatasetId(),
         		request.getVariableName(),
@@ -80,8 +84,8 @@ public class TimeseriesService implements InitializingBean {
         		responseRange.endIndex,
         		values,
         		csv,
-        		null,
-        		false
+        		nodataValue,
+        		containsNodata
     		);
 	}
 	
@@ -96,6 +100,34 @@ public class TimeseriesService implements InitializingBean {
 			}
 		}
 		return null;
+	}
+	
+	private Number getNodataValue(String requestNodata, File dataFile) {
+		Number nodata;
+		if (requestNodata == null || requestNodata.equalsIgnoreCase("detect")) {
+			nodata = detectNodataMetadata(dataFile);
+		} else if (requestNodata.equalsIgnoreCase("ignore")) {
+			nodata = null;
+		} else {
+			try {
+				nodata = Double.parseDouble(requestNodata);
+			} catch (Exception e) {
+	        	throw new InvalidArgumentException("nodata", requestNodata);
+			}
+		}
+		return nodata;
+	}
+
+	private Number detectNodataMetadata(File dataFile) {
+		return null;
+	}
+	
+	private boolean valueContainNodataValue(Number nodataValue, int[] values) {
+		if (nodataValue == null) return false;
+		for (Number n : values) {
+			if (n.intValue() == nodataValue.intValue()) return true;
+		}
+		return false;
 	}
 	
 	private String[] runGdalLocationInfo(File dataFile, double longitude, double latitude) throws Exception {
