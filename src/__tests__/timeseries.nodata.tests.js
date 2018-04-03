@@ -25,7 +25,11 @@ describe("When a GET request selects a pixel with all nodata values and sets nod
 	});
 
     it ('The nodata values should be ignored', async function() {
-        expect(response.entity.nodata).toEqual(false);
+        expect(response.entity.containsNodata).toEqual(false);
+	});
+
+    it ('Nodata should be null', async function() {
+        expect(response.entity.nodata).toEqual(null);
 	});
 
     it ('Csv should contain the nodata values', async function() {
@@ -61,7 +65,11 @@ describe("When a GET request selects a pixel with one nodata value and sets noda
 	});
     
     it ('The nodata values should be ignored', async function() {
-        expect(response.entity.nodata).toEqual(false);
+        expect(response.entity.containsNodata).toEqual(false);
+	});
+
+    it ('Nodata should be null', async function() {
+        expect(response.entity.nodata).toEqual(null);
 	});
 
     it ('Csv should contain the nodata value', async function() {

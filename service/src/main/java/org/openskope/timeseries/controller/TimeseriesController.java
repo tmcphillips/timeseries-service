@@ -58,6 +58,7 @@ public class TimeseriesController {
             @RequestParam(required=false) String end,
             @RequestParam(required=false) Boolean array,
             @RequestParam(required=false) Boolean csv,
+            @RequestParam(required=false) String nodata,
             HttpServletResponse response
         ) throws Exception {
     	
@@ -75,6 +76,7 @@ public class TimeseriesController {
     			end, 
     			array, 
     			csv, 
+    			nodata,
     			response
 		);
 	}
@@ -92,6 +94,7 @@ public class TimeseriesController {
             @RequestParam(required=false) String end,
             @RequestParam(required=false) Boolean array,
             @RequestParam(required=false) Boolean csv,
+            @RequestParam(required=false) String nodata,
             HttpServletResponse response
         ) throws Exception {
 
@@ -109,7 +112,8 @@ public class TimeseriesController {
     			start, 
     			end, 
     			array, 
-    			csv, 
+    			csv,
+    			nodata,
     			response
 		);
 	}
@@ -125,6 +129,7 @@ public class TimeseriesController {
             @RequestParam(required=false) String end,
             @RequestParam(required=false) Boolean array,
             @RequestParam(required=false) Boolean csv,
+            @RequestParam(required=false) String nodata,
             HttpServletResponse response
         ) throws Exception {
 
@@ -136,6 +141,7 @@ public class TimeseriesController {
     	if (request.getEnd() == null) request.setEnd(end);
     	if (request.getArray() == null) request.setArray(array);
     	if (request.getCsv() == null) request.setCsv(csv);
+    	if (request.getNodata() == null) request.setNodata(nodata);
     	
     	request.validate();
     	

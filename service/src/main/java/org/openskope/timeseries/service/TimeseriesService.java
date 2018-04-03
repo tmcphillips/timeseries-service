@@ -77,9 +77,10 @@ public class TimeseriesService implements InitializingBean {
         		timeScale.getTimeForIndex(responseRange.startIndex),
         		timeScale.getTimeForIndex(responseRange.endIndex),
         		responseRange.startIndex,
-        		responseRange.endIndex, 
+        		responseRange.endIndex,
         		values,
         		csv,
+        		null,
         		false
     		);
 	}

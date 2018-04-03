@@ -20,6 +20,7 @@ public class TimeseriesRequest {
 	private Boolean invalidBoundaryGeometryType = false;
 	private Boolean returnCsv;
 	private Boolean returnArray;
+	private String nodata;
 	
 	public TimeseriesRequest() {}
 
@@ -63,6 +64,10 @@ public class TimeseriesRequest {
 		this.returnCsv = returnCsv;
 	}
 	
+	public void setNodata(String nodata) {
+		this.nodata = nodata;
+	}
+
 	@SuppressWarnings("unchecked")
 	public void setBoundaryGeometry(Map<String,Object> boundaryGeometry) {
 		
@@ -97,4 +102,5 @@ public class TimeseriesRequest {
 	public String getEnd() { return end; }
 	public Boolean getArray() { return returnArray; }
 	public Boolean getCsv() { return returnCsv; }
+	public String getNodata() { return nodata; }
 }

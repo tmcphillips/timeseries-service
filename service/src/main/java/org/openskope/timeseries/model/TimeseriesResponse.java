@@ -15,7 +15,8 @@ public class TimeseriesResponse {
 	private int endIndex;
     private int[] values;
     private String csv;
-    private boolean nodata;
+    private Number nodata;
+    private boolean containsNodata;
 
 	public TimeseriesResponse(
 			String datasetId, 
@@ -28,7 +29,8 @@ public class TimeseriesResponse {
 			int endIndex,
 			int[] values,
 			String csv,
-			boolean nodata
+			Number nodata,
+			boolean containsNodata
 		) {
 		this.datasetId = datasetId;
 		this.variableName = variableName;
@@ -41,6 +43,7 @@ public class TimeseriesResponse {
         this.values = values;
         this.csv = csv;
         this.nodata = nodata;
+        this.containsNodata = containsNodata;
     }
 
 	public String getDatasetId() { return datasetId; }
@@ -51,8 +54,9 @@ public class TimeseriesResponse {
 	public String getEnd() { return end; }
 	public Integer getStartIndex() { return startIndex; }
 	public Integer getEndIndex() { return endIndex; }
-	public boolean getNodata() { return nodata; }
-
+	public boolean getContainsNodata() { return containsNodata; }
+	public Number getNodata() { return nodata; }
+	
 	public Map<String,Object> getBoundaryGeometry() { 
 		double[] coordinates = new double[2];
         coordinates[0] = longitude;
