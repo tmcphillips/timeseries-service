@@ -14,9 +14,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.util.UriTemplate;
 
 import java.io.File;
+import java.io.IOException;
 import java.net.URI;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @Service
 public class TimeseriesService implements InitializingBean {
@@ -119,7 +122,27 @@ public class TimeseriesService implements InitializingBean {
 	}
 
 	private Number detectNodataMetadata(File dataFile) {
-		return null;
+        
+		String commandLine = String.format("gdalinfo %s ", dataFile.getAbsolutePath());
+        System.out.println(commandLine);
+
+        String gdalinfoOutput;
+        try { 
+	        StreamSink streams[] = ProcessRunner.run(commandLine, "", new String[0], null);
+	        gdalinfoOutput = streams[0].toString();
+        } catch(Exception e) {
+        	return null;
+        }
+        
+        String nodataValueString = null;
+        Pattern pattern = Pattern.compile("NoData Value=([0-9.]+)");
+        Matcher matcher = pattern.matcher(gdalinfoOutput);
+        if (matcher.find()) {
+        	nodataValueString = matcher.group(1);
+        	return Double.parseDouble(nodataValueString);
+        } else {
+        	return null; 
+        }
 	}
 	
 	private boolean valueContainNodataValue(Number nodataValue, int[] values) {
