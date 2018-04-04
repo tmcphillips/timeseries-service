@@ -14,7 +14,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.util.UriTemplate;
 
 import java.io.File;
-import java.io.IOException;
 import java.net.URI;
 import java.util.HashMap;
 import java.util.Map;
@@ -28,9 +27,10 @@ public class TimeseriesService implements InitializingBean {
 	@Value("${TIMESERIES_DATA_FILE_EXTENSIONS}") public String timeseriesDatafileExtensions;
 
     private UriTemplate dataPathTemplate;
-    private Map<String, String> uriVariables = new HashMap<String,String>();
     private String[] extensions;
-
+    private Map<String, Number> nodataSettingForFile = new HashMap<String,Number>();
+    private Map<String, String> uriVariables = new HashMap<String,String>();
+    
     public void afterPropertiesSet() {
     	
     	dataPathTemplate = new UriTemplate(timeseriesDataPath);
@@ -122,27 +122,34 @@ public class TimeseriesService implements InitializingBean {
 	}
 
 	private Number detectNodataMetadata(File dataFile) {
-        
-		String commandLine = String.format("gdalinfo %s ", dataFile.getAbsolutePath());
-        System.out.println(commandLine);
+		
+		String dataFilePath = dataFile.getAbsolutePath();
+		Number nodataValue = nodataSettingForFile.get(dataFilePath);
 
-        String gdalinfoOutput;
-        try { 
-	        StreamSink streams[] = ProcessRunner.run(commandLine, "", new String[0], null);
-	        gdalinfoOutput = streams[0].toString();
-        } catch(Exception e) {
-        	return null;
-        }
+		if (nodataValue == null) {
         
-        String nodataValueString = null;
-        Pattern pattern = Pattern.compile("NoData Value=([0-9.]+)");
-        Matcher matcher = pattern.matcher(gdalinfoOutput);
-        if (matcher.find()) {
-        	nodataValueString = matcher.group(1);
-        	return Double.parseDouble(nodataValueString);
-        } else {
-        	return null; 
-        }
+			String commandLine = String.format("gdalinfo %s ", dataFilePath);
+	        System.out.println(commandLine);
+	
+	        String gdalinfoOutput;
+	        try { 
+		        StreamSink streams[] = ProcessRunner.run(commandLine, "", new String[0], null);
+		        gdalinfoOutput = streams[0].toString();
+	        } catch(Exception e) {
+	        	return null;
+	        }
+	        
+	        String nodataValueString = null;
+	        Pattern pattern = Pattern.compile("NoData Value=([0-9.]+)");
+	        Matcher matcher = pattern.matcher(gdalinfoOutput);
+	        if (matcher.find()) {
+	        	nodataValueString = matcher.group(1);
+	        	nodataValue = Double.parseDouble(nodataValueString);
+	        	nodataSettingForFile.put(dataFilePath, nodataValue);
+	        }
+		}
+		
+    	return nodataValue;
 	}
 	
 	private boolean valueContainNodataValue(Number nodataValue, int[] values) {
