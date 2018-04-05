@@ -13,7 +13,7 @@ public class TimeseriesResponse {
 	private String end;
 	private int startIndex;
 	private int endIndex;
-    private int[] values;
+    private Number[] values;
     private String csv;
     private Number nodata;
     private boolean containsNodata;
@@ -27,7 +27,7 @@ public class TimeseriesResponse {
 			String end,
 			int startIndex,
 			int endIndex,
-			int[] values,
+			Number[] values,
 			String csv,
 			Number nodata,
 			boolean containsNodata
@@ -48,7 +48,7 @@ public class TimeseriesResponse {
 
 	public String getDatasetId() { return datasetId; }
 	public String getVariableName() { return variableName; }
-	public int[] getValues() { return this.values; }
+	public Number[] getValues() { return this.values; }
 	public String getCsv() { return this.csv; }
 	public String getStart() { return start; }
 	public String getEnd() { return end; }
