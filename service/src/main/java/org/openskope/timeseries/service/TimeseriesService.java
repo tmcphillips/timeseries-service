@@ -69,12 +69,12 @@ public class TimeseriesService implements InitializingBean {
         
         IndexRange responseRange = timeScale.getResponseIndexRange(request.getStart(), request.getEnd(), fullTimeSeries.length);
         
-        int[] valuesInRequestedRange = getRangeOfStringValuesAsInts(fullTimeSeries, responseRange.startIndex, responseRange.endIndex);
+        Number[] valuesInRequestedRange = getRangeOfStringValuesAsNumbers(fullTimeSeries, responseRange.startIndex, responseRange.endIndex);
         
-        int[] values =  (request.getArray() == null || request.getArray()) ? valuesInRequestedRange : null;
+        Number[] values =  (request.getArray() == null || request.getArray()) ? valuesInRequestedRange : null;
         String csv = (request.getCsv() == null || request.getCsv()) ? getTable(responseRange, timeScale, request.getVariableName(), valuesInRequestedRange) : null;
 		        
-        boolean containsNodata = valueContainNodataValue(nodataValue, valuesInRequestedRange);
+        boolean containsNodata = containsNodataValue(nodataValue, valuesInRequestedRange);
         
         return new TimeseriesResponse(
         		request.getDatasetId(),
@@ -140,11 +140,11 @@ public class TimeseriesService implements InitializingBean {
 	        }
 	        
 	        String nodataValueString = null;
-	        Pattern pattern = Pattern.compile("NoData Value=([0-9.]+)");
+	        Pattern pattern = Pattern.compile("NoData Value=(-?[0-9.]+)");
 	        Matcher matcher = pattern.matcher(gdalinfoOutput);
 	        if (matcher.find()) {
 	        	nodataValueString = matcher.group(1);
-	        	nodataValue = Double.parseDouble(nodataValueString);
+	        	nodataValue = parseIntegerOrDouble(nodataValueString);
 	        	nodataSettingForFile.put(dataFilePath, nodataValue);
 	        }
 		}
@@ -152,7 +152,7 @@ public class TimeseriesService implements InitializingBean {
     	return nodataValue;
 	}
 	
-	private boolean valueContainNodataValue(Number nodataValue, int[] values) {
+	private boolean containsNodataValue(Number nodataValue, Number[] values) {
 		if (nodataValue == null) return false;
 		for (Number n : values) {
 			if (n.intValue() == nodataValue.intValue()) return true;
@@ -168,21 +168,37 @@ public class TimeseriesService implements InitializingBean {
         return streams[0].toString().split("\\s+");
 	}
 	
-	private int[] getRangeOfStringValuesAsInts(String[] sa, int start, int end) {
-		int[] ia = new int[end - start + 1];
+	private Number[] getRangeOfStringValuesAsNumbers(String[] sa, int start, int end) {
+		Number[] ia = new Number[end - start + 1];
 		for (int si = 0, ii = 0; si < sa.length; ++si) {
 			if (si >= start && si <= end) {
-				ia[ii++] = Integer.valueOf(sa[si]);
+				ia[ii++] = parseIntegerOrDouble(sa[si]);
 			}
 		}
 		return ia;
 	}
 	
-	public String getTable(IndexRange responseRange, TimeScale timeScale, String variableName, int[] values) throws Exception {
+	private Number parseIntegerOrDouble(String s) {
+		Number n;
+		if (s.contains(".")) {
+			Double d= Double.valueOf(s);
+			n = d;
+		} else {
+			Integer i = Integer.valueOf(s);
+			n = i;
+		}
+		return n;
+	}
+	
+	public String getTable(IndexRange responseRange, TimeScale timeScale, String variableName, Number[] values) throws Exception {
 		StringBuffer buffer = new StringBuffer();
         buffer.append(timeScale + ", " + variableName + "\n");
         for (int i = 0; i < values.length; ++i) {
-            buffer.append(String.format("%s, %s\n", timeScale.getTimeForIndex(i + responseRange.startIndex), values[i]));
+        	if (values[i] instanceof Double) {
+        		buffer.append(String.format("%s, %.6g\n", timeScale.getTimeForIndex(i + responseRange.startIndex), values[i]));
+        	} else {
+        		buffer.append(String.format("%s, %d\n", timeScale.getTimeForIndex(i + responseRange.startIndex), values[i]));
+        	}
         }
         return buffer.toString();
 	}
