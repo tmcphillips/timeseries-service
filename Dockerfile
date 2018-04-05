@@ -56,6 +56,12 @@ ENV LD_LIBRARY_PATH=/opt/gdal/gdal-2.1.2/lib/
 ENV PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/opt/gdal/gdal-2.1.2/bin/
 ENV PYTHONPATH=/opt/gdal/gdal-2.1.2/lib/python2.7/site-packages/
 
+RUN echo '***** Clone geoserver-loader repo and install CLI tools *****'                            \
+ && cd ~skope                                                                                       \
+ && git clone https://github.com/openskope/geoserver-loader.git                                     \
+ && cd geoserver-loader                                                                             \
+ && pip install .
+
 USER skope
 WORKDIR /home/skope
 
