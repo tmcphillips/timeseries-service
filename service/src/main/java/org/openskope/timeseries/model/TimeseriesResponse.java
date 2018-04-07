@@ -1,14 +1,12 @@
 package org.openskope.timeseries.model;
 
-import java.util.HashMap;
 import java.util.Map;
 
 public class TimeseriesResponse {
 	
 	private String datasetId;
 	private String variableName;
-	private double latitude;
-	private double longitude;
+	private Map<String, Object> boundaryGeometry;
 	private String start;
 	private String end;
 	private int startIndex;
@@ -21,8 +19,7 @@ public class TimeseriesResponse {
 	public TimeseriesResponse(
 			String datasetId, 
 			String variableName, 
-			double latitude, 
-			double longitude,
+			Map<String, Object> boundaryGeometry,
 			String start,
 			String end,
 			int startIndex,
@@ -34,8 +31,7 @@ public class TimeseriesResponse {
 		) {
 		this.datasetId = datasetId;
 		this.variableName = variableName;
-        this.latitude = latitude;
-        this.longitude = longitude;
+        this.boundaryGeometry = (Map<String,Object>) boundaryGeometry.get("geometry");
         this.start = start;
         this.end = end;
         this.startIndex = startIndex;
@@ -56,14 +52,5 @@ public class TimeseriesResponse {
 	public Integer getEndIndex() { return endIndex; }
 	public boolean getContainsNodata() { return containsNodata; }
 	public Number getNodata() { return nodata; }
-	
-	public Map<String,Object> getBoundaryGeometry() { 
-		double[] coordinates = new double[2];
-        coordinates[0] = longitude;
-        coordinates[1] = latitude;
-        Map<String,Object> boundaryGeometry = new HashMap<String,Object>();
-        boundaryGeometry.put("type", "Point");
-        boundaryGeometry.put("coordinates", coordinates);
-        return boundaryGeometry; 
-	}	
+	public Map<String,Object>  getBoundaryGeometry() { return boundaryGeometry; }	
 }

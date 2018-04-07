@@ -113,7 +113,7 @@ describe("When a values POST request specifies an unsupported boundary geometry 
 		    	datasetId: '5x5x5',
 		    	variableName: 'temp',
 		    	boundaryGeometry: {
-		    		type: 'Polygon',
+		    		type: 'NoSuchGeometry',
 		    		coordinates: [-123, 45]
 		    	},		    	
 	    		start: 0,
@@ -131,7 +131,7 @@ describe("When a values POST request specifies an unsupported boundary geometry 
     });
 
     it ('Error message should be that value for boundaryGeometry.type property is not supported', async function() {
-        expect(response.entity.message).toBe("'Polygon' is not a supported value for property 'boundaryGeometry.type'");
+        expect(response.entity.message).toBe("'NoSuchGeometry' is not a supported value for property 'boundaryGeometry.type'");
     });    
 });
 

@@ -1,6 +1,7 @@
 package org.openskope.timeseries.model;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Map;
 
 import org.openskope.timeseries.controller.InvalidArgumentException;
@@ -21,6 +22,7 @@ public class TimeseriesRequest {
 	private Boolean returnCsv;
 	private Boolean returnArray;
 	private String nodata;
+	private Map<String, Object> boundaryGeometry = new HashMap<String,Object>();
 	
 	public TimeseriesRequest() {}
 
@@ -71,16 +73,21 @@ public class TimeseriesRequest {
 	@SuppressWarnings("unchecked")
 	public void setBoundaryGeometry(Map<String,Object> boundaryGeometry) {
 		
+		this.boundaryGeometry.put("geometry", boundaryGeometry);
+		
 		boundaryGeometryType = (String) boundaryGeometry.get("type");
-		if (boundaryGeometryType != null && ! boundaryGeometryType.equals("Point")) {
+		if (boundaryGeometryType != null && !boundaryGeometryType.equalsIgnoreCase("Point") && 
+											! boundaryGeometryType.equalsIgnoreCase("Polygon")) {
 			invalidBoundaryGeometryType = true;
 			return;
 		}
-
-		ArrayList<Number> coordinates = (ArrayList<Number>) boundaryGeometry.get("coordinates");
-		if (coordinates != null) {
-			this.longitude = (Number) coordinates.get(0);
-			this.latitude  = (Number) coordinates.get(1);
+		
+		if (boundaryGeometryType.equalsIgnoreCase("Point")) {
+			ArrayList<Number> coordinates = (ArrayList<Number>) boundaryGeometry.get("coordinates");
+			if (coordinates != null) {
+				this.longitude = (Number) coordinates.get(0);
+				this.latitude  = (Number) coordinates.get(1);
+			}
 		}
 	}
 		
@@ -88,10 +95,13 @@ public class TimeseriesRequest {
 		if (datasetId == null) throw new MissingPropertyException("datasetId");
 		if (variableName == null) throw new MissingPropertyException("variableName");
 		if (invalidBoundaryGeometryType) throw new InvalidArgumentException("boundaryGeometry.type", boundaryGeometryType);
-		if (this.latitude == null) throw new MissingPropertyException("latitude");
-		if (this.longitude == null) throw new MissingPropertyException("longitude");
+		if (boundaryGeometryType.equalsIgnoreCase("Point")) {
+			if (this.latitude == null) throw new MissingPropertyException("latitude");
+			if (this.longitude == null) throw new MissingPropertyException("longitude");
+		}
 	}
 
+	public String getBoundaryGeometryType() { return boundaryGeometryType; }
 	public String getDatasetId() { return datasetId; }
 	public String getVariableName() { return variableName; }
 	public Double getLatitude() { return latitude != null ? latitude.doubleValue() : null; }
@@ -103,4 +113,17 @@ public class TimeseriesRequest {
 	public Boolean getArray() { return returnArray; }
 	public Boolean getCsv() { return returnCsv; }
 	public String getNodata() { return nodata; }
+
+	public Map<String,Object>  getBoundaryGeometry() {
+		if (boundaryGeometry.get("geometry") == null) {
+	        Map<String,Object> geometry = new HashMap<String,Object>();
+			Number[] coordinates = new Double[2];
+	        coordinates[0] = longitude;
+	        coordinates[1] = latitude;
+	        geometry.put("type", "Point");
+	        geometry.put("coordinates", coordinates);
+			this.boundaryGeometry.put("geometry", geometry);
+		}
+		return boundaryGeometry;	
+	}
 }

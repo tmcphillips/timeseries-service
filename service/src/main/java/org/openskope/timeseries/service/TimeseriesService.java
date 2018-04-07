@@ -8,6 +8,8 @@ import org.openskope.timeseries.model.TimeseriesResponse;
 import org.yesworkflow.util.exec.ProcessRunner;
 import org.yesworkflow.util.exec.StreamSink;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -25,11 +27,14 @@ public class TimeseriesService implements InitializingBean {
     
 	@Value("${TIMESERIES_DATA_PATH_TEMPLATE}") public String timeseriesDataPath;
 	@Value("${TIMESERIES_DATA_FILE_EXTENSIONS}") public String timeseriesDatafileExtensions;
+	@Value("${TIMESERIES_GDALLOCATIONINFO_COMMAND}") public String gdallocationinfoCommand;
+	@Value("${TIMESERIES_ZONALINFO_COMMAND}") public String zonalinfoCommand;
 
     private UriTemplate dataPathTemplate;
     private String[] extensions;
     private Map<String, Number> nodataSettingForFile = new HashMap<String,Number>();
     private Map<String, String> uriVariables = new HashMap<String,String>();
+    private ObjectMapper mapper = new ObjectMapper();
     
     public void afterPropertiesSet() {
     	
@@ -58,15 +63,9 @@ public class TimeseriesService implements InitializingBean {
 			);
         }
         
-        Number nodataValue = getNodataValue(request.getNodata(), dataFile);
-        
-        String[] fullTimeSeries = runGdalLocationInfo(dataFile, request.getLongitude(), request.getLatitude());
-        if (fullTimeSeries.length == 0) {
-        	throw new InvalidArgumentException("Coordinates are outside region covered by the dataset");
-        }
-
         TimeScale timeScale = new TimeScale(request.getTimeResolution(), request.getTimeZero());
-        
+        Number nodataValue = getNodataValue(request.getNodata(), dataFile);
+        String[] fullTimeSeries = getFullTimeseries(request, dataFile);
         IndexRange responseRange = timeScale.getResponseIndexRange(request.getStart(), request.getEnd(), fullTimeSeries.length);
         
         Number[] valuesInRequestedRange = getRangeOfStringValuesAsNumbers(fullTimeSeries, responseRange.startIndex, responseRange.endIndex);
@@ -79,8 +78,7 @@ public class TimeseriesService implements InitializingBean {
         return new TimeseriesResponse(
         		request.getDatasetId(),
         		request.getVariableName(),
-        		request.getLatitude(),
-        		request.getLongitude(),
+        		request.getBoundaryGeometry(),
         		timeScale.getTimeForIndex(responseRange.startIndex),
         		timeScale.getTimeForIndex(responseRange.endIndex),
         		responseRange.startIndex,
@@ -90,6 +88,22 @@ public class TimeseriesService implements InitializingBean {
         		nodataValue,
         		containsNodata
     		);
+	}
+	
+	private String[] getFullTimeseries(TimeseriesRequest request, File dataFile) throws Exception {
+		
+		String[] fullTimeSeries = null; 
+		
+		if (request.getBoundaryGeometryType().equalsIgnoreCase("POINT")) {
+			fullTimeSeries = runGdalLocationInfo(dataFile, request.getLongitude(), request.getLatitude());
+		} else {
+			fullTimeSeries = runZonalInfo(dataFile, request);			
+		}
+		
+        if (fullTimeSeries.length == 0) {
+        	throw new InvalidArgumentException("Coordinates are outside region covered by the dataset");
+        }
+        return fullTimeSeries;
 	}
 	
 	private File getDataFile(String datasetId, String variableName) {
@@ -162,9 +176,19 @@ public class TimeseriesService implements InitializingBean {
 	
 	private String[] runGdalLocationInfo(File dataFile, double longitude, double latitude) throws Exception {
         String commandLine = String.format(
-                "gdallocationinfo -valonly -geoloc %s %f %f", dataFile.getAbsolutePath(), longitude, latitude);
+                "%s -valonly -geoloc %s %f %f", gdallocationinfoCommand, dataFile.getAbsolutePath(), longitude, latitude);
         System.out.println(commandLine);
         StreamSink streams[] = ProcessRunner.run(commandLine, "", new String[0], null);
+        return streams[0].toString().split("\\s+");
+	}
+	
+	private String[] runZonalInfo(File dataFile, TimeseriesRequest request) throws Exception {
+        String commandLine = String.format(
+                "%s --valonly --geometry - %s", zonalinfoCommand, dataFile.getAbsolutePath());
+        System.out.println(commandLine);
+        String stdin = mapper.writeValueAsString(request.getBoundaryGeometry());
+        System.out.println(stdin);
+        StreamSink streams[] = ProcessRunner.run(commandLine, mapper.writeValueAsString(request.getBoundaryGeometry()), new String[0], null);
         return streams[0].toString().split("\\s+");
 	}
 	
