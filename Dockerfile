@@ -71,7 +71,6 @@ RUN echo '***** Clone timeseries-service and build the executable JAR *****'    
  && cd timeseries-service                                                                           \
  && mvn  install
 
-ENV TIMESERIES_SERVICE_DATA=timeseries-service/data
 ENV JAR=/home/skope/timeseries-service/app/target/time-series-service-app-0.1.5.jar
 
 RUN echo '***** Create scripts in ~skope/bin directory *****'                                       \
@@ -82,4 +81,13 @@ RUN echo '***** Create scripts in ~skope/bin directory *****'                   
 
 ENV PATH=$PATH:/home/skope
 
-CMD echo "Usage: docker run openskope/timeseries"
+ENV TIMESERIES_SERVICE_NAME='SKOPE Timeseries Service'
+ENV TIMESERIES_SERVICE_BASE=timeseries-service/api/v1
+ENV TIMESERIES_DATA_PATH_TEMPLATE=UNDEFINED
+ENV TIMESERIES_UNCERTAINTY_PATH_TEMPLATE=UNDEFINED
+ENV TIMESERIES_DATA_FILE_EXTENSIONS=''
+ENV TIMESERIES_GDALLOCATIONINFO_COMMAND=gdallocationinfo
+ENV TIMESERIES_ZONALINFO_COMMAND=zonalinfo.py
+
+CMD echo "Usage: docker run openskope/timeseries-service start"
+

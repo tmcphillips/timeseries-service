@@ -3,9 +3,9 @@
   "version": "0.15.0",
   "description": "",
   "scripts": {
-    "build": "docker build -t openskope/timeseries-service .",
-    "start": "docker-compose -f docker-compose-dev.yml up",
-    "stop": "docker-compose -f docker-compose-dev.yml down",
+    "build": "docker build -t openskope/timeseries-service:latest .",
+    "start": "docker-compose -f docker-compose.yml up",
+    "stop": "docker-compose -f docker-compose.yml down",
     "test": "jest --watchAll --runInBand"
   },
   "keywords": [],
