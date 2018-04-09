@@ -25,12 +25,14 @@ import java.util.regex.Pattern;
 @Service
 public class TimeseriesService implements InitializingBean {
     
-	@Value("${TIMESERIES_DATA_PATH_TEMPLATE}") public String timeseriesDataPath;
+	@Value("${TIMESERIES_DATA_PATH_TEMPLATE}") public String valuesDataPath;
+	@Value("${TIMESERIES_UNCERTAINTY_PATH_TEMPLATE}") public String uncertaintyDataPath;
 	@Value("${TIMESERIES_DATA_FILE_EXTENSIONS}") public String timeseriesDatafileExtensions;
 	@Value("${TIMESERIES_GDALLOCATIONINFO_COMMAND}") public String gdallocationinfoCommand;
 	@Value("${TIMESERIES_ZONALINFO_COMMAND}") public String zonalinfoCommand;
 
-    private UriTemplate dataPathTemplate;
+    private UriTemplate valuesPathTemplate = null;
+    private UriTemplate uncertaintyPathTemplate = null;
     private String[] extensions;
     private Map<String, Number> nodataSettingForFile = new HashMap<String,Number>();
     private Map<String, String> uriVariables = new HashMap<String,String>();
@@ -38,8 +40,12 @@ public class TimeseriesService implements InitializingBean {
     
     public void afterPropertiesSet() {
     	
-    	dataPathTemplate = new UriTemplate(timeseriesDataPath);
+    	valuesPathTemplate = new UriTemplate(valuesDataPath);
     	
+    	if (uncertaintyDataPath.trim().length() > 0) {
+    		uncertaintyPathTemplate = new UriTemplate(uncertaintyDataPath);
+    	}
+    	    	
     	String[] customExtensionArray = {};
     	if (timeseriesDatafileExtensions.trim().length() > 0) {
     		customExtensionArray = timeseriesDatafileExtensions.split("\\s+");
@@ -54,7 +60,11 @@ public class TimeseriesService implements InitializingBean {
 
 	public TimeseriesResponse getTimeseries(TimeseriesRequest request) throws Exception {
 
-        File dataFile = getDataFile(request.getDatasetId(), request.getVariableName());
+        TimeScale timeScale = new TimeScale(request.getTimeResolution(), request.getTimeZero());
+
+        File dataFile = getDataFile(valuesPathTemplate, request.getDatasetId(), request.getVariableName());
+        File uncertaintiesFile = getDataFile(uncertaintyPathTemplate, request.getDatasetId(), request.getVariableName());
+
         if (dataFile == null) {
         	throw new InvalidArgumentException(
     			"Data file for dataset '" + request.getDatasetId() +
@@ -63,18 +73,35 @@ public class TimeseriesService implements InitializingBean {
 			);
         }
         
-        TimeScale timeScale = new TimeScale(request.getTimeResolution(), request.getTimeZero());
-        Number nodataValue = getNodataValue(request.getNodata(), dataFile);
+        Number nodataValue = getNodataValue(request.getNodata(), dataFile);        
+        
         String[] fullTimeSeries = getFullTimeseries(request, dataFile);
         IndexRange responseRange = timeScale.getResponseIndexRange(request.getStart(), request.getEnd(), fullTimeSeries.length);
-        
-        Number[] valuesInRequestedRange = getRangeOfStringValuesAsNumbers(fullTimeSeries, responseRange.startIndex, responseRange.endIndex);
-        
-        Number[] values =  (request.getArray() == null || request.getArray()) ? valuesInRequestedRange : null;
-        String csv = (request.getCsv() == null || request.getCsv()) ? getTable(responseRange, timeScale, request.getVariableName(), valuesInRequestedRange) : null;
-		        
+        Number[] valuesInRequestedRange = getRangeOfStringValuesAsNumbers(fullTimeSeries, responseRange.startIndex, responseRange.endIndex);        
         boolean containsNodata = containsNodataValue(nodataValue, valuesInRequestedRange);
+        Number[] uncertainties = getUncertaintiesInRange(request, uncertaintiesFile, responseRange.startIndex, responseRange.endIndex);
+                
+        Number[] values = null;
+        Number[] lowerBounds = null;
+        Number[] upperBounds = null;;
+        if ((request.getArray() == null || request.getArray())) {
+        	values = valuesInRequestedRange;
+        	if (uncertainties != null) {
+        		upperBounds = addArrays(values, uncertainties, +1);
+        		lowerBounds = addArrays(values, uncertainties, -1);
+        	}
+        }
+
+        String csv = null;
         
+        if (request.getCsv() == null || request.getCsv()) {
+        	if (uncertainties != null) {
+        		csv = getTableWithUncertainties(responseRange, timeScale, request.getVariableName(), valuesInRequestedRange, upperBounds, lowerBounds);
+        	} else {
+        		csv = getTable(responseRange, timeScale, request.getVariableName(), valuesInRequestedRange);
+        	}
+        }
+		                
         return new TimeseriesResponse(
         		request.getDatasetId(),
         		request.getVariableName(),
@@ -84,10 +111,30 @@ public class TimeseriesService implements InitializingBean {
         		responseRange.startIndex,
         		responseRange.endIndex,
         		values,
+        		upperBounds,
+        		lowerBounds,
         		csv,
         		nodataValue,
         		containsNodata
     		);
+	}
+	
+	private Number[] getUncertaintiesInRange(TimeseriesRequest request, File uncertaintiesFile, int startIndex, int endIndex) throws Exception {
+
+		if (uncertaintiesFile != null) {
+	        String[] allCertainties = getFullTimeseries(request, uncertaintiesFile);
+	        return getRangeOfStringValuesAsNumbers(allCertainties, startIndex, endIndex);        			
+		}
+		
+		return null;
+	}
+	
+	private Number[] addArrays(Number[] values, Number[] delta, int sign) {
+		Number[] sum = new Number[values.length];
+		for (int i = 0; i < values.length; ++i) {
+			sum[i] = values[i].doubleValue() + sign * delta[i].doubleValue();
+		}
+		return sum;
 	}
 	
 	private String[] getFullTimeseries(TimeseriesRequest request, File dataFile) throws Exception {
@@ -106,14 +153,16 @@ public class TimeseriesService implements InitializingBean {
         return fullTimeSeries;
 	}
 	
-	private File getDataFile(String datasetId, String variableName) {
-        uriVariables.put("datasetId", datasetId);
-        uriVariables.put("variableName", variableName);
-		URI datafileBaseUri = dataPathTemplate.expand(uriVariables);
-		for (String extension : extensions) {
-			File file = new File(datafileBaseUri.getPath() + extension);
-			if (file.exists()) {
-				return file;
+	private File getDataFile(UriTemplate pathTemplate, String datasetId, String variableName) {
+		if (pathTemplate != null) {
+	        uriVariables.put("datasetId", datasetId);
+	        uriVariables.put("variableName", variableName);
+			URI datafileBaseUri = pathTemplate.expand(uriVariables);
+			for (String extension : extensions) {
+				File file = new File(datafileBaseUri.getPath() + extension);
+				if (file.exists()) {
+					return file;
+				}
 			}
 		}
 		return null;
@@ -218,11 +267,19 @@ public class TimeseriesService implements InitializingBean {
 		StringBuffer buffer = new StringBuffer();
         buffer.append(timeScale + ", " + variableName + "\n");
         for (int i = 0; i < values.length; ++i) {
-        	if (values[i] instanceof Double) {
-        		buffer.append(String.format("%s, %.6g\n", timeScale.getTimeForIndex(i + responseRange.startIndex), values[i]));
-        	} else {
-        		buffer.append(String.format("%s, %d\n", timeScale.getTimeForIndex(i + responseRange.startIndex), values[i]));
-        	}
+        	String format = (values[i] instanceof Double) ? "%s, %.6g\n" : "%s, %d\n";
+    		buffer.append(String.format(format, timeScale.getTimeForIndex(i + responseRange.startIndex), values[i]));
+        }
+        return buffer.toString();
+	}
+
+	public String getTableWithUncertainties(IndexRange responseRange, TimeScale timeScale, String variableName, 
+			Number[] values,Number[] upperBounds, Number[] lowerBounds) throws Exception {
+		StringBuffer buffer = new StringBuffer();
+        buffer.append(timeScale + ", " + variableName + ", lower bound, upper bound\n");
+        for (int i = 0; i < values.length; ++i) {
+        	String format = (values[i] instanceof Double) ? "%s, %.6g, %.6g, %.6g\n" : "%s, %d, %.6g, %.6g\n";
+    		buffer.append(String.format(format, timeScale.getTimeForIndex(i + responseRange.startIndex), values[i], lowerBounds[i], upperBounds[i]));
         }
         return buffer.toString();
 	}

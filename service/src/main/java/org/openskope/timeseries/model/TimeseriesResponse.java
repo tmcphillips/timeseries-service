@@ -12,10 +12,13 @@ public class TimeseriesResponse {
 	private int startIndex;
 	private int endIndex;
     private Number[] values;
+    private Number[] upperBounds;
+    private Number[] lowerBounds;
     private String csv;
     private Number nodata;
     private boolean containsNodata;
 
+	@SuppressWarnings("unchecked")
 	public TimeseriesResponse(
 			String datasetId, 
 			String variableName, 
@@ -25,6 +28,8 @@ public class TimeseriesResponse {
 			int startIndex,
 			int endIndex,
 			Number[] values,
+			Number[] upperBounds,
+			Number[] lowerBounds,
 			String csv,
 			Number nodata,
 			boolean containsNodata
@@ -37,6 +42,8 @@ public class TimeseriesResponse {
         this.startIndex = startIndex;
         this.endIndex = endIndex;
         this.values = values;
+        this.upperBounds = upperBounds;
+        this.lowerBounds = lowerBounds;
         this.csv = csv;
         this.nodata = nodata;
         this.containsNodata = containsNodata;
@@ -45,6 +52,8 @@ public class TimeseriesResponse {
 	public String getDatasetId() { return datasetId; }
 	public String getVariableName() { return variableName; }
 	public Number[] getValues() { return this.values; }
+	public Number[] getUpperBounds() { return this.upperBounds; }
+	public Number[] getLowerBounds() { return this.lowerBounds; }
 	public String getCsv() { return this.csv; }
 	public String getStart() { return start; }
 	public String getEnd() { return end; }
