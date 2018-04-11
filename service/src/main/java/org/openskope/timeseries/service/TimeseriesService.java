@@ -1,6 +1,7 @@
 package org.openskope.timeseries.service;
 
 import org.openskope.timeseries.controller.InvalidArgumentException;
+import org.openskope.timeseries.controller.InvalidDatafileException;
 import org.openskope.timeseries.model.IndexRange;
 import org.openskope.timeseries.model.TimeScale;
 import org.openskope.timeseries.model.TimeseriesRequest;
@@ -122,8 +123,12 @@ public class TimeseriesService implements InitializingBean {
 	private Number[] getUncertaintiesInRange(TimeseriesRequest request, File uncertaintiesFile, int startIndex, int endIndex) throws Exception {
 
 		if (uncertaintiesFile != null) {
-	        String[] allCertainties = getFullTimeseries(request, uncertaintiesFile);
-	        return getRangeOfStringValuesAsNumbers(allCertainties, startIndex, endIndex);        			
+	        String[] allUncertainties = getFullTimeseries(request, uncertaintiesFile);
+	        int indexOfLastUncertainty = allUncertainties.length -1;
+	        if (startIndex > indexOfLastUncertainty || endIndex > indexOfLastUncertainty) {
+	        	throw new InvalidDatafileException("Uncertainty file does not cover the entire requested timeseries");
+	        }
+	        return getRangeOfStringValuesAsNumbers(allUncertainties, startIndex, endIndex);        			
 		}
 		
 		return null;
