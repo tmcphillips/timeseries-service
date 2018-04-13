@@ -4,7 +4,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>org.openskope</groupId>
-    <artifactId>time-series-service</artifactId>
+    <artifactId>timeseries-service</artifactId>
     <version>0.2.0</version>
     <packaging>jar</packaging>
 
@@ -55,12 +55,6 @@
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
             <scope>test</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>org.yesworkflow</groupId>
-            <artifactId>yw-utilities</artifactId>
-            <version>0.1.0</version>
         </dependency>
 
     </dependencies>

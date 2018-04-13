@@ -6,8 +6,8 @@ import org.openskope.timeseries.model.IndexRange;
 import org.openskope.timeseries.model.TimeScale;
 import org.openskope.timeseries.model.TimeseriesRequest;
 import org.openskope.timeseries.model.TimeseriesResponse;
-import org.yesworkflow.util.exec.ProcessRunner;
-import org.yesworkflow.util.exec.StreamSink;
+import org.openskope.util.ProcessRunner;
+import org.openskope.util.StreamSink;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
