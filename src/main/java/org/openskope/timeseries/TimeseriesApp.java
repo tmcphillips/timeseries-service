@@ -1,4 +1,4 @@
-package org.openskope;
+package org.openskope.timeseries;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.context.annotation.ComponentScan;

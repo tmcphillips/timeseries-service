@@ -82,12 +82,12 @@ RUN echo '***** Create scripts in ~skope/bin directory *****'                   
 ENV PATH=$PATH:/home/skope
 
 ENV TIMESERIES_SERVICE_NAME='SKOPE Timeseries Service'
-ENV TIMESERIES_SERVICE_BASE=timeseries-service/api/v1
-ENV TIMESERIES_DATA_PATH_TEMPLATE=UNDEFINED
-ENV TIMESERIES_UNCERTAINTY_PATH_TEMPLATE=UNDEFINED
-ENV TIMESERIES_DATA_FILE_EXTENSIONS=''
-ENV TIMESERIES_GDALLOCATIONINFO_COMMAND=gdallocationinfo
-ENV TIMESERIES_ZONALINFO_COMMAND=zonalinfo.py
+ENV TIMESERIES_SERVICE_BASE='timeseries-service/api/v1'
+ENV TIMESERIES_DATA_PATH_TEMPLATE=/data/{datasetId}_{variableName}
+ENV TIMESERIES_UNCERTAINTY_PATH_TEMPLATE=/data/{datasetId}_{variableName}_uncertainty
+ENV TIMESERIES_DATA_FILE_EXTENSIONS='.tif .nc .nc4'
+ENV TIMESERIES_GDALLOCATIONINFO_COMMAND='gdallocationinfo'
+ENV TIMESERIES_ZONALINFO_COMMAND='zonalinfo.py'
 
 CMD echo "Usage: docker run openskope/timeseries-service start"
 

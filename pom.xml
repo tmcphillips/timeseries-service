@@ -4,15 +4,118 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>org.openskope</groupId>
-    <artifactId>time-series-service-pom</artifactId>
-    <version>0.1.5</version>
-    <packaging>pom</packaging>
+    <artifactId>time-series-service</artifactId>
+    <version>0.2.0</version>
+    <packaging>jar</packaging>
 
-    <name>time-series-service-pom</name>
-    
-    <modules>
-      <module>app</module>
-      <module>service</module>
-   </modules>
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>1.4.2.RELEASE</version>
+    </parent>
+
+    <name>time-series-service</name>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+
+    <repositories>
+        <repository>
+            <id>ncsa.releases</id>
+            <name>NCSA releases</name>
+            <url>https://opensource.ncsa.illinois.edu/nexus/content/repositories/releases/</url>
+        </repository>
+        <repository>
+            <id>ncsa.snapshots</id>
+            <name>NCSA snapshots</name>
+            <url>https://opensource.ncsa.illinois.edu/nexus/content/repositories/snapshots/</url>
+        </repository>
+    </repositories>
+
+    <dependencies>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>net.sf.jopt-simple</groupId>
+            <artifactId>jopt-simple</artifactId>
+            <version>4.8</version>
+        </dependency>
+
+        <dependency>
+           <groupId>org.yaml</groupId>
+           <artifactId>snakeyaml</artifactId>
+           </dependency>
+
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.yesworkflow</groupId>
+            <artifactId>yw-utilities</artifactId>
+            <version>0.1.0</version>
+        </dependency>
+
+       <dependency>
+            <groupId>org.openskope</groupId>
+            <artifactId>http-request-logger</artifactId>
+            <version>0.1.4</version>
+        </dependency>
+
+    </dependencies>
+
+    <build>
+
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+            </resource>
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>true</filtering>
+                <includes>
+                    <include>maven.properties</include>
+                </includes>
+            </resource>
+        </resources>
+
+	    <plugins>
+
+	        <plugin>
+	            <groupId>org.springframework.boot</groupId>
+	            <artifactId>spring-boot-maven-plugin</artifactId>
+	        </plugin>
+
+
+            <plugin>
+                <groupId>pl.project13.maven</groupId>
+                <artifactId>git-commit-id-plugin</artifactId>
+                <version>2.2.1</version>
+                <executions><execution><goals><goal>revision</goal></goals></execution></executions>
+                <configuration>
+                    <generateGitPropertiesFile>true</generateGitPropertiesFile>
+                    <generateGitPropertiesFilename>${project.build.outputDirectory}/git.properties</generateGitPropertiesFilename>
+                    <format>properties</format>
+                    <skipPoms>true</skipPoms>
+                    <failOnNoGitDirectory>true</failOnNoGitDirectory>
+                    <failOnUnableToExtractRepoInfo>true</failOnUnableToExtractRepoInfo>
+                    <skip>false</skip>
+                    <runOnlyOnce>false</runOnlyOnce>
+                    <useNativeGit>false</useNativeGit>
+                    <abbrevLength>7</abbrevLength>
+                    <commitIdGenerationMode>flat</commitIdGenerationMode>
+                </configuration>
+            </plugin>
+
+        </plugins>
+
+    </build>
 
 </project>
