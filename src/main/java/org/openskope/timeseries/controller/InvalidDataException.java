@@ -5,9 +5,9 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 
 @SuppressWarnings("serial")
 @ResponseStatus(HttpStatus.BAD_REQUEST)
-public class InvalidDatafileException extends RuntimeException {
+public class InvalidDataException extends RuntimeException {
 
-	public InvalidDatafileException(String message) {
+	public InvalidDataException(String message) {
 		super(message);
 	}
 }

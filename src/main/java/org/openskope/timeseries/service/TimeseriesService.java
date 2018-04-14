@@ -1,7 +1,7 @@
 package org.openskope.timeseries.service;
 
 import org.openskope.timeseries.controller.InvalidArgumentException;
-import org.openskope.timeseries.controller.InvalidDatafileException;
+import org.openskope.timeseries.controller.InvalidDataException;
 import org.openskope.timeseries.model.IndexRange;
 import org.openskope.timeseries.model.TimeScale;
 import org.openskope.timeseries.model.TimeseriesRequest;
@@ -126,7 +126,7 @@ public class TimeseriesService implements InitializingBean {
 	        String[] allUncertainties = getFullTimeseries(request, uncertaintiesFile);
 	        int indexOfLastUncertainty = allUncertainties.length -1;
 	        if (startIndex > indexOfLastUncertainty || endIndex > indexOfLastUncertainty) {
-	        	throw new InvalidDatafileException("Uncertainty file does not cover the entire requested timeseries");
+	        	throw new InvalidDataException("Uncertainty file does not cover the entire requested timeseries");
 	        }
 	        return getRangeOfStringValuesAsNumbers(allUncertainties, startIndex, endIndex);        			
 		}
@@ -246,19 +246,21 @@ public class TimeseriesService implements InitializingBean {
         return streams[0].toString().split("\\s+");
 	}
 	
-	private Number[] getRangeOfStringValuesAsNumbers(String[] sa, int start, int end) {
-		Number[] ia = new Number[end - start + 1];
-		for (int si = 0, ii = 0; si < sa.length; ++si) {
+	private Number[] getRangeOfStringValuesAsNumbers(String[] strings, int start, int end) {
+		Number[] numbers = new Number[end - start + 1];
+		for (int si = 0, ii = 0; si < strings.length; ++si) {
 			if (si >= start && si <= end) {
-				ia[ii++] = parseIntegerOrDouble(sa[si]);
+				numbers[ii++] = parseIntegerOrDouble(strings[si]);
 			}
 		}
-		return ia;
+		return numbers;
 	}
 	
 	private Number parseIntegerOrDouble(String s) {
 		Number n;
-		if (s.contains(".")) {
+		if (s.equalsIgnoreCase("nan")) {
+        	throw new InvalidDataException("Timeseries values contains NaN");
+		} else if (s.contains(".")) {
 			Double d= Double.valueOf(s);
 			n = d;
 		} else {
