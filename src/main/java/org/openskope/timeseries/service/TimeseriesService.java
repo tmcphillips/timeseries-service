@@ -243,6 +243,11 @@ public class TimeseriesService implements InitializingBean {
         String stdin = mapper.writeValueAsString(request.getBoundaryGeometry());
         System.out.println(stdin);
         StreamSink streams[] = ProcessRunner.run(commandLine, mapper.writeValueAsString(request.getBoundaryGeometry()), new String[0], null);
+        String stderr = streams[1].toString();
+        if (stderr.length() > 0) {
+        	throw new InvalidArgumentException(stderr);
+        }
+        	
         return streams[0].toString().split("\\s+");
 	}
 	
