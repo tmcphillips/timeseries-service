@@ -31,9 +31,9 @@ RUN echo '***** install development packages required to build service *****'   
 
 RUN echo '***** Install python2, pip *****'                                                         \
  && apt-get -y install python python-pip                                                            \
- && pip2 install --upgrade pip                                                                      \
-                                                                                                    \
- && echo '***** install numpy package for python2 *****'                                            \
+ && pip2 install --upgrade pip
+
+RUN echo '***** install numpy package for python2 *****'                                            \
  && pip2 install numpy
 
 RUN echo '***** download source package for GDAL 2.1.2 *****'                                       \
