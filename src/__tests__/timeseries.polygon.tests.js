@@ -238,7 +238,7 @@ describe("When a GET request selects exactly the top-left corner pixel", async (
     });
 });
 
-describe("When a GET request selects 1/4 of the top-left corner pixel the service reports an error", async () => {
+describe("When a GET request selects 1/4 of the top-left corner pixel", async () => {
     
 	var response;
 	
@@ -266,14 +266,25 @@ describe("When a GET request selects 1/4 of the top-left corner pixel the servic
     });
 
     it ('HTTP response status code should be 200 - success', async function() {
-        expect(response.status.code).toBe(400);
+        expect(response.status.code).toBe(200);
     });
     
-    it ('Error summary should be bad request', async function() {
-        expect(response.entity.error).toBe("Bad Request");
+    it ('The array should comprise the values of the top-left pixels in each band', async function() {
+        expect(response.entity.values[0]).toBeCloseTo(100.0,3);
+        expect(response.entity.values[1]).toBeCloseTo(200.0,3);
+        expect(response.entity.values[2]).toBeCloseTo(300.0,3);
+        expect(response.entity.values[3]).toBeCloseTo(400.0,3);
+        expect(response.entity.values[4]).toBeCloseTo(500.0,3);
     });
-
-    it ('Error message should be that longitude parameter is not present', async function() {
-        expect(response.entity.message).toContain("Warning: converting a masked element to nan.")
-    }); 
+    
+    it ('The data column should comprise the values of the top-left pixels in each band', async function() {
+        expect(response.entity.csv).toEqual( 
+        		"index, temp"	+ "\n" +
+        		"0, 100.000"	+ "\n" +
+        		"1, 200.000"	+ "\n" +
+        		"2, 300.000"	+ "\n" +
+        		"3, 400.000"	+ "\n" +
+    			"4, 500.000"	+ "\n"
+		);
+    });
 });
