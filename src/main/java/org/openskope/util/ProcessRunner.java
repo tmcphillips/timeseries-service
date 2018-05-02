@@ -4,10 +4,13 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintStream;
+import java.util.concurrent.TimeUnit;
+
+import org.openskope.timeseries.controller.ProcessTimeoutException;
 
 public class ProcessRunner {
 
-	public static StreamSink[] run(String cmdLine, String stdIn, String[] env, File workingDirectory) throws IOException, InterruptedException {
+	public static StreamSink[] run(String cmdLine, String stdIn, String[] env, File workingDirectory, long timeoutSeconds) throws IOException, InterruptedException {
 		
 		// start the external process using the provided command line string
 		Process process = Runtime.getRuntime().exec(cmdLine, env, workingDirectory);
@@ -34,7 +37,10 @@ public class ProcessRunner {
 		p2.start();
 		
 		// wait for the external process to complete
-		process.waitFor();
+		if (!process.waitFor(timeoutSeconds, TimeUnit.SECONDS)) {
+			process.destroyForcibly();
+			throw new ProcessTimeoutException("Process exceeded " + timeoutSeconds + "-second maximum execution time:" + cmdLine);
+		}
 		
 		// wait for the two output stream reading threads to complete
 		p1.join();

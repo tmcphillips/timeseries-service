@@ -31,6 +31,7 @@ public class TimeseriesService implements InitializingBean {
 	@Value("${TIMESERIES_DATA_FILE_EXTENSIONS}") public String timeseriesDatafileExtensions;
 	@Value("${TIMESERIES_GDALLOCATIONINFO_COMMAND}") public String gdallocationinfoCommand;
 	@Value("${TIMESERIES_ZONALINFO_COMMAND}") public String zonalinfoCommand;
+	@Value("${TIMESERIES_MAX_PROCESSING_TIME}") public String timeoutSetting;
 
     private UriTemplate valuesPathTemplate = null;
     private UriTemplate uncertaintyPathTemplate = null;
@@ -38,6 +39,7 @@ public class TimeseriesService implements InitializingBean {
     private Map<String, Number> nodataSettingForFile = new HashMap<String,Number>();
     private Map<String, String> uriVariables = new HashMap<String,String>();
     private ObjectMapper mapper = new ObjectMapper();
+    private long timeoutSeconds;
     
     public void afterPropertiesSet() {
     	
@@ -57,6 +59,8 @@ public class TimeseriesService implements InitializingBean {
     	for (String customExtension : customExtensionArray) {
     		extensions[i++] = customExtension;
     	}
+    	
+    	timeoutSeconds = Long.parseLong(timeoutSetting);
     }
 
 	public TimeseriesResponse getTimeseries(TimeseriesRequest request) throws Exception {
@@ -201,7 +205,7 @@ public class TimeseriesService implements InitializingBean {
 	
 	        String gdalinfoOutput;
 	        try { 
-		        StreamSink streams[] = ProcessRunner.run(commandLine, "", new String[0], null);
+		        StreamSink streams[] = ProcessRunner.run(commandLine, "", new String[0], null, timeoutSeconds);
 		        gdalinfoOutput = streams[0].toString();
 	        } catch(Exception e) {
 	        	return null;
@@ -232,7 +236,7 @@ public class TimeseriesService implements InitializingBean {
         String commandLine = String.format(
                 "%s -valonly -geoloc %s %f %f", gdallocationinfoCommand, dataFile.getAbsolutePath(), longitude, latitude);
         System.out.println(commandLine);
-        StreamSink streams[] = ProcessRunner.run(commandLine, "", new String[0], null);
+        StreamSink streams[] = ProcessRunner.run(commandLine, "", new String[0], null, timeoutSeconds);
         return streams[0].toString().split("\\s+");
 	}
 	
@@ -242,7 +246,7 @@ public class TimeseriesService implements InitializingBean {
         System.out.println(commandLine);
         String stdin = mapper.writeValueAsString(request.getBoundaryGeometry());
         System.out.println(stdin);
-        StreamSink streams[] = ProcessRunner.run(commandLine, mapper.writeValueAsString(request.getBoundaryGeometry()), new String[0], null);
+        StreamSink streams[] = ProcessRunner.run(commandLine, mapper.writeValueAsString(request.getBoundaryGeometry()), new String[0], null, timeoutSeconds);
         String stderr = streams[1].toString();
         if (stderr.length() > 0) {
         	throw new InvalidArgumentException(stderr);

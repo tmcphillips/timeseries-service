@@ -18,10 +18,6 @@ public class TimeseriesApp {
 
     public static VersionInfo versionInfo;
 
-    private OptionSet options = null;
-    private static PrintStream errStream;
-    private static PrintStream outStream;    
-
     public static void main(String[] args) {
 
         ExitCode exitCode;
@@ -44,9 +40,6 @@ public class TimeseriesApp {
     
     public static ExitCode startServiceForArgs(String [] args, 
         PrintStream outStream, PrintStream errStream) throws Exception{
-
-            TimeseriesApp.outStream = outStream;
-            TimeseriesApp.errStream = errStream;
 
         versionInfo = VersionInfo.loadVersionInfoFromResource(
             "Timemseries Service", 
@@ -76,19 +69,12 @@ public class TimeseriesApp {
             // print help and exit if requested
             if (options.has("h")) {
                 errStream.print(versionInfo.versionBanner());
-                // errStream.println(CLI_USAGE_HELP);
-                // errStream.println(CLI_COMMAND_HELP);
-                parser.printHelpOn(errStream);
-                // errStream.println();
-                // errStream.println(CLI_CONFIG_HELP);
-                // errStream.println(CLI_EXAMPLES_HELP);
                 return ExitCode.SUCCESS;
             }
 
         SpringApplication.run(TimeseriesApp.class, args);
         
         } catch (CliUsageException e) {
-//            printToolUsageErrors(e.getMessage());
             return ExitCode.CLI_USAGE_ERROR;
         }
 
@@ -100,9 +86,6 @@ public class TimeseriesApp {
         OptionParser parser = new OptionParser() {{
             acceptsAll(Arrays.asList("v", "version"), "Shows version, git, and build details.");
             acceptsAll(Arrays.asList("h", "help"), "Displays this help.");
-            acceptsAll(Arrays.asList("server.port"), "Sets PaloeCAR Browser web application service port.");
-            acceptsAll(Arrays.asList("raster-data-service.url"), "Sets URL of raster data query service.");
-            acceptsAll(Arrays.asList("raster-data-service.data-dir"), "Sets path to directory containing queryable raster data files.");
         }};
 
         parser.formatHelpWith(new BuiltinHelpFormatter(128, 2));

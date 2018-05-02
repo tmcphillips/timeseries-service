@@ -88,6 +88,7 @@ ENV TIMESERIES_UNCERTAINTY_PATH_TEMPLATE=/data/{datasetId}_{variableName}_uncert
 ENV TIMESERIES_DATA_FILE_EXTENSIONS='.tif .nc .nc4'
 ENV TIMESERIES_GDALLOCATIONINFO_COMMAND='gdallocationinfo'
 ENV TIMESERIES_ZONALINFO_COMMAND='zonalinfo.py'
+ENV TIMESERIES_MAX_PROCESSING_TIME='5'
 
 CMD echo "Usage: docker run openskope/timeseries-service start"
 
