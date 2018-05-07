@@ -31,7 +31,7 @@ public class TimeseriesService implements InitializingBean {
 	@Value("${TIMESERIES_DATA_FILE_EXTENSIONS}") public String timeseriesDatafileExtensions;
 	@Value("${TIMESERIES_GDALLOCATIONINFO_COMMAND}") public String gdallocationinfoCommand;
 	@Value("${TIMESERIES_ZONALINFO_COMMAND}") public String zonalinfoCommand;
-	@Value("${TIMESERIES_MAX_PROCESSING_TIME}") public String timeoutSetting;
+	@Value("${TIMESERIES_MAX_PROCESSING_TIME}") public String maxTimeoutSetting;
 
     private UriTemplate valuesPathTemplate = null;
     private UriTemplate uncertaintyPathTemplate = null;
@@ -39,7 +39,8 @@ public class TimeseriesService implements InitializingBean {
     private Map<String, Number> nodataSettingForFile = new HashMap<String,Number>();
     private Map<String, String> uriVariables = new HashMap<String,String>();
     private ObjectMapper mapper = new ObjectMapper();
-    private long timeoutSeconds;
+    private long maxTimeoutMilliseconds;
+    private long timeoutMilliseconds;
     
     public void afterPropertiesSet() {
     	
@@ -60,10 +61,17 @@ public class TimeseriesService implements InitializingBean {
     		extensions[i++] = customExtension;
     	}
     	
-    	timeoutSeconds = Long.parseLong(timeoutSetting);
+    	maxTimeoutMilliseconds = Long.parseLong(maxTimeoutSetting);
     }
 
 	public TimeseriesResponse getTimeseries(TimeseriesRequest request) throws Exception {
+		
+		Long requestedTimeout = request.getTimeout();
+		if (requestedTimeout != null && requestedTimeout < maxTimeoutMilliseconds) {
+			timeoutMilliseconds = requestedTimeout;
+		} else {
+			timeoutMilliseconds = maxTimeoutMilliseconds;
+		}
 
         TimeScale timeScale = new TimeScale(request.getTimeResolution(), request.getTimeZero());
 
@@ -205,7 +213,7 @@ public class TimeseriesService implements InitializingBean {
 	
 	        String gdalinfoOutput;
 	        try { 
-		        StreamSink streams[] = ProcessRunner.run(commandLine, "", new String[0], null, timeoutSeconds);
+		        StreamSink streams[] = ProcessRunner.run(commandLine, "", new String[0], null, maxTimeoutMilliseconds);
 		        gdalinfoOutput = streams[0].toString();
 	        } catch(Exception e) {
 	        	return null;
@@ -236,7 +244,7 @@ public class TimeseriesService implements InitializingBean {
         String commandLine = String.format(
                 "%s -valonly -geoloc %s %f %f", gdallocationinfoCommand, dataFile.getAbsolutePath(), longitude, latitude);
         System.out.println(commandLine);
-        StreamSink streams[] = ProcessRunner.run(commandLine, "", new String[0], null, timeoutSeconds);
+        StreamSink streams[] = ProcessRunner.run(commandLine, "", new String[0], null, timeoutMilliseconds);
         return streams[0].toString().split("\\s+");
 	}
 	
@@ -246,7 +254,7 @@ public class TimeseriesService implements InitializingBean {
         System.out.println(commandLine);
         String stdin = mapper.writeValueAsString(request.getBoundaryGeometry());
         System.out.println(stdin);
-        StreamSink streams[] = ProcessRunner.run(commandLine, mapper.writeValueAsString(request.getBoundaryGeometry()), new String[0], null, timeoutSeconds);
+        StreamSink streams[] = ProcessRunner.run(commandLine, mapper.writeValueAsString(request.getBoundaryGeometry()), new String[0], null, timeoutMilliseconds);
         String stderr = streams[1].toString();
         if (stderr.length() > 0) {
         	throw new InvalidArgumentException(stderr);

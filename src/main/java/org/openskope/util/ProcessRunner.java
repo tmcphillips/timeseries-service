@@ -37,9 +37,9 @@ public class ProcessRunner {
 		p2.start();
 		
 		// wait for the external process to complete
-		if (!process.waitFor(timeoutSeconds, TimeUnit.SECONDS)) {
+		if (!process.waitFor(timeoutSeconds, TimeUnit.MILLISECONDS)) {
 			process.destroyForcibly();
-			throw new ProcessTimeoutException("Process exceeded " + timeoutSeconds + "-second maximum execution time:" + cmdLine);
+			throw new ProcessTimeoutException("Process exceeded " + timeoutSeconds + "-millisecond maximum execution time:" + cmdLine);
 		}
 		
 		// wait for the two output stream reading threads to complete
