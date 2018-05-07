@@ -292,7 +292,7 @@ public class TimeseriesService implements InitializingBean {
 	public String getTableWithUncertainties(IndexRange responseRange, TimeScale timeScale, String variableName, 
 			Number[] values,Number[] upperBounds, Number[] lowerBounds) throws Exception {
 		StringBuffer buffer = new StringBuffer();
-        buffer.append(timeScale + ", " + variableName + ", lower bound, upper bound\n");
+        buffer.append(timeScale + ", " + variableName + ", range -, range +\n");
         for (int i = 0; i < values.length; ++i) {
         	String format = (values[i] instanceof Double) ? "%s, %.6g, %.6g, %.6g\n" : "%s, %d, %.6g, %.6g\n";
     		buffer.append(String.format(format, timeScale.getTimeForIndex(i + responseRange.startIndex), values[i], lowerBounds[i], upperBounds[i]));
