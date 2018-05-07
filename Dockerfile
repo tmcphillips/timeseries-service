@@ -71,7 +71,7 @@ RUN echo '***** Clone timeseries-service and build the executable JAR *****'    
  && cd timeseries-service                                                                           \
  && mvn  install
 
-ENV JAR=/home/skope/timeseries-service/target/timeseries-service-0.2.0.jar
+ENV JAR=/home/skope/timeseries-service/target/timeseries-service-0.2.1.jar
 
 RUN echo '***** Create scripts in ~skope/bin directory *****'                                       \
  && echo "#!/bin/bash" > start                                                                      \
