@@ -22,6 +22,7 @@ public class TimeseriesRequest {
 	private Boolean returnCsv;
 	private Boolean returnArray;
 	private String nodata;
+	private Long timeout;
 	private Map<String, Object> boundaryGeometry = new HashMap<String,Object>();
 	
 	public TimeseriesRequest() {}
@@ -42,6 +43,10 @@ public class TimeseriesRequest {
 		if (longitude != null) this.longitude = Double.parseDouble(longitude);
 	}
 
+	public void setTimeout(Long timeout) {
+		this.timeout = timeout;
+	}
+	
 	public void setTimeResolution(String timeResolution) {
 		this.timeResolution = timeResolution;
 	}
@@ -113,6 +118,7 @@ public class TimeseriesRequest {
 	public Boolean getArray() { return returnArray; }
 	public Boolean getCsv() { return returnCsv; }
 	public String getNodata() { return nodata; }
+	public Long getTimeout() { return timeout; }
 
 	public Map<String,Object>  getBoundaryGeometry() {
 		if (boundaryGeometry.get("geometry") == null) {

@@ -59,6 +59,7 @@ public class TimeseriesController {
             @RequestParam(required=false) Boolean array,
             @RequestParam(required=false) Boolean csv,
             @RequestParam(required=false) String nodata,
+            @RequestParam(required=false) Long timeout,
             HttpServletResponse response
         ) throws Exception {
     	
@@ -77,6 +78,7 @@ public class TimeseriesController {
     			array, 
     			csv, 
     			nodata,
+    			timeout,
     			response
 		);
 	}
@@ -95,6 +97,7 @@ public class TimeseriesController {
             @RequestParam(required=false) Boolean array,
             @RequestParam(required=false) Boolean csv,
             @RequestParam(required=false) String nodata,
+            @RequestParam(required=false) Long timeout,
             HttpServletResponse response
         ) throws Exception {
 
@@ -114,6 +117,7 @@ public class TimeseriesController {
     			array, 
     			csv,
     			nodata,
+    			timeout,
     			response
 		);
 	}
@@ -130,6 +134,7 @@ public class TimeseriesController {
             @RequestParam(required=false) Boolean array,
             @RequestParam(required=false) Boolean csv,
             @RequestParam(required=false) String nodata,
+            @RequestParam(required=false) Long timeout,
             HttpServletResponse response
         ) throws Exception {
 
@@ -142,6 +147,7 @@ public class TimeseriesController {
     	if (request.getArray() == null) request.setArray(array);
     	if (request.getCsv() == null) request.setCsv(csv);
     	if (request.getNodata() == null) request.setNodata(nodata);
+    	if (request.getTimeout() == null) request.setTimeout(timeout);
     	
     	request.validate();
     	
