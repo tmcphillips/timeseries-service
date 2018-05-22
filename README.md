@@ -80,27 +80,93 @@ A timeseries may be requested from the service either using a GET or a POST requ
 #### GET requests
 A GET request must include the dataset ID and variable name as path variables.  If the base URL for timeseries service endpoints is `https://app.openskope.org/timeseries-service/api/v1/` then an example of a valid GET request for the `growing_degree_days` variable of the `paleocar_2` dataset is:
 
-https://app.openskope.org/timeseries-service/api/v1/timeseries/paleocar_2/growing_degree_days/?longitude=-106.0&latitude=41.0
+```
+GET https://app.openskope.org/timeseries-service/api/v1/timeseries/paleocar_2/growing_degree_days/?longitude=-106.0&latitude=41.0
+```
 
 The above request returns the entire 2000-year time series in this dataset at the specified coordinates.  Only time series at single points are supported by GET requests, and the `longitude` and `latitude` query parameters are therefore required.  The full set of supported query parameters for GET requests are summarized in the **Table 1** and described more fully below.
 
-**Table 1** Query line parameters applicable to both GET and POST requests
+**Table 1** Query line parameters applicable to both GET and POST requests.
 
 Parameter       | Description                                                            | Values 
 ----------------|------------------------------------------------------------------------|-------
 `longitude`     | The longitude of a POINT at which the time series is requested.        |
 `latitude`      | The latitude of a POINT at which the time series is requested.         |
 `timeResolution`| The units used to refer to time points in the dataset.                 | `index` (default), `band`, or `year`
-`timeZero`      | The first (earliest) time point in the data set in `timeResolution` units.| defaults to 0 (`index`) or 1 (`band` or `year`)
-`start`         | First time point in requested time series in `timeResolution` units.   |
-`end`           | Last time point in requested time series in `timeResolution` units.    |
+`timeZero`      | The first (earliest) time point in the data set (in `timeResolution` units).| defaults to 0 (`index`) or 1 (`band` or `year`)
+`start`         | First time point in requested time series (in `timeResolution` units). | Defaults to `timeZero`.
+`end`           | Last time point in requested time series (in `timeResolution` units).  | Defaults to last time point in data set.
 `array`         | Whether to return timeseries as a JSON array in the JSON response body.| `true` (default) or `false` 
 `csv`           | Whether to return timeseries as a CSV-formatted string in the JSON response body.| `true` (default) or `false`
 `nodata`        | The pixel value to be interpreted to indicate missing data.            |
-`timeout`       | The maximum time allowed for producing the time series (milliesconds). |
+`timeout`       | The maximum time allowed for producing the time series (milliseconds). |
 
 #### POST requests
 
 All of the query parameters supported by GET requests may be used in the query line of POST requests, in the body of a POST requests, or both.  When query line and POST request body parameter values conflict, the values specified in the body take precedence.
 
+Specifying the dataset ID and variable name as path variables is optional for POST requests. The alternative is assign values to the `datasetID` and `variableName` properties in the POST body.  Thus, the following POST request that includes the dataset ID and variable name in the URL...
+
+```
+POST https://app.openskope.org/timeseries-service/api/v1/timeseries/paleocar_2/growing_degree_days
+{
+    'longitude': -106.0,
+    'latitude': 41.0
+}
+```
+...is equivalent to this POST request specifying the dataset and variable in the body:
+
+```
+POST https://app.openskope.org/timeseries-service/api/v1/timeseries/
+{
+    'datasetId': 'paleocar_2',
+    'variableName': 'growing_degree_days',
+    'longitude': -106.0,
+    'latitude': 41.0
+}
+```
+
+POST requests support the `BoundaryGeometry` property which both provides an alternative method for specifying the coordinates for a point for which a point is requested, and a way to specify a polgyonal region over which to compute an average value of the variable for each time point.
+
+A POST request equivalent to the previous two examples, but using the `BoundaryGeometry` property is:
+
+```
+POST https://app.openskope.org/timeseries-service/api/v1/timeseries/
+{
+    'datasetId': 'paleocar_2',
+    'variableName': 'growing_degree_days',
+    'boundaryGeometry': {
+        'type': 'Point',
+        'coordinates': [-106.0, 41.0]
+    }
+}
+```
+
+A POST request for a time series averaged over a 1-degree x 1-degree area is 
+```
+POST https://app.openskope.org/timeseries-service/api/v1/timeseries/
+{
+    'datasetId': 'paleocar_2',
+    'variableName': 'growing_degree_days',
+    'boundaryGeometry': {
+        'type': 'Polygon',
+        'coordinates': [[
+            [-106.0,41.0],
+            [-106.0,42.0],
+            [-105.0,42.0],
+            [-105.0,42.0],
+            [-106.0,41.0]
+        ]]
+    }
+}
+```
+
+**Table 2** POST body properties.  All of the query parameters in **Table 1** also may be specified as JSON properties in a POST body.
+
+Property                       | Description                                                            | Values 
+-------------------------------|------------------------------------------------------------------------|-------
+`datasetId`                    | The identifier of the data set for which a time series is requested.   |
+`variableName`                 | The identifier of the variable in the data set for which a time series is requested. |
+`boundaryGeometry.type`        | Indicates whether the time series is over a point or a region.    | `Point` (default) or `Polygon`.
+`boundaryGeometry.coordinates` | For a point an array of the form `[longitude, latitude]`.  For a polygon an array of such points representing the vertices of the polygon. |
 
