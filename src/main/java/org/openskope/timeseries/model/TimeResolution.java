@@ -4,7 +4,8 @@ public enum TimeResolution {
 	UNDEFINED,
 	INDEX,
 	BAND,
-	YEAR;
+	YEAR,
+	MONTH;
 	
     public static TimeResolution toTimeResolution(String tr) {
         
@@ -14,8 +15,11 @@ public enum TimeResolution {
         if (tr.equalsIgnoreCase("band"))
             return TimeResolution.BAND;
 
-        if (tr.equalsIgnoreCase("year") || tr.equalsIgnoreCase("annual"))
+        if (tr.equalsIgnoreCase("year") || tr.equalsIgnoreCase("years") || tr.equalsIgnoreCase("annual"))
             return TimeResolution.YEAR;
+
+        if (tr.equalsIgnoreCase("month") || tr.equalsIgnoreCase("months") || tr.equalsIgnoreCase("monthly"))
+            return TimeResolution.MONTH;
 
         return TimeResolution.UNDEFINED;
     }
@@ -25,6 +29,7 @@ public enum TimeResolution {
     	case INDEX: return "index";
     	case BAND: return "band";
     	case YEAR: return "year";
+        case MONTH: return "month";
     	default: return "UNDEFINED";
     	}
     }
