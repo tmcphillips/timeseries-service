@@ -2,8 +2,11 @@ import osr
 import numpy as np
 from osgeo import gdal
 
-def create_dataset_file(filename, format, pixel_type, rows, cols, bands, 
-                        origin_x, origin_y, pixel_width, pixel_height, coordinate_system='WGS84'):
+def create_dataset_file(filename, format, pixel_type, 
+                        rows, cols, bands, 
+                        origin_x, origin_y, 
+                        pixel_width, pixel_height, 
+                        coordinate_system='WGS84'):
 
     # create the data set
     driver = gdal.GetDriverByName(format)

@@ -288,3 +288,159 @@ describe("When a GET request selects 1/4 of the top-left corner pixel", async ()
 		);
     });
 });
+
+
+describe("When a GET request selects from a region exactly covering the 2x2 pixel area in southwest corner the dataset", async () => {
+    
+	var response;
+	
+	beforeAll(async () => {
+		response = await callRESTService({
+		    method: 'POST',
+		    path: timeseriesServiceBase + '/timeseries',
+		    entity: {
+		    	datasetId: '5x5x5',
+		    	variableName: 'temp',
+		    	boundaryGeometry: {
+    		    "type": "Polygon",
+    		    "coordinates": [[
+	    		    	[-123,48],
+	    		        [-123,50],
+	    		        [-121,50],
+	    		        [-121,48],
+	    		        [-123,48]
+	    		    	]]
+	    		},
+	    		start: 0,
+	    		end: 4
+		    }
+		});
+    });
+
+    it ('HTTP response status code should be 200 - success', async function() {
+        expect(response.status.code).toBe(200);
+    });
+    
+    it ('The array should comprise the average of four pixels in each band', async function() {
+        expect(response.entity.values[0]).toBeCloseTo(135.5,3);
+        expect(response.entity.values[1]).toBeCloseTo(235.5,3);
+        expect(response.entity.values[2]).toBeCloseTo(335.5,3);
+        expect(response.entity.values[3]).toBeCloseTo(435.5,3);
+        expect(response.entity.values[4]).toBeCloseTo(535.5,3);
+    });
+    
+    it ('The data column should comprise the average of four pixels in each band', async function() {
+        expect(response.entity.csv).toEqual( 
+        		"index, temp"	+ "\n" +
+        		"0, 135.500"	+ "\n" +
+        		"1, 235.500"	+ "\n" +
+        		"2, 335.500"	+ "\n" +
+        		"3, 435.500"	+ "\n" +
+    			"4, 535.500"	+ "\n"
+		);
+    });
+});
+
+describe("When a GET request selects from a region exactly covering the 2x2 pixel area in southeast corner of dataset with one NODATA pixel in each band", async () => {
+    
+	var response;
+	
+	beforeAll(async () => {
+		response = await callRESTService({
+		    method: 'POST',
+		    path: timeseriesServiceBase + '/timeseries',
+		    entity: {
+		    	datasetId: '5x5x5',
+		    	variableName: 'temp',
+		    	boundaryGeometry: {
+    		    "type": "Polygon",
+    		    "coordinates": [[
+	    		    	[-120,48],
+	    		        [-118,50],
+	    		        [-120,50],
+	    		        [-120,48],
+	    		        [-118,48]
+	    		    	]]
+	    		},
+	    		start: 0,
+	    		end: 4
+		    }
+		});
+    });
+
+    it ('HTTP response status code should be 200 - success', async function() {
+        expect(response.status.code).toBe(200);
+    });
+    
+    it ('The array should comprise the average of four pixels in each band', async function() {
+        expect(response.entity.values[0]).toBeCloseTo(140.0,3);
+        expect(response.entity.values[1]).toBeCloseTo(240.0,3);
+        expect(response.entity.values[2]).toBeCloseTo(340.0,3);
+        expect(response.entity.values[3]).toBeCloseTo(440.0,3);
+        expect(response.entity.values[4]).toBeCloseTo(540.0,3);
+    });
+    
+    it ('The data column should comprise the average of four pixels in each band', async function() {
+        expect(response.entity.csv).toEqual( 
+        		"index, temp"	+ "\n" +
+        		"0, 140.000"	+ "\n" +
+        		"1, 240.000"	+ "\n" +
+        		"2, 340.000"	+ "\n" +
+        		"3, 440.000"	+ "\n" +
+    			"4, 540.000"	+ "\n"
+		);
+    });
+});
+
+describe("When a GET request selects from a region exactly covering the 2x2 pixel area in southeast corner of dataset with two NODATA pixels in 3rd band", async () => {
+    
+	var response;
+	
+	beforeAll(async () => {
+		response = await callRESTService({
+		    method: 'POST',
+		    path: timeseriesServiceBase + '/timeseries',
+		    entity: {
+		    	datasetId: '5x5x5',
+		    	variableName: 'temp',
+		    	boundaryGeometry: {
+    		    "type": "Polygon",
+    		    "coordinates": [[
+	    		    	[-120,47],
+	    		        [-118,49],
+	    		        [-120,49],
+	    		        [-120,47],
+	    		        [-118,47]
+	    		    	]]
+	    		},
+	    		start: 0,
+	    		end: 4
+		    }
+		});
+    });
+
+    it ('HTTP response status code should be 200 - success', async function() {
+        expect(response.status.code).toBe(200);
+    });
+    
+    it ('The array should comprise the average of four pixels in each band', async function() {
+        expect(response.entity.values[0]).toBeCloseTo(126.667,3);
+        expect(response.entity.values[1]).toBeCloseTo(226.667,3);
+        expect(response.entity.values[2]).toBeCloseTo(328.000,3);
+        expect(response.entity.values[3]).toBeCloseTo(426.667,3);
+        expect(response.entity.values[4]).toBeCloseTo(526.667,3);
+    });
+    
+    it ('The data column should comprise the average of four pixels in each band', async function() {
+        expect(response.entity.csv).toEqual( 
+        		"index, temp"	+ "\n" +
+        		"0, 126.667"	+ "\n" +
+        		"1, 226.667"	+ "\n" +
+        		"2, 328.000"	+ "\n" +
+        		"3, 426.667"	+ "\n" +
+    			"4, 526.667"	+ "\n"
+		);
+    });
+});
+
+
