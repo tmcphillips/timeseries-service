@@ -21,3 +21,17 @@ def write_band(dataset, band, array, nodata):
     band = dataset.GetRasterBand(band)
     band.WriteArray(array)
     band.SetNoDataValue(nodata)
+    
+def read_pixel(dataset, band, row, column):
+    selected_band = dataset.GetRasterBand(band)
+    pixel_array = selected_band.ReadAsArray()
+    return pixel_array[row, column]
+    
+def write_pixel(dataset, band, row, column, value):
+    selected_band = dataset.GetRasterBand(band)
+    array = selected_band.ReadAsArray()
+    array[row, column] = value
+    selected_band.WriteArray(array)
+    selected_band.FlushCache()
+    
+   
