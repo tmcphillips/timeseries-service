@@ -18,9 +18,10 @@ def create_dataset_file(filename, format, pixel_type, rows, cols, bands,
     return dataset
 
 def write_band(dataset, band, array, nodata):
-    band = dataset.GetRasterBand(band)
-    band.WriteArray(array)
-    band.SetNoDataValue(nodata)
+    selected_band = dataset.GetRasterBand(band)
+    selected_band.WriteArray(array)
+    selected_band.SetNoDataValue(nodata)
+    selected_band.FlushCache()
     
 def read_pixel(dataset, band, row, column):
     selected_band = dataset.GetRasterBand(band)
