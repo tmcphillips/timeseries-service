@@ -12,7 +12,7 @@ describe("When a GET request selects from a float32 datafile a coordinate with a
 	beforeAll(async () => {
 		response = await callRESTService({
 		    method: 'GET',
-		    path: timeseriesServiceBase + '/timeseries/5x5x5/temp_float32?longitude=-123.0&latitude=45.0&start=0&end=4&csv=true&array=true'
+		    path: timeseriesServiceBase + '/timeseries/annual_5x5x5_dataset/float32_variable?longitude=-123.0&latitude=45.0&start=0&end=4&csv=true&array=true'
 		});
     });
 
@@ -42,7 +42,7 @@ describe("When a GET request selects from a float32 datafile a coordinate with a
 
     it ('The data column in the csv should comprise the values and upper and lower bounds', async function() {
         expect(response.entity.csv).toEqual( 
-        		"index, temp_float32, range -, range +"			+ "\n" +
+        		"index, float32_variable, range -, range +"	    + "\n" +
         		"0, 100, 90.0000, 110.000"						+ "\n" +
         		"1, 200, 180.000, 220.000"						+ "\n" +
         		"2, 300, 270.000, 330.000"						+ "\n" +
@@ -59,7 +59,7 @@ describe("When a GET request selects from a float32 datafile a coordinate with a
 	beforeAll(async () => {
 		response = await callRESTService({
 		    method: 'GET',
-		    path: timeseriesServiceBase + '/timeseries/5x5x5/temp_float32?longitude=-121.0&latitude=47.0&start=0&end=4&csv=true&array=true'
+		    path: timeseriesServiceBase + '/timeseries/annual_5x5x5_dataset/float32_variable?longitude=-121.0&latitude=47.0&start=0&end=4&csv=true&array=true'
 		});
     });
 
@@ -101,7 +101,7 @@ describe("When a GET request selects from a float32 datafile a coordinate with a
 
     it ('The data column in the csv should comprise the values and upper and lower bounds', async function() {
         expect(response.entity.csv).toEqual(
-        		"index, temp_float32, range -, range +"			+ "\n" +
+        		"index, float32_variable, range -, range +"	    + "\n" +
         		"0, 122.200, 110.000, 134.400"					+ "\n" +
         		"1, 222.200, 200.000, 244.400"					+ "\n" +
         		"2, 322.200, 290.000, 354.400"					+ "\n" +
