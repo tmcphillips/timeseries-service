@@ -14,8 +14,8 @@ describe("When a values POST request selects first pixel of each band in 5x5x5 d
 		    method: 'POST',
 		    path: timeseriesServiceBase + '/timeseries',
 		    entity: {
-		    	datasetId: '5x5x5',
-		    	variableName: 'temp',
+		    	datasetId: 'annual_5x5x5_dataset',
+		    	variableName: 'uint16_variable',
 		    	boundaryGeometry: {
 		    		type: 'Point',
 		    		coordinates: [-123, 45]
@@ -31,11 +31,11 @@ describe("When a values POST request selects first pixel of each band in 5x5x5 d
     });
     
     it ('Dataset id should match that in the request', async function() {
-        expect(response.entity.datasetId).toBe('5x5x5');
+        expect(response.entity.datasetId).toBe('annual_5x5x5_dataset');
     });
 
 	it ('Variable name should match that in the request', async function() {
-        expect(response.entity.variableName).toBe('temp');
+        expect(response.entity.variableName).toBe('uint16_variable');
     });
 
 	it ('Boundary geometry type should be point', async function() {
@@ -65,8 +65,8 @@ describe("When a values POST request selects first pixel of middle three bands i
 		    method: 'POST',
 		    path: timeseriesServiceBase + '/timeseries',
 		    entity: {
-		    	datasetId: '5x5x5',
-		    	variableName: 'temp',
+		    	datasetId: 'annual_5x5x5_dataset',
+		    	variableName: 'uint16_variable',
 		    	boundaryGeometry: {
 		    		type: 'Point',
 		    		coordinates: [-123, 45]
@@ -82,11 +82,11 @@ describe("When a values POST request selects first pixel of middle three bands i
     });
     
     it ('Dataset id should match that in the request', async function() {
-        expect(response.entity.datasetId).toBe('5x5x5');
+        expect(response.entity.datasetId).toBe('annual_5x5x5_dataset');
     });
 
 	it ('Variable name should match that in the request', async function() {
-        expect(response.entity.variableName).toBe('temp');
+        expect(response.entity.variableName).toBe('uint16_variable');
     });
 
 	it ('Boundary geometry type should be point', async function() {
@@ -116,8 +116,8 @@ describe("When a values POST request selects first pixel of first band in 5x5x5 
 		    method: 'POST',
 		    path: timeseriesServiceBase + '/timeseries',
 		    entity: {
-		    	datasetId: '5x5x5',
-		    	variableName: 'temp',
+		    	datasetId: 'annual_5x5x5_dataset',
+		    	variableName: 'uint16_variable',
 		    	boundaryGeometry: {
 		    		type: 'Point',
 		    		coordinates: [-123, 45]
@@ -151,8 +151,8 @@ describe("When a values POST request selects last pixel of each band in 5x5x5 da
 		    method: 'POST',
 		    path: timeseriesServiceBase + '/timeseries',
 		    entity: {
-		    	datasetId: '5x5x5',
-		    	variableName: 'temp',
+		    	datasetId: 'annual_5x5x5_dataset',
+		    	variableName: 'uint16_variable',
 		    	boundaryGeometry: {
 		    		type: 'Point',
 		    		coordinates: [-119, 49]
@@ -188,8 +188,8 @@ describe("When a values POST request selects last pixel of last band in 5x5x5 da
 		    method: 'POST',
 		    path: timeseriesServiceBase + '/timeseries',
 		    entity: {
-		    	datasetId: '5x5x5',
-		    	variableName: 'temp',
+		    	datasetId: 'annual_5x5x5_dataset',
+		    	variableName: 'uint16_variable',
 		    	boundaryGeometry: {
 		    		type: 'Point',
 		    		coordinates: [-119, 49]
@@ -224,8 +224,8 @@ describe("When a values POST request selects last pixel of 5x5x5 data cube witho
 		    method: 'POST',
 		    path: timeseriesServiceBase + '/timeseries',
 		    entity: {
-		    	datasetId: '5x5x5',
-		    	variableName: 'temp',
+		    	datasetId: 'annual_5x5x5_dataset',
+		    	variableName: 'uint16_variable',
 		    	boundaryGeometry: {
 		    		type: 'Point',
 		    		coordinates: [-119, 49]
@@ -260,8 +260,8 @@ describe("When a values POST request selects last pixel of 5x5x5 data cube and s
 		    method: 'POST',
 		    path: timeseriesServiceBase + '/timeseries',
 		    entity: {
-		    	datasetId: '5x5x5',
-		    	variableName: 'temp',
+		    	datasetId: 'annual_5x5x5_dataset',
+		    	variableName: 'uint16_variable',
 		    	boundaryGeometry: {
 		    		type: 'Point',
 		    		coordinates: [-119, 49]
@@ -296,8 +296,8 @@ describe("When a values POST request selects last pixel of 5x5x5 data cube and s
 		    method: 'POST',
 		    path: timeseriesServiceBase + '/timeseries',
 		    entity: {
-		    	datasetId: '5x5x5',
-		    	variableName: 'temp',
+		    	datasetId: 'annual_5x5x5_dataset',
+		    	variableName: 'uint16_variable',
 		    	boundaryGeometry: {
 		    		type: 'Point',
 		    		coordinates: [-119, 49]

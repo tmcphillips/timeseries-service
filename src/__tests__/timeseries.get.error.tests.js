@@ -12,7 +12,7 @@ describe("When a values GET request is missing the longitude parameter", async (
 	beforeAll(async () => {
 		response = await callRESTService({
 		    method: 'GET',
-		    path: timeseriesServiceBase + '/timeseries/5x5x5/temp?latitude=45.0&start=0&end=4'
+		    path: timeseriesServiceBase + '/timeseries/annual_5x5x5_dataset/uint16_variable?latitude=45.0&start=0&end=4'
 		});
     });
 
@@ -36,7 +36,7 @@ describe("When a values GET request is missing the lat parameter", async () => {
 	beforeAll(async () => {
 		response = await callRESTService({
 		    method: 'GET',
-		    path: timeseriesServiceBase + '/timeseries/5x5x5/temp?longitude=-123.0&start=0&end=4'
+		    path: timeseriesServiceBase + '/timeseries/annual_5x5x5_dataset/uint16_variable?longitude=-123.0&start=0&end=4'
 		});
     });
 
@@ -60,7 +60,7 @@ describe("When a values GET request specifies coordinates outside of raster file
 	beforeAll(async () => {
 		response = await callRESTService({
 		    method: 'GET',
-		    path: timeseriesServiceBase + '/timeseries/5x5x5/temp?longitude=-124.0&latitude=45.0&start=0&end=4'
+		    path: timeseriesServiceBase + '/timeseries/annual_5x5x5_dataset/uint16_variable?longitude=-124.0&latitude=45.0&start=0&end=4'
 		});
     });
 	
@@ -85,7 +85,7 @@ describe("When a values GET request specifies a dataset that does not exist", as
 	beforeAll(async () => {
 		response = await callRESTService({
 		    method: 'GET',
-		    path: timeseriesServiceBase + '/timeseries/not-a-dataset/temp?longitude=-123.0&latitude=45.0&start=0&end=4'
+		    path: timeseriesServiceBase + '/timeseries/not-a-dataset/uint16_variable?longitude=-123.0&latitude=45.0&start=0&end=4'
 		});
     });
 
@@ -98,7 +98,7 @@ describe("When a values GET request specifies a dataset that does not exist", as
     });
 
     it ('Error message should be that dataset file does not exist', async function() {
-        expect(response.entity.message).toBe("Data file for dataset 'not-a-dataset', variable 'temp' does not exist on timeseries server.");
+        expect(response.entity.message).toBe("Data file for dataset 'not-a-dataset', variable 'uint16_variable' does not exist on timeseries server.");
     });
     
 });
@@ -110,7 +110,7 @@ describe("When a values GET request specifies a nonexistent variable for dataset
 	beforeAll(async () => {
 		response = await callRESTService({
 		    method: 'GET',
-		    path: timeseriesServiceBase + '/timeseries/5x5x5/not-a-variable?longitude=-123.0&latitude=45.0&start=0&end=4'
+		    path: timeseriesServiceBase + '/timeseries/annual_5x5x5_dataset/not-a-variable?longitude=-123.0&latitude=45.0&start=0&end=4'
 		});
     });
 
@@ -123,7 +123,7 @@ describe("When a values GET request specifies a nonexistent variable for dataset
     });
 
     it ('Error message should be that dataset file does not exist', async function() {
-        expect(response.entity.message).toBe("Data file for dataset '5x5x5', variable 'not-a-variable' does not exist on timeseries server.");
+        expect(response.entity.message).toBe("Data file for dataset 'annual_5x5x5_dataset', variable 'not-a-variable' does not exist on timeseries server.");
     });
     
 });
@@ -135,7 +135,7 @@ describe("When a values GET request specifies a range start outside of dataset c
 	beforeAll(async () => {
 		response = await callRESTService({
 		    method: 'GET',
-		    path: timeseriesServiceBase + '/timeseries/5x5x5/temp?longitude=-123.0&latitude=45.0&start=5&end=5'
+		    path: timeseriesServiceBase + '/timeseries/annual_5x5x5_dataset/uint16_variable?longitude=-123.0&latitude=45.0&start=5&end=5'
 		});
     });
 	
@@ -160,7 +160,7 @@ describe("When a values GET request specifies a range end outside of dataset cov
 	beforeAll(async () => {
 		response = await callRESTService({
 		    method: 'GET',
-		    path: timeseriesServiceBase + '/timeseries/5x5x5/temp?longitude=-123.0&latitude=45.0&start=3&end=5'
+		    path: timeseriesServiceBase + '/timeseries/annual_5x5x5_dataset/uint16_variable?longitude=-123.0&latitude=45.0&start=3&end=5'
 		});
     });
 	
@@ -186,7 +186,7 @@ describe("When a values GET request specifies a range end before range start", a
 	beforeAll(async () => {
 		response = await callRESTService({
 		    method: 'GET',
-		    path: timeseriesServiceBase + '/timeseries/5x5x5/temp?longitude=-123.0&latitude=45.0&start=4&end=3'
+		    path: timeseriesServiceBase + '/timeseries/annual_5x5x5_dataset/uint16_variable?longitude=-123.0&latitude=45.0&start=4&end=3'
 		});
     });
 	

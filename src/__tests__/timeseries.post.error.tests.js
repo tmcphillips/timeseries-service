@@ -14,7 +14,7 @@ describe("When a values POST request is missing the datasetId property", async (
 		    method: 'POST',
 		    path: timeseriesServiceBase + '/timeseries',
 		    entity: {
-		    	variableName: 'temp',
+		    	variableName: 'uint16_variable',
 		    	boundaryGeometry: {
 		    		type: 'Point',
 		    		coordinates: [-123, 45]
@@ -47,7 +47,7 @@ describe("When a values POST request is missing the variableName property", asyn
 		    method: 'POST',
 		    path: timeseriesServiceBase + '/timeseries',
 		    entity: {
-		    	datasetId: '5x5x5',
+		    	datasetId: 'annual_5x5x5_dataset',
 		    	boundaryGeometry: {
 		    		type: 'Point',
 		    		coordinates: [-123, 45]
@@ -80,8 +80,8 @@ describe("When a values POST request is missing the boundaryGeometry property", 
 		    method: 'POST',
 		    path: timeseriesServiceBase + '/timeseries',
 		    entity: {
-		    	datasetId: '5x5x5',
-		    	variableName: 'temp',
+		    	datasetId: 'annual_5x5x5_dataset',
+		    	variableName: 'uint16_variable',
 	    		start: 0,
 	    		end: 4
 		    }
@@ -110,8 +110,8 @@ describe("When a values POST request specifies an unsupported boundary geometry 
 		    method: 'POST',
 		    path: timeseriesServiceBase + '/timeseries',
 		    entity: {
-		    	datasetId: '5x5x5',
-		    	variableName: 'temp',
+		    	datasetId: 'annual_5x5x5_dataset',
+		    	variableName: 'uint16_variable',
 		    	boundaryGeometry: {
 		    		type: 'NoSuchGeometry',
 		    		coordinates: [-123, 45]
@@ -144,8 +144,8 @@ describe("When a values POST request specifies coordinates outside of raster fil
 		    method: 'POST',
 		    path: timeseriesServiceBase + '/timeseries',
 		    entity: {
-		    	datasetId: '5x5x5',
-		    	variableName: 'temp',
+		    	datasetId: 'annual_5x5x5_dataset',
+		    	variableName: 'uint16_variable',
 		    	boundaryGeometry: {
 		    		type: 'Point',
 		    		coordinates: [-124, 45]
@@ -180,7 +180,7 @@ describe("When a values POST request specifies a dataset that does not exist", a
 		    path: timeseriesServiceBase + '/timeseries',
 		    entity: {
 		    	datasetId: 'not-a-dataset',
-		    	variableName: 'temp',
+		    	variableName: 'uint16_variable',
 		    	boundaryGeometry: {
 		    		type: 'Point',
 		    		coordinates: [-123, 45]
@@ -200,7 +200,7 @@ describe("When a values POST request specifies a dataset that does not exist", a
     });
 
     it ('Error message should be that dataset file does not exist', async function() {
-        expect(response.entity.message).toBe( "Data file for dataset 'not-a-dataset', variable 'temp' does not exist on timeseries server.");
+        expect(response.entity.message).toBe( "Data file for dataset 'not-a-dataset', variable 'uint16_variable' does not exist on timeseries server.");
     });
     
 });
@@ -214,7 +214,7 @@ describe("When a values POST request specifies a nonexistent variable for datase
 		    method: 'POST',
 		    path: timeseriesServiceBase + '/timeseries',
 		    entity: {
-		    	datasetId: '5x5x5',
+		    	datasetId: 'annual_5x5x5_dataset',
 		    	variableName: 'not-a-variable',
 		    	boundaryGeometry: {
 		    		type: 'Point',
@@ -235,7 +235,7 @@ describe("When a values POST request specifies a nonexistent variable for datase
     });
 
     it ('Error message should be that dataset file does not exist', async function() {
-        expect(response.entity.message).toBe("Data file for dataset '5x5x5', variable 'not-a-variable' does not exist on timeseries server.");
+        expect(response.entity.message).toBe("Data file for dataset 'annual_5x5x5_dataset', variable 'not-a-variable' does not exist on timeseries server.");
     });
     
 })
@@ -249,8 +249,8 @@ describe("When a values POST request specifies a range start outside of dataset 
 		    method: 'POST',
 		    path: timeseriesServiceBase + '/timeseries',
 		    entity: {
-		    	datasetId: '5x5x5',
-		    	variableName: 'temp',
+		    	datasetId: 'annual_5x5x5_dataset',
+		    	variableName: 'uint16_variable',
 		    	boundaryGeometry: {
 		    		type: 'Point',
 		    		coordinates: [-123, 45]
@@ -284,8 +284,8 @@ describe("When a values POST request specifies a range end outside of dataset co
 		    method: 'POST',
 		    path: timeseriesServiceBase + '/timeseries',
 		    entity: {
-		    	datasetId: '5x5x5',
-		    	variableName: 'temp',
+		    	datasetId: 'annual_5x5x5_dataset',
+		    	variableName: 'uint16_variable',
 		    	boundaryGeometry: {
 		    		type: 'Point',
 		    		coordinates: [-123, 45]
@@ -321,8 +321,8 @@ describe("When a values POST request specifies a range end before range start", 
 		    method: 'POST',
 		    path: timeseriesServiceBase + '/timeseries',
 		    entity: {
-		    	datasetId: '5x5x5',
-		    	variableName: 'temp',
+		    	datasetId: 'annual_5x5x5_dataset',
+		    	variableName: 'uint16_variable',
 		    	boundaryGeometry: {
 		    		type: 'Point',
 		    		coordinates: [-123, 45]

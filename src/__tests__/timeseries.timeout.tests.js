@@ -12,7 +12,7 @@ describe("When a GET request specifies a timeout shorter than required when requ
 	beforeAll(async () => {
 		response = await callRESTService({
 		    method: 'GET',
-		    path: timeseriesServiceBase + '/timeseries/5x5x5/temp?longitude=-123.0&latitude=45.0&start=0&end=4&timeout=1'
+		    path: timeseriesServiceBase + '/timeseries/annual_5x5x5_dataset/uint16_variable?longitude=-123.0&latitude=45.0&start=0&end=4&timeout=1'
 		});
     });
 
@@ -38,8 +38,8 @@ describe("When a POST request specifies in the query line a timeout shorter than
 		    method: 'POST',
 		    path: timeseriesServiceBase + '/timeseries?timeout=1',
 		    entity: {
-		    	datasetId: '5x5x5',
-		    	variableName: 'temp',
+		    	datasetId: 'annual_5x5x5_dataset',
+		    	variableName: 'uint16_variable',
 		    	boundaryGeometry: {
     		    "type": "Polygon",
     		    "coordinates": [[
@@ -78,8 +78,8 @@ describe("When a POST request specifies in the body a timeout shorter than requi
 		    method: 'POST',
 		    path: timeseriesServiceBase + '/timeseries',
 		    entity: {
-		    	datasetId: '5x5x5',
-		    	variableName: 'temp',
+		    	datasetId: 'annual_5x5x5_dataset',
+		    	variableName: 'uint16_variable',
 		    	boundaryGeometry: {
     		    "type": "Polygon",
     		    "coordinates": [[

@@ -13,7 +13,7 @@ describe("When a values POST request uses the query line only to request first p
 	beforeAll(async () => {
 		response = await callRESTService({
 		    method: 'POST',
-		    path: timeseriesServiceBase + '/timeseries/5x5x5/temp?longitude=-123.0&latitude=45.0&start=0&end=4',
+		    path: timeseriesServiceBase + '/timeseries/annual_5x5x5_dataset/uint16_variable?longitude=-123.0&latitude=45.0&start=0&end=4',
 		    entity: {}
 		});
     });
@@ -23,11 +23,11 @@ describe("When a values POST request uses the query line only to request first p
     });
 
     it ('Dataset id should match that in the request', async function() {
-        expect(response.entity.datasetId).toBe('5x5x5');
+        expect(response.entity.datasetId).toBe('annual_5x5x5_dataset');
     });
 
 	it ('Variable name should match that in the request', async function() {
-        expect(response.entity.variableName).toBe('temp');
+        expect(response.entity.variableName).toBe('uint16_variable');
     });
 
 	it ('Boundary geometry type should be point', async function() {
@@ -56,9 +56,9 @@ describe("When a values POST request provides the dataset id both in the request
 	beforeAll(async () => {
 		response = await callRESTService({
 		    method: 'POST',
-		    path: timeseriesServiceBase + '/timeseries/not-a-dataset/temp?longitude=-123.0&latitude=45.0&start=0&end=4',
+		    path: timeseriesServiceBase + '/timeseries/not-a-dataset/uint16_variable?longitude=-123.0&latitude=45.0&start=0&end=4',
 		    entity: {
-		    	datasetId: '5x5x5'
+		    	datasetId: 'annual_5x5x5_dataset'
 		    }
 		});
     });
@@ -68,7 +68,7 @@ describe("When a values POST request provides the dataset id both in the request
     });
 
     it ('Dataset id in response should match that in the request body', async function() {
-        expect(response.entity.datasetId).toBe('5x5x5');
+        expect(response.entity.datasetId).toBe('annual_5x5x5_dataset');
     });
 
 });
@@ -80,9 +80,9 @@ describe("When a values POST request provides the variable name both in the requ
 	beforeAll(async () => {
 		response = await callRESTService({
 		    method: 'POST',
-		    path: timeseriesServiceBase + '/timeseries/5x5x5/not-a-variable?longitude=-123.0&latitude=45.0&start=0&end=4',
+		    path: timeseriesServiceBase + '/timeseries/annual_5x5x5_dataset/not-a-variable?longitude=-123.0&latitude=45.0&start=0&end=4',
 		    entity: {
-		    	variableName: 'temp'
+		    	variableName: 'uint16_variable'
 		    }
 		});
     });
@@ -92,7 +92,7 @@ describe("When a values POST request provides the variable name both in the requ
     });
 
     it ('Variable name in response should match that in the request body', async function() {
-        expect(response.entity.variableName).toBe('temp');
+        expect(response.entity.variableName).toBe('uint16_variable');
     });
 
 });
@@ -104,7 +104,7 @@ describe("When a values POST request provides the coordinates both in the reques
 	beforeAll(async () => {
 		response = await callRESTService({
 		    method: 'POST',
-		    path: timeseriesServiceBase + '/timeseries/5x5x5/temp?longitude=0.0&latitude=0.0&start=0&end=4',
+		    path: timeseriesServiceBase + '/timeseries/annual_5x5x5_dataset/uint16_variable?longitude=0.0&latitude=0.0&start=0&end=4',
 		    entity: {
 		    	boundaryGeometry: {
 		    		type: 'Point',
@@ -131,7 +131,7 @@ describe("When a values POST request provides the band range both in the request
 	beforeAll(async () => {
 		response = await callRESTService({
 		    method: 'POST',
-		    path: timeseriesServiceBase + '/timeseries/5x5x5/temp?longitude=-123.0&latitude=45.0&start=5&end=10',
+		    path: timeseriesServiceBase + '/timeseries/annual_5x5x5_dataset/uint16_variable?longitude=-123.0&latitude=45.0&start=5&end=10',
 		    entity: {
 		    	start: 0,
 		    	end: 4

@@ -12,7 +12,7 @@ describe("When the time resolution is index, time zero is not specified, and sec
 	beforeAll(async () => {
 		response = await callRESTService({
 		    method: 'GET',
-		    path: timeseriesServiceBase + '/timeseries/5x5x5/temp?longitude=-123.0&latitude=45.0&timeResolution=index&start=1&end=3'
+		    path: timeseriesServiceBase + '/timeseries/annual_5x5x5_dataset/uint16_variable?longitude=-123.0&latitude=45.0&timeResolution=index&start=1&end=3'
 		});
     });
 

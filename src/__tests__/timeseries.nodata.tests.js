@@ -12,7 +12,7 @@ describe("When a GET request selects a pixel with all nodata values and sets nod
 	beforeAll(async () => {
 		response = await callRESTService({
 		    method: 'GET',
-		    path: timeseriesServiceBase + '/timeseries/5x5x5/temp?longitude=-119.0&latitude=48.0&start=0&end=4&csv=true&array=true&nodata=ignore'
+		    path: timeseriesServiceBase + '/timeseries/annual_5x5x5_dataset/uint16_variable?longitude=-119.0&latitude=48.0&start=0&end=4&csv=true&array=true&nodata=ignore'
 		});
     });
 
@@ -34,12 +34,12 @@ describe("When a GET request selects a pixel with all nodata values and sets nod
 
     it ('Csv should contain the nodata values', async function() {
         expect(response.entity.csv).toEqual( 
-        		"index, temp"	+ "\n" +
-        		"0, 65535"		+ "\n" +
-        		"1, 65535"		+ "\n" +
-        		"2, 65535"		+ "\n" +
-        		"3, 65535"		+ "\n" +
-    			"4, 65535"		+ "\n"
+        		"index, uint16_variable"	+ "\n" +
+        		"0, 65535"					+ "\n" +
+        		"1, 65535"					+ "\n" +
+        		"2, 65535"					+ "\n" +
+        		"3, 65535"					+ "\n" +
+    			"4, 65535"					+ "\n"
 		);
     });
 });
@@ -52,7 +52,7 @@ describe("When a GET request selects a pixel with one nodata value and sets noda
 	beforeAll(async () => {
 		response = await callRESTService({
 		    method: 'GET',
-		    path: timeseriesServiceBase + '/timeseries/5x5x5/temp?longitude=-119.0&latitude=47.0&start=0&end=4&csv=true&array=true&nodata=ignore'
+		    path: timeseriesServiceBase + '/timeseries/annual_5x5x5_dataset/uint16_variable?longitude=-119.0&latitude=47.0&start=0&end=4&csv=true&array=true&nodata=ignore'
 		});
     });
 
@@ -74,12 +74,12 @@ describe("When a GET request selects a pixel with one nodata value and sets noda
 
     it ('Csv should contain the nodata value', async function() {
         expect(response.entity.csv).toEqual( 
-        		"index, temp"	+ "\n" +
-        		"0, 124"		+ "\n" +
-        		"1, 224"		+ "\n" +
-        		"2, 65535"		+ "\n" +
-        		"3, 424"		+ "\n" +
-    			"4, 524"		+ "\n"
+        		"index, uint16_variable"	+ "\n" +
+        		"0, 124"					+ "\n" +
+        		"1, 224"					+ "\n" +
+        		"2, 65535"					+ "\n" +
+        		"3, 424"					+ "\n" +
+    			"4, 524"					+ "\n"
 		);
     });
 });
@@ -91,7 +91,7 @@ describe("When a GET request selects a pixel with one nodata value and sets noda
 	beforeAll(async () => {
 		response = await callRESTService({
 		    method: 'GET',
-		    path: timeseriesServiceBase + '/timeseries/5x5x5/temp?longitude=-119.0&latitude=47.0&start=0&end=4&csv=true&array=true&nodata=1000'
+		    path: timeseriesServiceBase + '/timeseries/annual_5x5x5_dataset/uint16_variable?longitude=-119.0&latitude=47.0&start=0&end=4&csv=true&array=true&nodata=1000'
 		});
     });
 
@@ -113,12 +113,12 @@ describe("When a GET request selects a pixel with one nodata value and sets noda
 
     it ('Csv should contain the actual nodata value', async function() {
         expect(response.entity.csv).toEqual( 
-        		"index, temp"	+ "\n" +
-        		"0, 124"		+ "\n" +
-        		"1, 224"		+ "\n" +
-        		"2, 65535"		+ "\n" +
-        		"3, 424"		+ "\n" +
-    			"4, 524"		+ "\n"
+        		"index, uint16_variable"	+ "\n" +
+        		"0, 124"					+ "\n" +
+        		"1, 224"					+ "\n" +
+        		"2, 65535"					+ "\n" +
+        		"3, 424"					+ "\n" +
+    			"4, 524"					+ "\n"
 		);
     });
 });
@@ -130,7 +130,7 @@ describe("When a GET request selects a pixel with no nodata value but sets nodat
 	beforeAll(async () => {
 		response = await callRESTService({
 		    method: 'GET',
-		    path: timeseriesServiceBase + '/timeseries/5x5x5/temp?longitude=-119.0&latitude=46.0&start=0&end=4&csv=true&array=true&nodata=314'
+		    path: timeseriesServiceBase + '/timeseries/annual_5x5x5_dataset/uint16_variable?longitude=-119.0&latitude=46.0&start=0&end=4&csv=true&array=true&nodata=314'
 		});
     });
 
@@ -152,12 +152,12 @@ describe("When a GET request selects a pixel with no nodata value but sets nodat
 
     it ('Csv should contain the nodata value specified in the request', async function() {
         expect(response.entity.csv).toEqual( 
-        		"index, temp"	+ "\n" +
-        		"0, 114"		+ "\n" +
-        		"1, 214"		+ "\n" +
-        		"2, 314"		+ "\n" +
-        		"3, 414"		+ "\n" +
-    			"4, 514"		+ "\n"
+        		"index, uint16_variable"	+ "\n" +
+        		"0, 114"					+ "\n" +
+        		"1, 214"					+ "\n" +
+        		"2, 314"					+ "\n" +
+        		"3, 414"					+ "\n" +
+    			"4, 514"					+ "\n"
 		);
     });
 });
@@ -170,7 +170,7 @@ describe("When a GET request selects a pixel with one nodata value and accepts d
 	beforeAll(async () => {
 		response = await callRESTService({
 		    method: 'GET',
-		    path: timeseriesServiceBase + '/timeseries/5x5x5/temp?longitude=-119.0&latitude=47.0&start=0&end=4&csv=true&array=true'
+		    path: timeseriesServiceBase + '/timeseries/annual_5x5x5_dataset/uint16_variable?longitude=-119.0&latitude=47.0&start=0&end=4&csv=true&array=true'
 		});
     });
 
@@ -192,12 +192,12 @@ describe("When a GET request selects a pixel with one nodata value and accepts d
 
     it ('Csv should contain the actual nodata value', async function() {
         expect(response.entity.csv).toEqual( 
-        		"index, temp"	+ "\n" +
-        		"0, 124"		+ "\n" +
-        		"1, 224"		+ "\n" +
-        		"2, 65535"		+ "\n" +
-        		"3, 424"		+ "\n" +
-    			"4, 524"		+ "\n"
+        		"index, uint16_variable"	+ "\n" +
+        		"0, 124"					+ "\n" +
+        		"1, 224"					+ "\n" +
+        		"2, 65535"					+ "\n" +
+        		"3, 424"					+ "\n" +
+    			"4, 524"					+ "\n"
 		);
     });
 });
@@ -210,7 +210,7 @@ describe("When a GET request selects a pixel with one nodata value and explicitl
 	beforeAll(async () => {
 		response = await callRESTService({
 		    method: 'GET',
-		    path: timeseriesServiceBase + '/timeseries/5x5x5/temp?longitude=-119.0&latitude=47.0&start=0&end=4&csv=true&array=true&nodata=detect'
+		    path: timeseriesServiceBase + '/timeseries/annual_5x5x5_dataset/uint16_variable?longitude=-119.0&latitude=47.0&start=0&end=4&csv=true&array=true&nodata=detect'
 		});
     });
 
@@ -232,12 +232,12 @@ describe("When a GET request selects a pixel with one nodata value and explicitl
 
     it ('Csv should contain the actual nodata value', async function() {
         expect(response.entity.csv).toEqual( 
-        		"index, temp"	+ "\n" +
-        		"0, 124"		+ "\n" +
-        		"1, 224"		+ "\n" +
-        		"2, 65535"		+ "\n" +
-        		"3, 424"		+ "\n" +
-    			"4, 524"		+ "\n"
+        		"index, uint16_variable"	+ "\n" +
+        		"0, 124"					+ "\n" +
+        		"1, 224"					+ "\n" +
+        		"2, 65535"					+ "\n" +
+        		"3, 424"					+ "\n" +
+    			"4, 524"					+ "\n"
 		);
     });
 })

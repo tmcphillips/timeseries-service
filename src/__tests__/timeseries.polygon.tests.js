@@ -14,8 +14,8 @@ describe("When a GET request selects from a region exactly covering a 2x2 pixel 
 		    method: 'POST',
 		    path: timeseriesServiceBase + '/timeseries',
 		    entity: {
-		    	datasetId: '5x5x5',
-		    	variableName: 'temp',
+		    	datasetId: 'annual_5x5x5_dataset',
+		    	variableName: 'uint16_variable',
 		    	boundaryGeometry: {
     		    "type": "Polygon",
     		    "coordinates": [[
@@ -46,12 +46,12 @@ describe("When a GET request selects from a region exactly covering a 2x2 pixel 
     
     it ('The data column should comprise the average of four pixels in each band', async function() {
         expect(response.entity.csv).toEqual( 
-        		"index, temp"	+ "\n" +
-        		"0, 105.500"	+ "\n" +
-        		"1, 205.500"	+ "\n" +
-        		"2, 305.500"	+ "\n" +
-        		"3, 405.500"	+ "\n" +
-    			"4, 505.500"	+ "\n"
+        		"index, uint16_variable"	+ "\n" +
+        		"0, 105.500"				+ "\n" +
+        		"1, 205.500"				+ "\n" +
+        		"2, 305.500"				+ "\n" +
+        		"3, 405.500"				+ "\n" +
+    			"4, 505.500"				+ "\n"
 		);
     });
 });
@@ -65,8 +65,8 @@ describe("When a GET request selects from a region of zero area using a polygon 
 		    method: 'POST',
 		    path: timeseriesServiceBase + '/timeseries',
 		    entity: {
-		    	datasetId: '5x5x5',
-		    	variableName: 'temp',
+		    	datasetId: 'annual_5x5x5_dataset',
+		    	variableName: 'uint16_variable',
 		    	boundaryGeometry: {
     		    "type": "Polygon",
     		    "coordinates": [[
@@ -105,8 +105,8 @@ describe("When a GET request selects from a 2x2 pixel region that intersects a 2
 		    method: 'POST',
 		    path: timeseriesServiceBase + '/timeseries',
 		    entity: {
-		    	datasetId: '5x5x5',
-		    	variableName: 'temp',
+		    	datasetId: 'annual_5x5x5_dataset',
+		    	variableName: 'uint16_variable',
 		    	boundaryGeometry: {
     		    "type": "Polygon",
     		    "coordinates": [[
@@ -137,12 +137,12 @@ describe("When a GET request selects from a 2x2 pixel region that intersects a 2
     
     it ('The data column should comprise the average of the two pixels intersection of polygon and dataset', async function() {
         expect(response.entity.csv).toEqual( 
-        		"index, temp"	+ "\n" +
-        		"0, 100.500"	+ "\n" +
-        		"1, 200.500"	+ "\n" +
-        		"2, 300.500"	+ "\n" +
-        		"3, 400.500"	+ "\n" +
-    			"4, 500.500"	+ "\n"
+        		"index, uint16_variable"	+ "\n" +
+        		"0, 100.500"				+ "\n" +
+        		"1, 200.500"				+ "\n" +
+        		"2, 300.500"				+ "\n" +
+        		"3, 400.500"				+ "\n" +
+    			"4, 500.500"				+ "\n"
 		);
     });
 });
@@ -156,8 +156,8 @@ describe("When a GET request selects a region just outside coverage of dataset",
 		    method: 'POST',
 		    path: timeseriesServiceBase + '/timeseries',
 		    entity: {
-		    	datasetId: '5x5x5',
-		    	variableName: 'temp',
+		    	datasetId: 'annual_5x5x5_dataset',
+		    	variableName: 'uint16_variable',
 		    	boundaryGeometry: {
     		    "type": "Polygon",
     		    "coordinates": [[
@@ -196,8 +196,8 @@ describe("When a GET request selects exactly the top-left corner pixel", async (
 		    method: 'POST',
 		    path: timeseriesServiceBase + '/timeseries',
 		    entity: {
-		    	datasetId: '5x5x5',
-		    	variableName: 'temp',
+		    	datasetId: 'annual_5x5x5_dataset',
+		    	variableName: 'uint16_variable',
 		    	boundaryGeometry: {
     		    "type": "Polygon",
     		    "coordinates": [[
@@ -228,12 +228,12 @@ describe("When a GET request selects exactly the top-left corner pixel", async (
     
     it ('The data column should comprise the values of the top-left pixels in each band', async function() {
         expect(response.entity.csv).toEqual( 
-        		"index, temp"	+ "\n" +
-        		"0, 100.000"	+ "\n" +
-        		"1, 200.000"	+ "\n" +
-        		"2, 300.000"	+ "\n" +
-        		"3, 400.000"	+ "\n" +
-    			"4, 500.000"	+ "\n"
+        		"index, uint16_variable"	+ "\n" +
+        		"0, 100.000"				+ "\n" +
+        		"1, 200.000"				+ "\n" +
+        		"2, 300.000"				+ "\n" +
+        		"3, 400.000"				+ "\n" +
+    			"4, 500.000"				+ "\n"
 		);
     });
 });
@@ -247,8 +247,8 @@ describe("When a GET request selects 1/4 of the top-left corner pixel", async ()
 		    method: 'POST',
 		    path: timeseriesServiceBase + '/timeseries',
 		    entity: {
-		    	datasetId: '5x5x5',
-		    	variableName: 'temp',
+		    	datasetId: 'annual_5x5x5_dataset',
+		    	variableName: 'uint16_variable',
 		    	boundaryGeometry: {
     		    "type": "Polygon",
     		    "coordinates": [[
@@ -279,12 +279,12 @@ describe("When a GET request selects 1/4 of the top-left corner pixel", async ()
     
     it ('The data column should comprise the values of the top-left pixels in each band', async function() {
         expect(response.entity.csv).toEqual( 
-        		"index, temp"	+ "\n" +
-        		"0, 100.000"	+ "\n" +
-        		"1, 200.000"	+ "\n" +
-        		"2, 300.000"	+ "\n" +
-        		"3, 400.000"	+ "\n" +
-    			"4, 500.000"	+ "\n"
+        		"index, uint16_variable"	+ "\n" +
+        		"0, 100.000"				+ "\n" +
+        		"1, 200.000"				+ "\n" +
+        		"2, 300.000"				+ "\n" +
+        		"3, 400.000"				+ "\n" +
+    			"4, 500.000"				+ "\n"
 		);
     });
 });
@@ -299,8 +299,8 @@ describe("When a GET request selects from a region exactly covering the 2x2 pixe
 		    method: 'POST',
 		    path: timeseriesServiceBase + '/timeseries',
 		    entity: {
-		    	datasetId: '5x5x5',
-		    	variableName: 'temp',
+		    	datasetId: 'annual_5x5x5_dataset',
+		    	variableName: 'uint16_variable',
 		    	boundaryGeometry: {
     		    "type": "Polygon",
     		    "coordinates": [[
@@ -331,12 +331,12 @@ describe("When a GET request selects from a region exactly covering the 2x2 pixe
     
     it ('The data column should comprise the average of four pixels in each band', async function() {
         expect(response.entity.csv).toEqual( 
-        		"index, temp"	+ "\n" +
-        		"0, 135.500"	+ "\n" +
-        		"1, 235.500"	+ "\n" +
-        		"2, 335.500"	+ "\n" +
-        		"3, 435.500"	+ "\n" +
-    			"4, 535.500"	+ "\n"
+        		"index, uint16_variable"	+ "\n" +
+        		"0, 135.500"				+ "\n" +
+        		"1, 235.500"				+ "\n" +
+        		"2, 335.500"				+ "\n" +
+        		"3, 435.500"				+ "\n" +
+    			"4, 535.500"				+ "\n"
 		);
     });
 });
@@ -350,8 +350,8 @@ describe("When a GET request selects from a region exactly covering the 2x2 pixe
 		    method: 'POST',
 		    path: timeseriesServiceBase + '/timeseries',
 		    entity: {
-		    	datasetId: '5x5x5',
-		    	variableName: 'temp',
+		    	datasetId: 'annual_5x5x5_dataset',
+		    	variableName: 'uint16_variable',
 		    	boundaryGeometry: {
     		    "type": "Polygon",
     		    "coordinates": [[
@@ -382,12 +382,12 @@ describe("When a GET request selects from a region exactly covering the 2x2 pixe
     
     it ('The data column should comprise the average of four pixels in each band', async function() {
         expect(response.entity.csv).toEqual( 
-        		"index, temp"	+ "\n" +
-        		"0, 140.000"	+ "\n" +
-        		"1, 240.000"	+ "\n" +
-        		"2, 340.000"	+ "\n" +
-        		"3, 440.000"	+ "\n" +
-    			"4, 540.000"	+ "\n"
+        		"index, uint16_variable"	+ "\n" +
+        		"0, 140.000"				+ "\n" +
+        		"1, 240.000"				+ "\n" +
+        		"2, 340.000"				+ "\n" +
+        		"3, 440.000"				+ "\n" +
+    			"4, 540.000"				+ "\n"
 		);
     });
 });
@@ -401,8 +401,8 @@ describe("When a GET request selects from a region exactly covering the 2x2 pixe
 		    method: 'POST',
 		    path: timeseriesServiceBase + '/timeseries',
 		    entity: {
-		    	datasetId: '5x5x5',
-		    	variableName: 'temp',
+		    	datasetId: 'annual_5x5x5_dataset',
+		    	variableName: 'uint16_variable',
 		    	boundaryGeometry: {
     		    "type": "Polygon",
     		    "coordinates": [[
@@ -433,12 +433,12 @@ describe("When a GET request selects from a region exactly covering the 2x2 pixe
     
     it ('The data column should comprise the average of four pixels in each band', async function() {
         expect(response.entity.csv).toEqual( 
-        		"index, temp"	+ "\n" +
-        		"0, 126.667"	+ "\n" +
-        		"1, 226.667"	+ "\n" +
-        		"2, 328.000"	+ "\n" +
-        		"3, 426.667"	+ "\n" +
-    			"4, 526.667"	+ "\n"
+        		"index, uint16_variable"	+ "\n" +
+        		"0, 126.667"				+ "\n" +
+        		"1, 226.667"				+ "\n" +
+        		"2, 328.000"				+ "\n" +
+        		"3, 426.667"				+ "\n" +
+    			"4, 526.667"				+ "\n"
 		);
     });
 });

@@ -12,7 +12,7 @@ describe("When a GET request selects first pixel of each band in 5x5x5 data cube
 	beforeAll(async () => {
 		response = await callRESTService({
 		    method: 'GET',
-		    path: timeseriesServiceBase + '/timeseries/5x5x5/temp?longitude=-123.0&latitude=45.0&start=0&end=4&csv=true&array=false'
+		    path: timeseriesServiceBase + '/timeseries/annual_5x5x5_dataset/uint16_variable?longitude=-123.0&latitude=45.0&start=0&end=4&csv=true&array=false'
 		});
     });
 
@@ -26,12 +26,12 @@ describe("When a GET request selects first pixel of each band in 5x5x5 data cube
     
     it ('Csv should be present', async function() {
         expect(response.entity.csv).toEqual( 
-        		"index, temp"	+ "\n" +
-        		"0, 100"		+ "\n" +
-        		"1, 200"		+ "\n" +
-        		"2, 300"		+ "\n" +
-        		"3, 400"		+ "\n" +
-    			"4, 500"		+ "\n"
+        		"index, uint16_variable"	+ "\n" +
+        		"0, 100"					+ "\n" +
+        		"1, 200"					+ "\n" +
+        		"2, 300"					+ "\n" +
+        		"3, 400"					+ "\n" +
+    			"4, 500"					+ "\n"
 		);
     });
 
@@ -44,7 +44,7 @@ describe("When a GET request selects first pixel of each band in 5x5x5 data cube
 	beforeAll(async () => {
 		response = await callRESTService({
 		    method: 'GET',
-		    path: timeseriesServiceBase + '/timeseries/5x5x5/temp?longitude=-123.0&latitude=45.0&start=0&end=4&csv=false&array=true'
+		    path: timeseriesServiceBase + '/timeseries/annual_5x5x5_dataset/uint16_variable?longitude=-123.0&latitude=45.0&start=0&end=4&csv=false&array=true'
 		});
     });
 
@@ -72,8 +72,8 @@ describe("When a POST request selects first pixel of each band in 5x5x5 data cub
 		    method: 'POST',
 		    path: timeseriesServiceBase + '/timeseries',
 		    entity: {
-		    	datasetId: '5x5x5',
-		    	variableName: 'temp',
+		    	datasetId: 'annual_5x5x5_dataset',
+		    	variableName: 'uint16_variable',
 		    	boundaryGeometry: {
 		    		type: 'Point',
 		    		coordinates: [-123, 45]
@@ -98,12 +98,12 @@ describe("When a POST request selects first pixel of each band in 5x5x5 data cub
     
     it ('Csv should be present', async function() {
         expect(response.entity.csv).toEqual( 
-        		"index, temp"	+ "\n" +
-        		"0, 100"		+ "\n" +
-        		"1, 200"		+ "\n" +
-        		"2, 300"		+ "\n" +
-        		"3, 400"		+ "\n" +
-    			"4, 500"		+ "\n"
+        		"index, uint16_variable"	+ "\n" +
+        		"0, 100"					+ "\n" +
+        		"1, 200"					+ "\n" +
+        		"2, 300"					+ "\n" +
+        		"3, 400"					+ "\n" +
+    			"4, 500"					+ "\n"
 		);
     });
 
@@ -119,8 +119,8 @@ describe("When a POST request selects first pixel of each band in 5x5x5 data cub
 		    method: 'POST',
 		    path: timeseriesServiceBase + '/timeseries',
 		    entity: {
-		    	datasetId: '5x5x5',
-		    	variableName: 'temp',
+		    	datasetId: 'annual_5x5x5_dataset',
+		    	variableName: 'uint16_variable',
 		    	boundaryGeometry: {
 		    		type: 'Point',
 		    		coordinates: [-123, 45]
@@ -156,7 +156,7 @@ describe("When a GET request selects first pixel of each band in 5x5x5 data cube
 	beforeAll(async () => {
 		response = await callRESTService({
 		    method: 'GET',
-		    path: timeseriesServiceBase + '/timeseries/5x5x5/temp?longitude=-123.0&latitude=45.0&start=1&end=5&csv=true&timeResolution=year'
+		    path: timeseriesServiceBase + '/timeseries/annual_5x5x5_dataset/uint16_variable?longitude=-123.0&latitude=45.0&start=1&end=5&csv=true&timeResolution=year'
 		});
     });
 
@@ -176,12 +176,12 @@ describe("When a GET request selects first pixel of each band in 5x5x5 data cube
         
     it ('Csv should be present', async function() {
         expect(response.entity.csv).toEqual( 
-        		"year, temp"	+ "\n" +
-        		"1, 100"		+ "\n" +
-        		"2, 200"		+ "\n" +
-        		"3, 300"		+ "\n" +
-        		"4, 400"		+ "\n" +
-    			"5, 500"		+ "\n"
+        		"year, uint16_variable"	+ "\n" +
+        		"1, 100"				+ "\n" +
+        		"2, 200"				+ "\n" +
+        		"3, 300"				+ "\n" +
+        		"4, 400"				+ "\n" +
+    			"5, 500"				+ "\n"
 		);
     });
 })
@@ -193,7 +193,7 @@ describe("When a GET request selects first pixel of each band in 5x5x5 data cube
 	beforeAll(async () => {
 		response = await callRESTService({
 		    method: 'GET',
-		    path: timeseriesServiceBase + '/timeseries/5x5x5/temp?longitude=-123.0&latitude=45.0&csv=true&timeResolution=year'
+		    path: timeseriesServiceBase + '/timeseries/annual_5x5x5_dataset/uint16_variable?longitude=-123.0&latitude=45.0&csv=true&timeResolution=year'
 		});
     });
 
@@ -213,12 +213,12 @@ describe("When a GET request selects first pixel of each band in 5x5x5 data cube
     
     it ('Csv should should represent entire time range in data set starting at default year of 1', async function() {
         expect(response.entity.csv).toEqual( 
-        		"year, temp"	+ "\n" +
-        		"1, 100"		+ "\n" +
-        		"2, 200"		+ "\n" +
-        		"3, 300"		+ "\n" +
-        		"4, 400"		+ "\n" +
-    			"5, 500"		+ "\n"
+        		"year, uint16_variable"	+ "\n" +
+        		"1, 100"				+ "\n" +
+        		"2, 200"				+ "\n" +
+        		"3, 300"				+ "\n" +
+        		"4, 400"				+ "\n" +
+    			"5, 500"				+ "\n"
 		);
     });
 })
@@ -230,7 +230,7 @@ describe("When a GET request selects first pixel of each band in 5x5x5 data cube
 	beforeAll(async () => {
 		response = await callRESTService({
 		    method: 'GET',
-		    path: timeseriesServiceBase + '/timeseries/5x5x5/temp?longitude=-123.0&latitude=45.0&csv=true&timeResolution=year&timeZero=501'
+		    path: timeseriesServiceBase + '/timeseries/annual_5x5x5_dataset/uint16_variable?longitude=-123.0&latitude=45.0&csv=true&timeResolution=year&timeZero=501'
 		});
     });
 
@@ -250,12 +250,12 @@ describe("When a GET request selects first pixel of each band in 5x5x5 data cube
     
     it ('Csv should be present', async function() {
         expect(response.entity.csv).toEqual( 
-        		"year, temp"	+ "\n" +
-        		"501, 100"		+ "\n" +
-        		"502, 200"		+ "\n" +
-        		"503, 300"		+ "\n" +
-        		"504, 400"		+ "\n" +
-    			"505, 500"		+ "\n"
+        		"year, uint16_variable"	+ "\n" +
+        		"501, 100"				+ "\n" +
+        		"502, 200"				+ "\n" +
+        		"503, 300"				+ "\n" +
+        		"504, 400"				+ "\n" +
+    			"505, 500"				+ "\n"
 		);
     });
 })
@@ -267,7 +267,7 @@ describe("When a GET request selects first pixel of 5x5x5 data cube in units of 
 	beforeAll(async () => {
 		response = await callRESTService({
 		    method: 'GET',
-		    path: timeseriesServiceBase + '/timeseries/5x5x5/temp?longitude=-123.0&latitude=45.0&csv=true&timeResolution=year&timeZero=501&start=503&end=510'
+		    path: timeseriesServiceBase + '/timeseries/annual_5x5x5_dataset/uint16_variable?longitude=-123.0&latitude=45.0&csv=true&timeResolution=year&timeZero=501&start=503&end=510'
 		});
     });
 
@@ -287,10 +287,10 @@ describe("When a GET request selects first pixel of 5x5x5 data cube in units of 
   
     it ('Csv should be present', async function() {
         expect(response.entity.csv).toEqual( 
-        		"year, temp"	+ "\n" +
-        		"503, 300"		+ "\n" +
-        		"504, 400"		+ "\n" +
-    			"505, 500"		+ "\n"
+        		"year, uint16_variable"	+ "\n" +
+        		"503, 300"				+ "\n" +
+        		"504, 400"				+ "\n" +
+    			"505, 500"				+ "\n"
 		);
     });
 })
@@ -302,7 +302,7 @@ describe("When a GET request selects first pixel of 5x5x5 data cube in units of 
 	beforeAll(async () => {
 		response = await callRESTService({
 		    method: 'GET',
-		    path: timeseriesServiceBase + '/timeseries/5x5x5/temp?longitude=-123.0&latitude=45.0&csv=true&timeResolution=year&timeZero=501&end=503'
+		    path: timeseriesServiceBase + '/timeseries/annual_5x5x5_dataset/uint16_variable?longitude=-123.0&latitude=45.0&csv=true&timeResolution=year&timeZero=501&end=503'
 		});
     });
 
@@ -322,10 +322,10 @@ describe("When a GET request selects first pixel of 5x5x5 data cube in units of 
 
     it ('Csv should be present', async function() {
         expect(response.entity.csv).toEqual( 
-        		"year, temp"	+ "\n" +
-        		"501, 100"		+ "\n" +
-        		"502, 200"		+ "\n" +
-    			"503, 300"		+ "\n"
+        		"year, uint16_variable"	+ "\n" +
+        		"501, 100"				+ "\n" +
+        		"502, 200"				+ "\n" +
+    			"503, 300"				+ "\n"
 		);
     });
 })
