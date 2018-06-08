@@ -43,7 +43,7 @@ public class TimeseriesService implements InitializingBean {
     private long timeoutMilliseconds;
     
     public void afterPropertiesSet() {
-    	
+    			
     	valuesPathTemplate = new UriTemplate(valuesDataPath);
     	
     	if (uncertaintyDataPath.trim().length() > 0) {
@@ -90,7 +90,7 @@ public class TimeseriesService implements InitializingBean {
         
         String[] fullTimeSeries = getFullTimeseries(request, dataFile);
         IndexRange responseRange = timeScale.getResponseIndexRange(request.getStart(), request.getEnd(), fullTimeSeries.length);
-        Number[] valuesInRequestedRange = getRangeOfStringValuesAsNumbers(fullTimeSeries, responseRange.startIndex, responseRange.endIndex);        
+        Number[] valuesInRequestedRange = getRangeOfStringValuesAsNumbers(fullTimeSeries, responseRange.startIndex, responseRange.endIndex, nodataValue);      
         boolean containsNodata = containsNodataValue(nodataValue, valuesInRequestedRange);
         Number[] uncertainties = getUncertaintiesInRange(request, uncertaintiesFile, responseRange.startIndex, responseRange.endIndex);
                 
@@ -140,7 +140,7 @@ public class TimeseriesService implements InitializingBean {
 	        if (startIndex > indexOfLastUncertainty || endIndex > indexOfLastUncertainty) {
 	        	throw new InvalidDataException("Uncertainty file does not cover the entire requested timeseries");
 	        }
-	        return getRangeOfStringValuesAsNumbers(allUncertainties, startIndex, endIndex);        			
+	        return getRangeOfStringValuesAsNumbers(allUncertainties, startIndex, endIndex, null);        			
 		}
 		
 		return null;
@@ -149,7 +149,11 @@ public class TimeseriesService implements InitializingBean {
 	private Number[] addArrays(Number[] values, Number[] delta, int sign) {
 		Number[] sum = new Number[values.length];
 		for (int i = 0; i < values.length; ++i) {
-			sum[i] = values[i].doubleValue() + sign * delta[i].doubleValue();
+			if (values[i] == null ) {
+				sum[i] = null;
+			} else { 
+				sum[i] = values[i].doubleValue() + sign * delta[i].doubleValue();
+			}
 		}
 		return sum;
 	}
@@ -220,11 +224,11 @@ public class TimeseriesService implements InitializingBean {
 	        }
 	        
 	        String nodataValueString = null;
-	        Pattern pattern = Pattern.compile("NoData Value=(-?[0-9.]+)");
+	        Pattern pattern = Pattern.compile("NoData Value=(((-?[0-9.]+))|(nan))");
 	        Matcher matcher = pattern.matcher(gdalinfoOutput);
 	        if (matcher.find()) {
 	        	nodataValueString = matcher.group(1);
-	        	nodataValue = parseIntegerOrDouble(nodataValueString);
+	        	nodataValue = nodataValueString.equals("nan") ? Double.NaN : parseIntegerOrDouble(nodataValueString, null);
 	        	nodataSettingForFile.put(dataFilePath, nodataValue);
 	        }
 		}
@@ -233,10 +237,22 @@ public class TimeseriesService implements InitializingBean {
 	}
 	
 	private boolean containsNodataValue(Number nodataValue, Number[] values) {
+		
+		// data contains no NODATA values if NODATA value is not specified for data set
 		if (nodataValue == null) return false;
+		
+		// check for NAN values indicating NODATA if NODATA is specified to be Double.NAN
+		if (nodataValue instanceof Double && (Double.isNaN((double) nodataValue))) {
+			for (Number n : values) {
+				if (n == null || Double.isNaN(n.doubleValue())) return true;
+			}
+			return false;
+		}
+		
 		for (Number n : values) {
 			if (n.intValue() == nodataValue.intValue()) return true;
 		}
+
 		return false;
 	}
 	
@@ -263,28 +279,31 @@ public class TimeseriesService implements InitializingBean {
         return streams[0].toString().split("\\s+");
 	}
 	
-	private Number[] getRangeOfStringValuesAsNumbers(String[] strings, int start, int end) {
+	private Number[] getRangeOfStringValuesAsNumbers(String[] strings, int start, int end, Number nodataValue) {
 		Number[] numbers = new Number[end - start + 1];
 		for (int si = 0, ii = 0; si < strings.length; ++si) {
 			if (si >= start && si <= end) {
-				numbers[ii++] = parseIntegerOrDouble(strings[si]);
+				numbers[ii++] = parseIntegerOrDouble(strings[si], nodataValue);
 			}
 		}
 		return numbers;
 	}
 	
-	private Number parseIntegerOrDouble(String s) {
-		Number n;
+	private Number parseIntegerOrDouble(String s, Number nodataValue) {
+		
 		if (s.equalsIgnoreCase("nan")) {
-        	throw new InvalidDataException("Timeseries values contains NaN");
-		} else if (s.contains(".")) {
-			Double d= Double.valueOf(s);
-			n = d;
-		} else {
-			Integer i = Integer.valueOf(s);
-			n = i;
+			if (nodataValue != null && Double.isNaN((double)nodataValue)) {
+				return null;
+			} else {
+	        	throw new InvalidDataException("Timeseries values contains NaN");
+			}
 		}
-		return n;
+		
+        if (s.contains(".")) {
+			return Double.valueOf(s);
+		} 
+        
+		return Integer.valueOf(s);
 	}
 	
 	public String getTable(IndexRange responseRange, TimeScale timeScale, String variableName, Number[] values) throws Exception {

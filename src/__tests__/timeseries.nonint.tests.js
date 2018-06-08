@@ -21,7 +21,7 @@ describe("When a GET request selects from a float32 datafile a coordinate with a
     });
     
     it ('The nodata value should be the one defined in the data file', async function() {
-        expect(response.entity.nodata).toEqual(-1);
+        expect(response.entity.nodata).toEqual('NaN');
 	});
 
     it ('No nodata values should be found', async function() {
@@ -68,7 +68,7 @@ describe("When a GET request selects from a float32 datafile a coordinate with a
     });
     
     it ('The nodata value should be the one defined in the data file', async function() {
-        expect(response.entity.nodata).toEqual(-1);
+        expect(response.entity.nodata).toEqual('NaN');
 	});
 
     it ('No nodata values should be found', async function() {
@@ -110,4 +110,64 @@ describe("When a GET request selects from a float32 datafile a coordinate with a
 		);
     });
 });
+
+describe("When a GET request selects from a float32 datafile a coordinate containing NODATA NaN values", async () => {
+    
+	var response;
+	
+	beforeAll(async () => {
+		response = await callRESTService({
+		    method: 'GET',
+		    path: timeseriesServiceBase + '/timeseries/annual_5x5x5_dataset/float32_variable?longitude=-119.0&latitude=47.0&start=0&end=4&csv=true&array=true'
+		});
+    });
+
+    it ('HTTP response status code should be 200 - success', async function() {
+        expect(response.status.code).toBe(200);
+    });
+    
+    it ('The nodata value should be the one defined in the data file', async function() {
+        expect(response.entity.nodata).toEqual('NaN');
+	});
+
+    it ('A nodata value should be found', async function() {
+        expect(response.entity.containsNodata).toEqual(true);
+	});
+    
+    it ('The array should contain the 5 pixel values', async function() {
+        expect(response.entity.values[0]).toBeCloseTo(124.4,3);
+        expect(response.entity.values[1]).toBeCloseTo(224.4,3);
+        expect(response.entity.values[2]).toBeNull()
+        expect(response.entity.values[3]).toBeCloseTo(424.4,3);
+        expect(response.entity.values[4]).toBeCloseTo(524.4,3);
+    });
+    
+    it ('The lowerBounds array should contain the 5 pixel values minus the uncertainty in each', async function() {
+        expect(response.entity.lowerBounds[0]).toBeCloseTo(112.0,3);
+        expect(response.entity.lowerBounds[1]).toBeCloseTo(202.0,3);
+        expect(response.entity.lowerBounds[2]).toBeNull();
+        expect(response.entity.lowerBounds[3]).toBeCloseTo(382.0,3);
+        expect(response.entity.lowerBounds[4]).toBeCloseTo(472.0,3);
+    });
+
+    it ('The upperBounds array should contain the 5 pixel values plus the uncertainty in each', async function() {
+        expect(response.entity.upperBounds[0]).toBeCloseTo(136.8,3);
+        expect(response.entity.upperBounds[1]).toBeCloseTo(246.8,3);
+        expect(response.entity.upperBounds[2]).toBeNull();
+        expect(response.entity.upperBounds[3]).toBeCloseTo(466.8,3);
+        expect(response.entity.upperBounds[4]).toBeCloseTo(576.8,3);
+    });
+
+    it ('The data column in the csv should comprise the values and upper and lower bounds', async function() {
+        expect(response.entity.csv).toEqual(
+        		"index, float32_variable, range -, range +"	    + "\n" +
+        		"0, 124.400, 112.000, 136.800"					+ "\n" +
+        		"1, 224.400, 202.000, 246.800"					+ "\n" +
+        		"2, null, null, null"							+ "\n" +
+        		"3, 424.400, 382.000, 466.800"					+ "\n" +
+        		"4, 524.400, 472.000, 576.800"					+ "\n"
+		);
+    });
+});
+
 

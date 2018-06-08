@@ -15,7 +15,7 @@ describe("When a GET request selects from a region exactly covering a 2x2 pixel 
 		    path: timeseriesServiceBase + '/timeseries',
 		    entity: {
 		    	datasetId: 'annual_5x5x5_dataset',
-		    	variableName: 'uint16_variable',
+		    	variableName: 'float32_variable',
 		    	boundaryGeometry: {
     		    "type": "Polygon",
     		    "coordinates": [[
@@ -37,21 +37,21 @@ describe("When a GET request selects from a region exactly covering a 2x2 pixel 
     });
     
     it ('The array should comprise the average of four pixels in each band', async function() {
-        expect(response.entity.values[0]).toBeCloseTo(105.5,3);
-        expect(response.entity.values[1]).toBeCloseTo(205.5,3);
-        expect(response.entity.values[2]).toBeCloseTo(305.5,3);
-        expect(response.entity.values[3]).toBeCloseTo(405.5,3);
-        expect(response.entity.values[4]).toBeCloseTo(505.5,3);
+        expect(response.entity.values[0]).toBeCloseTo(105.55,3);
+        expect(response.entity.values[1]).toBeCloseTo(205.55,3);
+        expect(response.entity.values[2]).toBeCloseTo(305.55,3);
+        expect(response.entity.values[3]).toBeCloseTo(405.55,3);
+        expect(response.entity.values[4]).toBeCloseTo(505.55,3);
     });
     
     it ('The data column should comprise the average of four pixels in each band', async function() {
         expect(response.entity.csv).toEqual( 
-        		"index, uint16_variable"	+ "\n" +
-        		"0, 105.500"				+ "\n" +
-        		"1, 205.500"				+ "\n" +
-        		"2, 305.500"				+ "\n" +
-        		"3, 405.500"				+ "\n" +
-    			"4, 505.500"				+ "\n"
+        		"index, float32_variable, range -, range +"	+ "\n" +
+        		"0, 105.550, 95.0000, 116.100"				+ "\n" +
+        		"1, 205.550, 185.000, 226.100"				+ "\n" +
+        		"2, 305.550, 275.000, 336.100"				+ "\n" +
+        		"3, 405.550, 365.000, 446.100" 				+ "\n" +
+        		"4, 505.550, 455.000, 556.100" 				+ "\n"
 		);
     });
 });
