@@ -48,18 +48,18 @@ describe("When a timeseries GET request selects first pixel of each band in firs
     it ('Csv should comprise dates and values for each band for first 12 months', async function() {
         expect(response.entity.csv).toEqual( 
         		"month, int16_variable"	+ "\n" +
-        		"0001-01, 100"			+ "\n" +
-        		"0001-02, 200"			+ "\n" +
-        		"0001-03, 300"			+ "\n" +
-        		"0001-04, 400"			+ "\n" +
-        		"0001-05, 500"			+ "\n" +
-        		"0001-06, 600"			+ "\n" +
-        		"0001-07, 700"			+ "\n" +
-        		"0001-08, 800"			+ "\n" +
-        		"0001-09, 900"			+ "\n" +
-        		"0001-10, 1000"			+ "\n" +
-        		"0001-11, 1100"			+ "\n" +
-        		"0001-12, 1200"			+ "\n"
+        		"0001-01,100"			+ "\n" +
+        		"0001-02,200"			+ "\n" +
+        		"0001-03,300"			+ "\n" +
+        		"0001-04,400"			+ "\n" +
+        		"0001-05,500"			+ "\n" +
+        		"0001-06,600"			+ "\n" +
+        		"0001-07,700"			+ "\n" +
+        		"0001-08,800"			+ "\n" +
+        		"0001-09,900"			+ "\n" +
+        		"0001-10,1000"			+ "\n" +
+        		"0001-11,1100"			+ "\n" +
+        		"0001-12,1200"			+ "\n"
 		);
     });
 
@@ -92,18 +92,18 @@ describe("When a timeseries GET request selects first pixel of each band in thir
     it ('Csv should comprise dates and values for each month in third year', async function() {
         expect(response.entity.csv).toEqual( 
         		"month, int16_variable"	+ "\n" +
-        		"0003-01, 2500"			+ "\n" +
-        		"0003-02, 2600"			+ "\n" +
-        		"0003-03, 2700"			+ "\n" +
-        		"0003-04, 2800"			+ "\n" +
-        		"0003-05, 2900"			+ "\n" +
-        		"0003-06, 3000"			+ "\n" +
-        		"0003-07, 3100"			+ "\n" +
-        		"0003-08, 3200"			+ "\n" +
-        		"0003-09, 3300"			+ "\n" +
-        		"0003-10, 3400"			+ "\n" +
-        		"0003-11, 3500"			+ "\n" +
-        		"0003-12, 3600"			+ "\n"
+        		"0003-01,2500"			+ "\n" +
+        		"0003-02,2600"			+ "\n" +
+        		"0003-03,2700"			+ "\n" +
+        		"0003-04,2800"			+ "\n" +
+        		"0003-05,2900"			+ "\n" +
+        		"0003-06,3000"			+ "\n" +
+        		"0003-07,3100"			+ "\n" +
+        		"0003-08,3200"			+ "\n" +
+        		"0003-09,3300"			+ "\n" +
+        		"0003-10,3400"			+ "\n" +
+        		"0003-11,3500"			+ "\n" +
+        		"0003-12,3600"			+ "\n"
 		);
     });
 });
@@ -135,18 +135,18 @@ describe("When a timeseries GET request selects first pixel of each band in the 
     it ('Csv should comprise dates and values for 12 months starting at mid-year of year 4', async function() {
         expect(response.entity.csv).toEqual( 
         		"month, int16_variable"	+ "\n" +
-        		"0004-07, 4300"			+ "\n" +
-        		"0004-08, 4400"			+ "\n" +
-        		"0004-09, 4500"			+ "\n" +
-        		"0004-10, 4600"			+ "\n" +
-        		"0004-11, 4700"			+ "\n" +
-        		"0004-12, 4800"			+ "\n" +
-        		"0005-01, 4900"			+ "\n" +
-        		"0005-02, 5000"			+ "\n" +
-        		"0005-03, 5100"			+ "\n" +
-        		"0005-04, 5200"			+ "\n" +
-        		"0005-05, 5300"			+ "\n" +
-        		"0005-06, 5400"			+ "\n"
+        		"0004-07,4300"			+ "\n" +
+        		"0004-08,4400"			+ "\n" +
+        		"0004-09,4500"			+ "\n" +
+        		"0004-10,4600"			+ "\n" +
+        		"0004-11,4700"			+ "\n" +
+        		"0004-12,4800"			+ "\n" +
+        		"0005-01,4900"			+ "\n" +
+        		"0005-02,5000"			+ "\n" +
+        		"0005-03,5100"			+ "\n" +
+        		"0005-04,5200"			+ "\n" +
+        		"0005-05,5300"			+ "\n" +
+        		"0005-06,5400"			+ "\n"
 		);
     });
 });
@@ -178,12 +178,12 @@ describe("When a values GET request selects first pixel of each band in year sta
     it ('Csv should comprise dates and values for each month starting at mid-year of last year of monthly 5x5x60 data cube', async function() {
         expect(response.entity.csv).toEqual( 
         		"month, int16_variable"	+ "\n" +
-        		"0005-07, 5500"			+ "\n" +
-        		"0005-08, 5600"			+ "\n" +
-        		"0005-09, 5700"			+ "\n" +
-        		"0005-10, 5800"			+ "\n" +
-        		"0005-11, 5900"			+ "\n" +
-        		"0005-12, 6000"			+ "\n"
+        		"0005-07,5500"			+ "\n" +
+        		"0005-08,5600"			+ "\n" +
+        		"0005-09,5700"			+ "\n" +
+        		"0005-10,5800"			+ "\n" +
+        		"0005-11,5900"			+ "\n" +
+        		"0005-12,6000"			+ "\n"
 		);
     });
 });
@@ -215,12 +215,12 @@ describe("When a values GET request selects first pixel of each band in first ye
     it ('Csv should comprise dates and values for each of the first six months in the data set', async function() {
         expect(response.entity.csv).toEqual( 
         		"month, int16_variable"	+ "\n" +
-        		"0002-07, 100"			+ "\n" +
-        		"0002-08, 200"			+ "\n" +
-        		"0002-09, 300"			+ "\n" +
-        		"0002-10, 400"			+ "\n" +
-        		"0002-11, 500"			+ "\n" +
-        		"0002-12, 600"			+ "\n"
+        		"0002-07,100"			+ "\n" +
+        		"0002-08,200"			+ "\n" +
+        		"0002-09,300"			+ "\n" +
+        		"0002-10,400"			+ "\n" +
+        		"0002-11,500"			+ "\n" +
+        		"0002-12,600"			+ "\n"
 		);
     });
 });
@@ -252,12 +252,12 @@ describe("When a values GET request selects first pixel of each band in year sta
     it ('Csv should comprise dates and values for each of the last six months in the data set', async function() {
         expect(response.entity.csv).toEqual( 
         		"month, int16_variable"	+ "\n" +
-        		"0007-01, 5500"			+ "\n" +
-        		"0007-02, 5600"			+ "\n" +
-        		"0007-03, 5700"			+ "\n" +
-        		"0007-04, 5800"			+ "\n" +
-        		"0007-05, 5900"			+ "\n" +
-        		"0007-06, 6000"			+ "\n"
+        		"0007-01,5500"			+ "\n" +
+        		"0007-02,5600"			+ "\n" +
+        		"0007-03,5700"			+ "\n" +
+        		"0007-04,5800"			+ "\n" +
+        		"0007-05,5900"			+ "\n" +
+        		"0007-06,6000"			+ "\n"
 		);
     });
 });

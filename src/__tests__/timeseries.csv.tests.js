@@ -27,11 +27,11 @@ describe("When a GET request selects first pixel of each band in 5x5x5 data cube
     it ('Csv should be present', async function() {
         expect(response.entity.csv).toEqual( 
         		"index, uint16_variable"	+ "\n" +
-        		"0, 100"					+ "\n" +
-        		"1, 200"					+ "\n" +
-        		"2, 300"					+ "\n" +
-        		"3, 400"					+ "\n" +
-    			"4, 500"					+ "\n"
+        		"0,100"						+ "\n" +
+        		"1,200"						+ "\n" +
+        		"2,300"						+ "\n" +
+        		"3,400"						+ "\n" +
+    			"4,500"						+ "\n"
 		);
     });
 
@@ -99,11 +99,11 @@ describe("When a POST request selects first pixel of each band in 5x5x5 data cub
     it ('Csv should be present', async function() {
         expect(response.entity.csv).toEqual( 
         		"index, uint16_variable"	+ "\n" +
-        		"0, 100"					+ "\n" +
-        		"1, 200"					+ "\n" +
-        		"2, 300"					+ "\n" +
-        		"3, 400"					+ "\n" +
-    			"4, 500"					+ "\n"
+        		"0,100"						+ "\n" +
+        		"1,200"						+ "\n" +
+        		"2,300"						+ "\n" +
+        		"3,400"						+ "\n" +
+    			"4,500"						+ "\n"
 		);
     });
 
@@ -177,11 +177,11 @@ describe("When a GET request selects first pixel of each band in 5x5x5 data cube
     it ('Csv should be present', async function() {
         expect(response.entity.csv).toEqual( 
         		"year, uint16_variable"	+ "\n" +
-        		"1, 100"				+ "\n" +
-        		"2, 200"				+ "\n" +
-        		"3, 300"				+ "\n" +
-        		"4, 400"				+ "\n" +
-    			"5, 500"				+ "\n"
+        		"1,100"					+ "\n" +
+        		"2,200"					+ "\n" +
+        		"3,300"					+ "\n" +
+        		"4,400"					+ "\n" +
+    			"5,500"					+ "\n"
 		);
     });
 })
@@ -214,11 +214,11 @@ describe("When a GET request selects first pixel of each band in 5x5x5 data cube
     it ('Csv should should represent entire time range in data set starting at default year of 1', async function() {
         expect(response.entity.csv).toEqual( 
         		"year, uint16_variable"	+ "\n" +
-        		"1, 100"				+ "\n" +
-        		"2, 200"				+ "\n" +
-        		"3, 300"				+ "\n" +
-        		"4, 400"				+ "\n" +
-    			"5, 500"				+ "\n"
+        		"1,100"					+ "\n" +
+        		"2,200"					+ "\n" +
+        		"3,300"					+ "\n" +
+        		"4,400"					+ "\n" +
+    			"5,500"					+ "\n"
 		);
     });
 })
@@ -251,11 +251,11 @@ describe("When a GET request selects first pixel of each band in 5x5x5 data cube
     it ('Csv should be present', async function() {
         expect(response.entity.csv).toEqual( 
         		"year, uint16_variable"	+ "\n" +
-        		"501, 100"				+ "\n" +
-        		"502, 200"				+ "\n" +
-        		"503, 300"				+ "\n" +
-        		"504, 400"				+ "\n" +
-    			"505, 500"				+ "\n"
+        		"501,100"				+ "\n" +
+        		"502,200"				+ "\n" +
+        		"503,300"				+ "\n" +
+        		"504,400"				+ "\n" +
+    			"505,500"				+ "\n"
 		);
     });
 })
@@ -288,9 +288,9 @@ describe("When a GET request selects first pixel of 5x5x5 data cube in units of 
     it ('Csv should be present', async function() {
         expect(response.entity.csv).toEqual( 
         		"year, uint16_variable"	+ "\n" +
-        		"503, 300"				+ "\n" +
-        		"504, 400"				+ "\n" +
-    			"505, 500"				+ "\n"
+        		"503,300"				+ "\n" +
+        		"504,400"				+ "\n" +
+    			"505,500"				+ "\n"
 		);
     });
 })
@@ -323,9 +323,9 @@ describe("When a GET request selects first pixel of 5x5x5 data cube in units of 
     it ('Csv should be present', async function() {
         expect(response.entity.csv).toEqual( 
         		"year, uint16_variable"	+ "\n" +
-        		"501, 100"				+ "\n" +
-        		"502, 200"				+ "\n" +
-    			"503, 300"				+ "\n"
+        		"501,100"				+ "\n" +
+        		"502,200"				+ "\n" +
+    			"503,300"				+ "\n"
 		);
     });
 })

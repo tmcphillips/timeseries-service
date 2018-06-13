@@ -42,12 +42,12 @@ describe("When a GET request selects from a float32 datafile a coordinate with a
 
     it ('The data column in the csv should comprise the values and upper and lower bounds', async function() {
         expect(response.entity.csv).toEqual( 
-        		"index, float32_variable, range -, range +"	    + "\n" +
-        		"0, 100, 90.0000, 110.000"						+ "\n" +
-        		"1, 200, 180.000, 220.000"						+ "\n" +
-        		"2, 300, 270.000, 330.000"						+ "\n" +
-        		"3, 400, 360.000, 440.000"						+ "\n" +
-        		"4, 500, 450.000, 550.000"						+ "\n"
+        		"index, float32_variable, range -, range +"	+ "\n" +
+        		"0,100,90.0000,110.000"						+ "\n" +
+        		"1,200,180.000,220.000"						+ "\n" +
+        		"2,300,270.000,330.000"						+ "\n" +
+        		"3,400,360.000,440.000"						+ "\n" +
+        		"4,500,450.000,550.000"						+ "\n"
 		);
     });
 });
@@ -101,12 +101,12 @@ describe("When a GET request selects from a float32 datafile a coordinate with a
 
     it ('The data column in the csv should comprise the values and upper and lower bounds', async function() {
         expect(response.entity.csv).toEqual(
-        		"index, float32_variable, range -, range +"	    + "\n" +
-        		"0, 122.200, 110.000, 134.400"					+ "\n" +
-        		"1, 222.200, 200.000, 244.400"					+ "\n" +
-        		"2, 322.200, 290.000, 354.400"					+ "\n" +
-        		"3, 422.200, 380.000, 464.400"					+ "\n" +
-        		"4, 522.200, 470.000, 574.400"					+ "\n"
+        		"index, float32_variable, range -, range +"	+ "\n" +
+        		"0,122.200,110.000,134.400"					+ "\n" +
+        		"1,222.200,200.000,244.400"					+ "\n" +
+        		"2,322.200,290.000,354.400"					+ "\n" +
+        		"3,422.200,380.000,464.400"					+ "\n" +
+        		"4,522.200,470.000,574.400"					+ "\n"
 		);
     });
 });
@@ -160,12 +160,12 @@ describe("When a GET request selects from a float32 datafile a coordinate contai
 
     it ('The data column in the csv should comprise the values and upper and lower bounds', async function() {
         expect(response.entity.csv).toEqual(
-        		"index, float32_variable, range -, range +"	    + "\n" +
-        		"0, 124.400, 112.000, 136.800"					+ "\n" +
-        		"1, 224.400, 202.000, 246.800"					+ "\n" +
-        		"2, null, null, null"							+ "\n" +
-        		"3, 424.400, 382.000, 466.800"					+ "\n" +
-        		"4, 524.400, 472.000, 576.800"					+ "\n"
+        		"index, float32_variable, range -, range +"	+ "\n" +
+        		"0,124.400,112.000,136.800"					+ "\n" +
+        		"1,224.400,202.000,246.800"					+ "\n" +
+        		"2,,,"										+ "\n" +
+        		"3,424.400,382.000,466.800"					+ "\n" +
+        		"4,524.400,472.000,576.800"					+ "\n"
 		);
     });
 });
