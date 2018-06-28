@@ -2,7 +2,6 @@ package org.openskope.timeseries.service;
 
 import org.openskope.timeseries.controller.InvalidArgumentException;
 import org.openskope.timeseries.controller.InvalidDataException;
-import org.openskope.timeseries.controller.ProcessExecutionException;
 import org.openskope.timeseries.model.IndexRange;
 import org.openskope.timeseries.model.TimeScale;
 import org.openskope.timeseries.model.TimeseriesRequest;
@@ -161,27 +160,11 @@ public class TimeseriesService implements InitializingBean {
 	}
 	
 	private String[] getFullTimeseries(TimeseriesRequest request, File dataFile) throws Exception {
-		
-		String[] fullTimeSeries = null; 
-		
 		if (request.getBoundaryGeometryType().equalsIgnoreCase("POINT")) {
-			fullTimeSeries = runGdalLocationInfo(dataFile, request.getLongitude(), request.getLatitude());
-	        if (fullTimeSeries.length == 0) {
-	        	throw new InvalidArgumentException("Coordinates are outside region covered by the dataset");
-	        }
+			return runGdalLocationInfo(dataFile, request.getLongitude(), request.getLatitude());
 		} else {
-			try {
-				fullTimeSeries = runZonalInfo(dataFile, request);
-			} catch (ProcessExecutionException e) {
-				if (e.getMessage().contains("Input shapes do not overlap raster.")) {
-		        	throw new InvalidArgumentException("The selected area does not overlap the region covered by the dataset");
-				} else {
-					throw e;
-				}
-			}
+			return runZonalInfo(dataFile, request);
 		}
-		
-        return fullTimeSeries;
 	}
 	
 	private File getDataFile(UriTemplate pathTemplate, String datasetId, String variableName) {
@@ -276,7 +259,11 @@ public class TimeseriesService implements InitializingBean {
                 "%s -valonly -geoloc %s %f %f", gdallocationinfoCommand, dataFile.getAbsolutePath(), longitude, latitude);
         System.out.println(commandLine);
         StreamSink streams[] = ProcessRunner.run(commandLine, "", new String[0], null, timeoutMilliseconds);
-        return streams[0].toString().split("\\s+");
+        String[] stdoutTokens = streams[0].toString().split("\\s+");
+        if (stdoutTokens.length == 0) {
+        	throw new InvalidArgumentException("Coordinates are outside region covered by the dataset");
+        }
+        return stdoutTokens;
 	}
 	
 	private String[] runZonalInfo(File dataFile, TimeseriesRequest request) throws Exception {
@@ -287,8 +274,13 @@ public class TimeseriesService implements InitializingBean {
         System.out.println(stdin);
         StreamSink streams[] = ProcessRunner.run(commandLine, mapper.writeValueAsString(request.getBoundaryGeometry()), new String[0], null, timeoutMilliseconds);
         String stderr = streams[1].toString();
+        
         if (stderr.length() > 0) {
-        	throw new ProcessExecutionException(stderr);
+    		if (stderr.contains("Input shapes do not overlap raster.")) {
+    			throw new InvalidArgumentException("The selected area does not overlap the region covered by the dataset");
+    		} else {
+    			throw new InvalidArgumentException(stderr);
+    		}
         }
         	
         return streams[0].toString().split("\\s+");
