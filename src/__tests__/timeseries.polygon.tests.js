@@ -143,7 +143,7 @@ describe("When a GET request selects from a region of zero area from the uint16 
     });
 
     it ('Error message should be that longitude parameter is not present', async function() {
-        expect(response.entity.message).toContain("Input shapes do not overlap raster.")
+        expect(response.entity.message).toBe("The selected area does not overlap the region covered by the dataset");
     }); 
 });
 
@@ -183,7 +183,7 @@ describe("When a GET request selects from a region of zero area from the float32
     });
 
     it ('Error message should be that longitude parameter is not present', async function() {
-        expect(response.entity.message).toContain("Input shapes do not overlap raster.")
+        expect(response.entity.message).toBe("The selected area does not overlap the region covered by the dataset");
     }); 
 });
 
@@ -327,7 +327,7 @@ describe("When a GET request selects a region just outside coverage of the uint1
     });
 
     it ('Error message should be that longitude parameter is not present', async function() {
-        expect(response.entity.message).toContain("Input shapes do not overlap raster.")
+        expect(response.entity.message).toBe("The selected area does not overlap the region covered by the dataset");
     }); 
 });
 
@@ -350,7 +350,7 @@ describe("When a GET request selects a region just outside coverage of the float
     		        [-123,47],
     		        [-123,45],
     		        [-123,45]
-	    		    	]]
+    		    	]]
 	    		},
 	    		start: 0,
 	    		end: 4
@@ -366,11 +366,50 @@ describe("When a GET request selects a region just outside coverage of the float
         expect(response.entity.error).toBe("Bad Request");
     });
 
-    it ('Error message should be that longitude parameter is not present', async function() {
-        expect(response.entity.message).toContain("Input shapes do not overlap raster.")
-    }); 
+    it ('Error message should be that coordinates are outside dataset coverage', async function() {
+        expect(response.entity.message).toBe("The selected area does not overlap the region covered by the dataset");
+    });
 });
 
+describe("When a GET request selects a region well outside coverage of the float32 variable", async () => {
+    
+	var response;
+	
+	beforeAll(async () => {
+		response = await callRESTService({
+		    method: 'POST',
+		    path: timeseriesServiceBase + '/timeseries',
+		    entity: {
+		    	datasetId: 'annual_5x5x5_dataset',
+		    	variableName: 'float32_variable',
+		    	boundaryGeometry: {
+    		    "type": "Polygon",
+    		    "coordinates": [[
+    		    	[-104,35],
+    		        [-104,37],
+    		        [-103,37],
+    		        [-103,35],
+    		        [-103,35]
+    		    	]]
+	    		},
+	    		start: 0,
+	    		end: 4
+		    }
+		});
+    });
+
+    it ('HTTP response status code should be 400', async function() {
+        expect(response.status.code).toBe(400);
+    });
+    
+    it ('Error summary should be bad request', async function() {
+        expect(response.entity.error).toBe("Bad Request");
+    });
+
+    it ('Error message should be that coordinates are outside dataset coverage', async function() {
+        expect(response.entity.message).toBe("The selected area does not overlap the region covered by the dataset");
+    });
+});
 
 describe("When a GET request selects exactly the top-left corner pixel of the uint16 variable", async () => {
     

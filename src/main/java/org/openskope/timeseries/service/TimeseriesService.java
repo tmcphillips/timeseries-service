@@ -2,6 +2,7 @@ package org.openskope.timeseries.service;
 
 import org.openskope.timeseries.controller.InvalidArgumentException;
 import org.openskope.timeseries.controller.InvalidDataException;
+import org.openskope.timeseries.controller.ProcessExecutionException;
 import org.openskope.timeseries.model.IndexRange;
 import org.openskope.timeseries.model.TimeScale;
 import org.openskope.timeseries.model.TimeseriesRequest;
@@ -165,13 +166,21 @@ public class TimeseriesService implements InitializingBean {
 		
 		if (request.getBoundaryGeometryType().equalsIgnoreCase("POINT")) {
 			fullTimeSeries = runGdalLocationInfo(dataFile, request.getLongitude(), request.getLatitude());
+	        if (fullTimeSeries.length == 0) {
+	        	throw new InvalidArgumentException("Coordinates are outside region covered by the dataset");
+	        }
 		} else {
-			fullTimeSeries = runZonalInfo(dataFile, request);			
+			try {
+				fullTimeSeries = runZonalInfo(dataFile, request);
+			} catch (ProcessExecutionException e) {
+				if (e.getMessage().contains("Input shapes do not overlap raster.")) {
+		        	throw new InvalidArgumentException("The selected area does not overlap the region covered by the dataset");
+				} else {
+					throw e;
+				}
+			}
 		}
 		
-        if (fullTimeSeries.length == 0) {
-        	throw new InvalidArgumentException("Coordinates are outside region covered by the dataset");
-        }
         return fullTimeSeries;
 	}
 	
@@ -279,7 +288,7 @@ public class TimeseriesService implements InitializingBean {
         StreamSink streams[] = ProcessRunner.run(commandLine, mapper.writeValueAsString(request.getBoundaryGeometry()), new String[0], null, timeoutMilliseconds);
         String stderr = streams[1].toString();
         if (stderr.length() > 0) {
-        	throw new InvalidArgumentException(stderr);
+        	throw new ProcessExecutionException(stderr);
         }
         	
         return streams[0].toString().split("\\s+");
