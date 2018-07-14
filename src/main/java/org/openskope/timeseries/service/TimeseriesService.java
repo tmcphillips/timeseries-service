@@ -286,7 +286,7 @@ public class TimeseriesService implements InitializingBean {
         return streams[0].toString().split("\\s+");
 	}
 	
-	public static Number[] getRangeOfStringValuesAsNumbers(String[] strings, int start, int end, Number nodataValue) {
+	public Number[] getRangeOfStringValuesAsNumbers(String[] strings, int start, int end, Number nodataValue) {
 		Number[] numbers = new Number[end - start + 1];
 		for (int si = 0, ii = 0; si < strings.length; ++si) {
 			if (si >= start && si <= end) {
@@ -296,7 +296,7 @@ public class TimeseriesService implements InitializingBean {
 		return numbers;
 	}
 	
-	public static Number parseIntegerOrDouble(String s, Number nodataValue) {
+	public Number parseIntegerOrDouble(String s, Number nodataValue) {
 		
 		if (s.equalsIgnoreCase("nan")) {
 			if (nodataValue != null && Double.isNaN((double)nodataValue)) {
@@ -306,11 +306,19 @@ public class TimeseriesService implements InitializingBean {
 			}
 		}
 		
+		Number value = null;
+		
         if (s.contains(".")) {
-			return Double.valueOf(s);
-		} 
+			value = Double.valueOf(s);
+		} else {
+			value = Integer.valueOf(s);
+		}
         
-		return Integer.valueOf(s);
+        if (valueIsNodata(value)) {
+        	return null;
+        } else {
+        	return value;
+    	}
 	}
 	
 	private String getTableValue(Number value) {

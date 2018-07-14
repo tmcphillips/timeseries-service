@@ -139,7 +139,7 @@ describe("When a GET request selects a pixel with no nodata value but sets nodat
     });
     
     it ('Values should contain the nodata value specified in request', async function() {
-        expect(response.entity.values).toEqual([114,214,314,414,514]);
+        expect(response.entity.values).toEqual([114,214,null,414,514]);
 	});
     
     it ('Response nodata should be the nodata value from the request', async function() {
@@ -179,7 +179,7 @@ describe("When a GET request selects a pixel with one nodata value and accepts d
     });
     
     it ('Values should contain the actual nodata value', async function() {
-        expect(response.entity.values).toEqual([124,224,65535,424,524]);
+        expect(response.entity.values).toEqual([124,224,null,424,524]);
 	});
     
     it ('Response nodata should be the nodata value detected in the data file metadata', async function() {
@@ -219,7 +219,7 @@ describe("When a GET request selects a pixel with one nodata value and explicitl
     });
     
     it ('Values should contain the actual nodata value', async function() {
-        expect(response.entity.values).toEqual([124,224,65535,424,524]);
+        expect(response.entity.values).toEqual([124,224,null,424,524]);
 	});
     
     it ('Response nodata should be the nodata value detected in the data file metadata', async function() {
