@@ -11,6 +11,6 @@ setup(
     license='MIT',
     packages=['skope_analysis'],
     package_dir={'': 'src'},
-    data_files = [("", ["../../LICENSE.txt"])],
+    data_files = [("", ["LICENSE.txt"])],
     install_requires=['Flask >= 1.0.2']
 )
