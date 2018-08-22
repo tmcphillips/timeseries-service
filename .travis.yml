@@ -1,8 +1,10 @@
 language: python
 python:
   - "3.6"
+before_install:
+  - sudo apt-get update
+  - sudo apt install gdal-bin
 install:
-  - apt install gdal-bin
   - pip install ./python/skope_analysis/
 script: pytest -v
 
