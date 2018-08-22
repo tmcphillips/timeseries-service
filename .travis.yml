@@ -2,6 +2,7 @@ language: python
 python:
   - "3.6"
 install:
+  - apt install gdal-bin
   - pip install ./python/skope_analysis/
 script: pytest -v
 
