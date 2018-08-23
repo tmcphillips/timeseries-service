@@ -5,6 +5,7 @@ before_install:
   - sudo apt-get update
   - sudo apt install -y gdal-bin python3-gdal
 env:
+  - LD_LIBRARY_PATH=/usr/lib
   - PYTHONPATH=/usr/lib/python3/dist-packages
 install:
   - pip install ./python/skope_analysis/
