@@ -2,6 +2,7 @@ language: python
 python:
   - "3.6"
 before_install:
+  - sudo add-apt-repository -y ppa:ubuntugis/ppa
   - sudo apt-get update
   - sudo apt install -y gdal-bin python3-gdal
   - dpkg-query -L libgdal20
