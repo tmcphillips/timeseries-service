@@ -7,7 +7,7 @@ before_install:
   - sudo apt install -y gdal-bin python3-gdal
   - dpkg-query -L python3-gdal
 env:
-  - LD_LIBRARY_PATH=/usr/lib PYTHONPATH=/usr/lib/python3/dist-packages
+  - LD_LIBRARY_PATH=/usr/lib PYTHONPATH=/usr/lib/python3/dist-packages:/usr/lib/python3/dist-packages/osgeo
 install:
   - pip install ./python/skope_analysis/
 script: pytest -v
