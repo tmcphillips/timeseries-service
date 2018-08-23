@@ -6,6 +6,7 @@ before_install:
   - sudo apt-get update
   - sudo apt install -y gdal-bin python3-gdal
   - dpkg-query -L python3-gdal
+  - pip install GDAL
 env:
   - LD_LIBRARY_PATH=/usr/lib:/usr/lib/python3/dist-packages/osgeo PYTHONPATH=/usr/lib/python3/dist-packages
 install:
